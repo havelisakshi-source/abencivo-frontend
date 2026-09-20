@@ -724,11 +724,12 @@ function Admin(){
    e.preventDefault();
    setLoginError("");
    try{
-     const r=await fetch(API_BASE+"/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(login)});
+     // FIXED: Hardcoded the exact URL so it always works
+     const r=await fetch("https://abencivo-bio.onrender.com/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(login)});
      const d=await r.json();
      if(r.ok){localStorage.setItem("ab_token",d.token);setToken(d.token)}
      else setLoginError(d.message||"Login failed");
-   }catch{setLoginError(`Can't reach the backend at ${API_BASE}. Make sure the server is running.`)}
+   }catch{setLoginError(`Can't reach the backend at https://abencivo-bio.onrender.com/api/auth/login. Make sure the server is running.`)}
  }
 
  async function handleFile(e){
