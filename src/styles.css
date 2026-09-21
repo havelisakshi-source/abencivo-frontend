@@ -270,3 +270,106 @@ html{scroll-behavior:smooth}
     transform: scale(1);
   }
 }
+
+/* ---------- Updated Header Styles ---------- */
+
+/* Ensure the header pushes the brand left and menu right */
+.nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 0 24px;
+  /* Add any existing positioning (fixed/sticky) if not already in your original CSS */
+}
+
+/* --- Hamburger Menu (3 Lines) on the far right --- */
+
+.menuContainer {
+  position: relative;
+  display: flex;
+  align-items: center;
+  margin-left: auto; /* Pushes it to the far right */
+}
+
+.hamburgerBtn {
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  padding: 10px;
+  border-radius: 8px;
+  transition: background-color 0.2s ease;
+}
+
+.hamburgerBtn:hover {
+  background-color: rgba(0, 0, 0, 0.05);
+}
+
+.hamburgerBtn span {
+  width: 26px;
+  height: 3px;
+  background-color: #e21b2d; /* Abencivo Red */
+  border-radius: 2px;
+  transition: transform 0.2s ease;
+}
+
+/* --- Dropdown Menu --- */
+
+.dropdownMenu {
+  position: absolute;
+  top: 100%;
+  right: 0;
+  background-color: #ffffff;
+  box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 12px;
+  padding: 10px;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  z-index: 1000;
+  min-width: 180px;
+  animation: fadeInDropdown 0.2s ease forwards;
+}
+
+.dropdownMenu button {
+  background: none;
+  border: none;
+  text-align: left;
+  padding: 10px 16px;
+  font-size: 14px;
+  font-weight: 600;
+  color: #333;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background-color 0.2s ease, color 0.2s ease;
+}
+
+.dropdownMenu button:hover,
+.dropdownMenu button.activeLink {
+  background-color: #fce8e9;
+  color: #e21b2d;
+}
+
+@keyframes fadeInDropdown {
+  from { opacity: 0; transform: translateY(-10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+/* ---------- Header Logo Styling (Bulletproof) ---------- */
+
+.brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0; /* Prevents it from being squished */
+}
+
+.headerLogo {
+  height: 70px !important; /* Forces the height to be 100px */
+  width: auto !important;   /* Keeps the proper aspect ratio */
+  max-height: none !important;
+  object-fit: contain;
+  display: block;
+}

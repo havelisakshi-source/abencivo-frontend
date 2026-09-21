@@ -11,10 +11,9 @@ function SplashScreen({onFinish}) {
   const [hide, setHide] = useState(false);
 
   useEffect(() => {
-    // Total animation time: ~3 seconds
     const timer = setTimeout(() => {
       setHide(true);
-      setTimeout(onFinish, 600); // Wait for fade-out
+      setTimeout(onFinish, 600); 
     }, 3000);
     return () => clearTimeout(timer);
   }, [onFinish]);
@@ -22,7 +21,6 @@ function SplashScreen({onFinish}) {
   return (
     <div className={`splashScreen ${hide ? "hide" : ""}`}>
       <div className="splashContainer">
-        {/* The Full Logo */}
         <img src="/images/logo.png" alt="Abencivo Biotech" className="splashLogo" />
       </div>
     </div>
@@ -194,11 +192,14 @@ const demoProducts = [
  {id:"demo-3",name:"Product Name 03",composition:"Add verified composition",dosage_form:"Syrup",category:"General",image_url:"/products/product-placeholder.svg",description:"Replace this demo information with verified product details."}
 ];
 
-const NAV_PAGES = ["home","about","products","pcd","manufacturing","quality","blog","careers","contact"];
+// REMOVED "manufacturing" from this list
+const NAV_PAGES = ["home","about","products","pcd","quality","blog","careers","contact"];
 
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
+  const [menuOpen, setMenuOpen] = useState(false); 
+
   useEffect(() => {
     let lastY = window.scrollY;
     const onScroll = () => {
@@ -211,26 +212,48 @@ function Layout({children, setPage, page}) {
     window.addEventListener("scroll", onScroll, {passive: true});
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
+
+  const handleNavClick = (p) => {
+    setPage(p);
+    setMenuOpen(false); 
+  };
+
   return (
     <>
       <CursorGlow />
       <header className={`nav ${scrolled ? "scrolled" : ""} ${navHidden ? "navHidden" : ""}`}>
-        <div className="brand" onClick={() => setPage("home")}>
-          <img src={COMPANY.logo} />
-          <span>{COMPANY.name}</span>
+        
+        {/* Replaced text brand with the full logo image */}
+        <div className="brand" onClick={() => handleNavClick("home")}>
+          <img src="/images/logo.png" alt="Abencivo Biotech" className="headerLogo" />
         </div>
-        <nav>
-          {NAV_PAGES.map(p => (
-            <button
-              key={p}
-              className={page === p ? "activeLink" : ""}
-              onClick={() => setPage(p)}
-            >
-              {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
-            </button>
-          ))}
-        </nav>
-        <a className="navcta" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">WhatsApp</a>
+        
+        {/* Right side: Hamburger Menu */}
+        <div className="menuContainer">
+          <button 
+            className="hamburgerBtn" 
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+          >
+            <span></span>
+            <span></span>
+            <span></span>
+          </button>
+          
+          {menuOpen && (
+            <div className="dropdownMenu">
+              {NAV_PAGES.map(p => (
+                <button
+                  key={p}
+                  className={page === p ? "activeLink" : ""}
+                  onClick={() => handleNavClick(p)}
+                >
+                  {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
+                </button>
+              ))}
+            </div>
+          )}
+        </div>
       </header>
 
       {children}
@@ -251,7 +274,7 @@ function Layout({children, setPage, page}) {
         <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
         <div>
           <h4>Quick Links</h4>
-          {["products","pcd","manufacturing","quality","careers"].map(p => (
+          {["products","pcd","quality","careers"].map(p => (
             <p key={p} className="footLink" onClick={() => setPage(p)}>
               {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
             </p>
@@ -928,7 +951,6 @@ function App() {
 
   const go = p => { location.hash = p; setPage(p); };
 
-  // If splash is showing, render ONLY the splash screen
   if (showSplash) {
     return <SplashScreen onFinish={() => setShowSplash(false)} />;
   }
