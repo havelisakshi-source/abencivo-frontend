@@ -5,10 +5,32 @@ import {CERTIFICATIONS, MILESTONES, VALUES, TEAM, TESTIMONIALS, CAPABILITIES, PR
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
 
+/* ---------- Splash Screen (Cinematic Intro) ---------- */
+
+function SplashScreen({onFinish}) {
+  const [hide, setHide] = useState(false);
+
+  useEffect(() => {
+    // Total animation time: ~3 seconds
+    const timer = setTimeout(() => {
+      setHide(true);
+      setTimeout(onFinish, 600); // Wait for fade-out
+    }, 3000);
+    return () => clearTimeout(timer);
+  }, [onFinish]);
+
+  return (
+    <div className={`splashScreen ${hide ? "hide" : ""}`}>
+      <div className="splashContainer">
+        {/* The Full Logo */}
+        <img src="/images/logo.png" alt="Abencivo Biotech" className="splashLogo" />
+      </div>
+    </div>
+  );
+}
+
 /* ---------- Scroll-reveal animation utilities ---------- */
 
-// Watches an element and flips `visible` to true the moment it enters the
-// viewport. Only fires once per element (unobserves itself after).
 function useReveal(threshold = 0.15) {
   const ref = useRef(null);
   const [visible, setVisible] = useState(false);
@@ -30,8 +52,6 @@ function useReveal(threshold = 0.15) {
   return [ref, visible];
 }
 
-// Drop-in wrapper: <Reveal delay={100}>...</Reveal> fades/slides its
-// children up into place the first time they scroll into view.
 function Reveal({children, delay = 0, className = "", as: Tag = "div", ...rest}) {
   const [ref, visible] = useReveal();
   return (
@@ -46,11 +66,8 @@ function Reveal({children, delay = 0, className = "", as: Tag = "div", ...rest})
   );
 }
 
-// Pings the backend once on mount and reports whether it's reachable.
-// Used to show "live data" vs "demo preview" instead of silently falling
-// back to hardcoded content with no explanation.
 function useApiStatus() {
-  const [status, setStatus] = useState("checking"); // "checking" | "online" | "offline"
+  const [status, setStatus] = useState("checking");
   useEffect(() => {
     let cancelled = false;
     fetch(API_BASE + "/health")
@@ -70,6 +87,7 @@ function ApiStatusBadge() {
     </span>
   );
 }
+
 function BackToTop() {
   const [show, setShow] = useState(false);
   useEffect(() => {
@@ -90,7 +108,6 @@ function BackToTop() {
 
 /* ---------- Reusable content-section building blocks ---------- */
 
-// Row of certification/compliance badges — used on Home and Quality.
 function BadgeStrip({items = CERTIFICATIONS}) {
   return (
     <Reveal className="badgeStrip">
@@ -99,7 +116,6 @@ function BadgeStrip({items = CERTIFICATIONS}) {
   );
 }
 
-// Numbered 4-step process row — used on Home and PCD Franchise.
 function ProcessSteps({steps = PROCESS_STEPS}) {
   return (
     <div className="processGrid">
@@ -114,7 +130,6 @@ function ProcessSteps({steps = PROCESS_STEPS}) {
   );
 }
 
-// Testimonial quote cards — used on Home and PCD Franchise.
 function Testimonials({items = TESTIMONIALS}) {
   return (
     <div className="grid3">
@@ -128,7 +143,6 @@ function Testimonials({items = TESTIMONIALS}) {
   );
 }
 
-// Leadership team grid — used on About.
 function TeamGrid({people = TEAM}) {
   return (
     <div className="grid4">
@@ -144,7 +158,6 @@ function TeamGrid({people = TEAM}) {
   );
 }
 
-// Vertical milestone timeline — used on About.
 function Timeline({items = MILESTONES}) {
   return (
     <div className="timeline">
@@ -158,7 +171,6 @@ function Timeline({items = MILESTONES}) {
   );
 }
 
-// Collapsible FAQ accordion — used on PCD Franchise, Quality and Contact.
 function FAQ({items = FAQS}) {
   const [open, setOpen] = useState(0);
   return (
@@ -192,8 +204,6 @@ function Layout({children, setPage, page}) {
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 12);
-      // Hide only once we're past the hero, and only while actively
-      // scrolling down; any upward movement brings it right back.
       if (y > lastY && y > 140) setNavHidden(true);
       else setNavHidden(false);
       lastY = y;
@@ -724,12 +734,11 @@ function Admin(){
    e.preventDefault();
    setLoginError("");
    try{
-     // FIXED: Hardcoded the exact URL so it always works
      const r=await fetch("https://abencivo-bio.onrender.com/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(login)});
      const d=await r.json();
      if(r.ok){localStorage.setItem("ab_token",d.token);setToken(d.token)}
      else setLoginError(d.message||"Login failed");
-   }catch{setLoginError(`Can't reach the backend at https://abencivo-bio.onrender.com/api/auth/login. Make sure the server is running.`)}
+   }catch{setLoginError(`Can't reach the backend. Make sure the server is running.`)}
  }
 
  async function handleFile(e){
@@ -907,5 +916,40 @@ function Admin(){
  );
 }
 
-function App(){const [page,setPage]=useState(location.hash.slice(1)||"home");useEffect(()=>{const f=()=>setPage(location.hash.slice(1)||"home");addEventListener("hashchange",f);return()=>removeEventListener("hashchange",f)},[]);const go=p=>{location.hash=p;setPage(p)};let content=page==="home"?<Home setPage={go}/>:page==="products"?<Products setPage={go}/>:page==="contact"?<Contact/>:page==="admin"?<Admin/>:page==="about"?<About setPage={go}/>:page==="pcd"?<PCDFranchise setPage={go}/>:page==="manufacturing"?<Manufacturing setPage={go}/>:page==="quality"?<Quality setPage={go}/>:page==="blog"?<Blog/>:page==="careers"?<Careers setPage={go}/>:<Home setPage={go}/>;return page==="admin"?content:<Layout setPage={go} page={page}><div key={page} className="pageTransition">{content}</div></Layout>}
-createRoot(document.getElementById("root")).render(<App/>);
+function App() {
+  const [page, setPage] = useState(location.hash.slice(1) || "home");
+  const [showSplash, setShowSplash] = useState(true);
+
+  useEffect(() => {
+    const f = () => setPage(location.hash.slice(1) || "home");
+    addEventListener("hashchange", f);
+    return () => removeEventListener("hashchange", f);
+  }, []);
+
+  const go = p => { location.hash = p; setPage(p); };
+
+  // If splash is showing, render ONLY the splash screen
+  if (showSplash) {
+    return <SplashScreen onFinish={() => setShowSplash(false)} />;
+  }
+
+  let content = page === "home" ? <Home setPage={go} /> : 
+                page === "products" ? <Products setPage={go} /> : 
+                page === "contact" ? <Contact /> : 
+                page === "admin" ? <Admin /> : 
+                page === "about" ? <About setPage={go} /> : 
+                page === "pcd" ? <PCDFranchise setPage={go} /> : 
+                page === "manufacturing" ? <Manufacturing setPage={go} /> : 
+                page === "quality" ? <Quality setPage={go} /> : 
+                page === "blog" ? <Blog /> : 
+                page === "careers" ? <Careers setPage={go} /> : 
+                <Home setPage={go} />;
+
+  return page === "admin" ? content : (
+    <Layout setPage={go} page={page}>
+      <div key={page} className="pageTransition">{content}</div>
+    </Layout>
+  );
+}
+
+createRoot(document.getElementById("root")).render(<App />);

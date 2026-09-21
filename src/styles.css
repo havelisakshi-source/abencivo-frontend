@@ -219,3 +219,54 @@ html{scroll-behavior:smooth}
   .productRow{grid-template-columns:44px 1fr;grid-template-areas:"thumb name" "actions actions"}
   .statusBarRow{grid-template-columns:100px 1fr 26px}
 }
+
+/* ---------- Splash Screen Animation ---------- */
+
+.splashScreen {
+  position: fixed;
+  top: 0; left: 0;
+  width: 100vw; height: 100vh;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 9999;
+  transition: opacity 0.6s ease, visibility 0.6s ease;
+}
+
+.splashScreen.hide {
+  opacity: 0;
+  visibility: hidden;
+}
+
+.splashContainer {
+  position: relative;
+  width: 90%;
+  max-width: 600px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* The Full Logo Animation */
+.splashLogo {
+  width: 100%;
+  height: auto;
+  object-fit: contain;
+  opacity: 0;
+  /* Animation: fades in and zooms slightly over 1.5 seconds */
+  animation: logoReveal 1.5s cubic-bezier(0.4, 0, 0.2, 1) forwards;
+}
+
+/* --- Keyframes --- */
+
+@keyframes logoReveal {
+  0% {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
