@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
 import {COMPANY, API_BASE} from "./config";
-import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
+import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, FRANCHISE_FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
 
@@ -92,11 +92,7 @@ function getCategoryImage(name = "") {
   if (key.includes("energy")) return "/images/categories/cat-syrups.png";
   return "/images/categories/cat-tablets.png";
 }
-
-/* ---------- Product Image helper ---------- */
-function getProductImage(category) {
-  return getCategoryImage(category);
-}
+function getProductImage(category) { return getCategoryImage(category); }
 
 /* ============================================================
    REAL PRODUCT CATALOGUE — fallback
@@ -126,10 +122,8 @@ const REAL_PRODUCTS = [
   {id:"i8", name:"MEROABN-1GM", composition:"Meropenem 1gm", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:1850},
   {id:"e1", name:"ABNCIVO-ORS", composition:"ORS Drink", dosage_form:"Energy Drink", category:"Energy Drink", packing:"200 ML", mrp:55},
 ];
-
 const demoProducts = REAL_PRODUCTS;
 
-/* Categories — MATCHES YOUR FILENAMES */
 const FALLBACK_CATEGORIES = [
   {id:"f1", name:"Tablets",     image:"/images/categories/cat-tablets.png"},
   {id:"f2", name:"Capsules",    image:"/images/categories/cat-capsules.png"},
@@ -557,12 +551,13 @@ function PCDFranchise({setPage}) {
         <ProcessSteps />
       </section>
 
+      {/* PCD Franchise FAQs — now using FRANCHISE_FAQS */}
       <section className="section franchiseFaqSection">
         <div className="franchiseSectionHeader">
           <Reveal><span className="eyebrowRed">QUESTIONS</span></Reveal>
           <Reveal delay={80}><h2>Franchise FAQs.</h2></Reveal>
         </div>
-        <FAQ />
+        <FAQ items={FRANCHISE_FAQS} />
       </section>
 
       <Reveal as="section" className="ctaBanner">

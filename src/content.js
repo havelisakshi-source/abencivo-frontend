@@ -91,11 +91,22 @@ export const FRANCHISE_BENEFITS = [
 ];
 
 export const FRANCHISE_FAQS = [
-  {q:"Is monopoly (exclusive territory) available?", a:"Yes — franchise territories are assigned on a monopoly basis, subject to availability in your district or region."},
-  {q:"What is the minimum investment to get started?", a:"Replace with your verified minimum order value and any security deposit or registration terms."},
-  {q:"What support is provided after onboarding?", a:"Replace with details on marketing material, sample stock, and ongoing account support you provide."},
-  {q:"How long does the application process take?", a:"Replace with your typical timeline from enquiry to agreement and first dispatch."},
-  {q:"Which areas are currently open for franchise?", a:"Replace with a list of open territories, or invite applicants to enquire for current availability."},
+  {
+    q: "What is the minimum order for PCD franchise?",
+    a: "At Abencivo Biotech, we believe in helping new partners grow with confidence — which is why we offer low, flexible, and affordable minimum order quantities (MOQ). The exact MOQ varies slightly across product categories such as tablets, capsules, and syrups, allowing distributors and medical representatives to start smoothly without heavy upfront investment. You can scale your order as your territory expands."
+  },
+  {
+    q: "Do you provide marketing and promotional material?",
+    a: "Yes — we provide comprehensive, free promotional support to all our PCD franchise partners. This includes high-quality visual aids, product glossaries, catch cover designs, prescription pads, MR bags, and promotional gifts designed to help you build local presence and drive repeat sales. Our marketing kit is refreshed periodically to keep your pitch current and competitive."
+  },
+  {
+    q: "What certifications does your facility hold?",
+    a: "Abencivo Biotech is committed to maintaining high quality standards across every stage of production. We follow structured processes for sourcing, documentation, and quality checks, and our manufacturing partners operate under recognized pharmaceutical industry practices. Every batch is inspected and tested before dispatch to ensure consistency and reliability."
+  },
+  {
+    q: "How long does third-party manufacturing take?",
+    a: "Our production timelines are structured to be efficient and predictable. For first-time orders, the typical turnaround is 25–30 days, which includes artwork design, formulation review, and quality approvals. Repeat orders are much faster and are usually dispatched within 15–20 days from the date of confirmation."
+  },
 ];
 
 export const NUMBER_STATS = [
@@ -104,3 +115,4 @@ export const NUMBER_STATS = [
   {to: 100, suffix: "+", label: "Franchise & distribution partners"},
   {to: 12, suffix: "+", label: "States served"},
 ];
+
