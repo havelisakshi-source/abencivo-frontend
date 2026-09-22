@@ -9,11 +9,10 @@ export const CERTIFICATIONS = [
 ];
 
 export const MILESTONES = [
-  {year:"2011", text:"Company founded with a single manufacturing line and a handful of trusted formulations."},
-  {year:"2014", text:"Crossed 100 PCD franchise partners across three states."},
-  {year:"2017", text:"WHO-GMP certified facility commissioned, expanding dosage-form capability."},
-  {year:"2020", text:"Launched third-party manufacturing for partner brands nationwide."},
-  {year:"2023", text:"Product portfolio crossed 200 formulations across 10+ therapeutic segments."},
+  {year:"2022", text:"Company founded with a single manufacturing line and a handful of trusted formulations."},
+  {year:"2023", text:"Crossed 100 PCD franchise partners across three states."},
+  {year:"2024", text:"Launched third-party manufacturing for partner brands nationwide."},
+  {year:"2025", text:"Product portfolio crossed 100 formulations across 10+ therapeutic segments."},
   {year:"2026", text:"Ongoing investment in R&D, cold-chain logistics and export readiness."},
 ];
 

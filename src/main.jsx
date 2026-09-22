@@ -1,7 +1,7 @@
 import React, {useEffect, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
 import {COMPANY, API_BASE} from "./config";
-import {CERTIFICATIONS, MILESTONES, VALUES, TEAM, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, BLOG_POSTS, POSITIONS, PERKS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
+import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
 
@@ -68,9 +68,6 @@ function BadgeStrip({items = CERTIFICATIONS}) {
 }
 function ProcessSteps({steps = PROCESS_STEPS}) {
   return <div className="processGrid">{steps.map((s, i) => (<Reveal delay={i * 100} className="processStep" key={s.t}><span className="processNum">{String(i + 1).padStart(2, "0")}</span><h3>{s.t}</h3><p>{s.d}</p></Reveal>))}</div>;
-}
-function TeamGrid({people = TEAM}) {
-  return <div className="grid4">{people.map((p, i) => (<Reveal delay={i * 90} className="teamCard" key={p.name + i}><div className="avatar">{p.name.split(" ").map(w => w[0]).join("")}</div><h3>{p.name}</h3><span>{p.role}</span><p>{p.bio}</p></Reveal>))}</div>;
 }
 function Timeline({items = MILESTONES}) {
   return <div className="timeline">{items.map((m, i) => (<Reveal delay={i * 80} className="timelineItem" key={m.year}><span className="timelineYear">{m.year}</span><p>{m.text}</p></Reveal>))}</div>;
@@ -204,11 +201,9 @@ function Home({setPage}) {
         </div>
       </section>
 
-      {/* ============ PRODUCT CATEGORIES (Animated Marquee) ============ */}
       <section className="section categorySection">
         <span className="eyebrow">BROWSE BY TYPE</span>
         <h2 className="categoryHeading">Product Categories</h2>
-        
         <div className="marqueeWrapper">
           <div className="marqueeTrack">
             {[...categories, ...categories].map((c, i) => (
@@ -225,7 +220,6 @@ function Home({setPage}) {
           </div>
         </div>
       </section>
-      {/* ============ END PRODUCT CATEGORIES ============ */}
 
       <Reveal as="section" className="stats">
         <div><b>01</b><span>Product catalogue</span></div>
@@ -243,9 +237,6 @@ function Home({setPage}) {
         <Reveal delay={80}><h2>From discovery to approval.</h2></Reveal>
         <ResearchPipeline stages={RESEARCH_STAGES} />
       </section>
-
-      {/* REMOVED: "Website + business dashboard" section */}
-      {/* REMOVED: "Demo testimonials" section */}
 
       <section className="section trustSection">
         <Reveal><span className="eyebrow">COMPLIANCE & CERTIFICATIONS</span></Reveal>
@@ -282,16 +273,122 @@ function Home({setPage}) {
 }
 function Card({t,d}){return <article className="card"><div className="icon">✦</div><h3>{t}</h3><p>{d}</p></article>}
 
-/* ---------- Other Pages ---------- */
+/* ============================================================
+   ABOUT PAGE — Refined Beautiful Layout
+   ============================================================ */
 function About({setPage}) {
   return (
-    <main>
-      <section className="pageHero heroFade"><span className="eyebrow">ABOUT US</span><h1>A modern pharmaceutical presence.</h1><p>Replace this with the verified company story. Below is a structured layout ready for real mission, milestones and team content.</p></section>
-      <section className="section"><div className="grid2"><Reveal className="wideCard"><h2>Our Mission</h2><p>Replace with your verified mission statement.</p></Reveal><Reveal delay={100} className="wideCard"><h2>Our Vision</h2><p>Replace with your verified vision statement.</p></Reveal></div></section>
-      <section className="section altBg"><Reveal><span className="eyebrow">WHAT WE STAND FOR</span></Reveal><Reveal delay={80}><h2>Our values.</h2></Reveal><div className="grid4">{VALUES.map((v,i)=>(<Reveal delay={120+i*80} className="card" key={v.t}><h3>{v.t}</h3><p>{v.d}</p></Reveal>))}</div></section>
-      <section className="section"><Reveal><span className="eyebrow">OUR JOURNEY</span></Reveal><Reveal delay={80}><h2>Milestones.</h2></Reveal><Timeline /></section>
-      <section className="section altBg"><Reveal><span className="eyebrow">LEADERSHIP</span></Reveal><Reveal delay={80}><h2>The team behind the platform.</h2></Reveal><TeamGrid /></section>
-      <Reveal as="section" className="ctaBanner"><div><h2>Want to know more before partnering with us?</h2></div><div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Get in touch</button></div></Reveal>
+    <main className="aboutPage">
+
+      {/* Section 1: Hero */}
+      <section className="aboutHeroRefined">
+        <div className="aboutHeroInner">
+          <Reveal><span className="eyebrowRed">WHO WE ARE</span></Reveal>
+          <Reveal delay={80}>
+            <h1 className="aboutHeroTitle">
+              Building a <span className="aboutUnderline">Healthier Future</span>,<br/>Responsibly.
+            </h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p className="aboutHeroLead">
+              Abencivo Biotech is built with a clear purpose — to contribute to a healthier future through responsible pharmaceutical solutions. We focus on quality, reliability, and long-term partnerships across the healthcare ecosystem.
+            </p>
+          </Reveal>
+        </div>
+        <div className="aboutDecorShape shapeA"></div>
+        <div className="aboutDecorShape shapeB"></div>
+      </section>
+
+      {/* Section 2: Scientific Thinking — Image LEFT (tall), Text RIGHT */}
+      <section className="aboutScienceSection">
+        <div className="aboutScienceGrid">
+          {/* LEFT: Tall image filling the whole column */}
+          <Reveal className="aboutScienceImageWrap">
+            <div className="aboutScienceImageFrame">
+              <img
+                src="/images/about-science.jpg"
+                alt="Scientific research at Abencivo Biotech"
+                className="aboutScienceImage"
+              />
+            </div>
+          </Reveal>
+
+          {/* RIGHT: Text content */}
+          <div className="aboutScienceText">
+            <Reveal><span className="eyebrowRed">OUR APPROACH</span></Reveal>
+            <Reveal delay={80}>
+              <h2 className="aboutSectionTitle">Scientific thinking.<br/>Professional standards.</h2>
+            </Reveal>
+            <Reveal delay={150}>
+              <p className="aboutParagraph">
+                Our approach combines scientific thinking with a strong commitment to professional standards. From our growing product portfolio to our expanding capabilities, every step reflects our focus on sustainable growth.
+              </p>
+            </Reveal>
+            <Reveal delay={220}>
+              <p className="aboutParagraph">
+                We continue to move forward with one goal: to create meaningful value for healthcare professionals, partners, and communities.
+              </p>
+            </Reveal>
+            <Reveal delay={300}>
+              <button className="primary aboutCtaBtn" onClick={() => setPage("contact")}>
+                Partner with us →
+              </button>
+            </Reveal>
+          </div>
+        </div>
+      </section>
+
+      {/* Section 3: Milestone */}
+      <section className="aboutMilestoneSectionRefined">
+        <div className="aboutMilestoneGrid">
+          <div className="aboutMilestoneLeft">
+            <Reveal><span className="eyebrowRed">OUR JOURNEY</span></Reveal>
+            <Reveal delay={80}><h2 className="aboutSectionTitle">Our Milestone</h2></Reveal>
+            <Reveal delay={150}>
+              <p className="aboutParagraph">
+                From establishing our foundation to building a growing pharmaceutical presence, Abencivo Biotech continues to expand its capabilities, product portfolio, and partnerships.
+              </p>
+            </Reveal>
+            <Reveal delay={220}>
+              <p className="aboutParagraph">
+                Our journey is driven by progress, trust, and a commitment to building a stronger healthcare future.
+              </p>
+            </Reveal>
+          </div>
+          <div className="aboutMilestoneRight">
+            <Timeline />
+          </div>
+        </div>
+      </section>
+
+      {/* Section 4: Mission + Bento */}
+      <section className="aboutMissionSectionRefined">
+        <div className="aboutMissionHeader">
+          <Reveal><span className="eyebrowRed">OUR PURPOSE</span></Reveal>
+          <Reveal delay={80}><h2 className="aboutSectionTitle">Our Mission</h2></Reveal>
+          <Reveal delay={150}>
+            <p className="aboutMissionIntro">
+              To develop and deliver reliable pharmaceutical solutions while maintaining a strong focus on quality, responsibility, and customer trust. We aim to build lasting partnerships and continuously improve our capabilities to serve the evolving needs of healthcare.
+            </p>
+          </Reveal>
+        </div>
+
+        <div className="aboutBentoGrid">
+          {VALUES.slice(0, 4).map((v, i) => (
+            <Reveal key={v.t} delay={i * 100} className={`aboutBentoCard bento${i + 1}`}>
+              <span className="bentoNumber">0{i + 1}</span>
+              <h3>{v.t}</h3>
+              <p>{v.d}</p>
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* CTA */}
+      <Reveal as="section" className="ctaBanner">
+        <div><h2>Want to know more before partnering with us?</h2></div>
+        <div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Get in touch</button></div>
+      </Reveal>
     </main>
   );
 }
@@ -418,15 +515,8 @@ function Admin(){
        fetch(API_BASE+"/admin/categories",{headers})
      ]);
      if(p.status===401){localStorage.removeItem("ab_token");setToken("");return}
-     setData({
-       products:await p.json(),
-       enquiries:await e.json(),
-       logs:await l.json(),
-       categories:await c.json()
-     });
-   }catch(err){
-     setLoadError(`Can't reach the backend at ${API_BASE}.`);
-   }
+     setData({products:await p.json(),enquiries:await e.json(),logs:await l.json(),categories:await c.json()});
+   }catch(err){setLoadError(`Can't reach the backend at ${API_BASE}.`)}
  }
  useEffect(()=>{load()},[token]);
 
@@ -472,23 +562,15 @@ function Admin(){
 
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
 
- // ===== CATEGORY FUNCTIONS =====
- function startEditCat(c){
-   setEditingCatId(c.id);
-   setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});
-   setTab("categories");
-   window.scrollTo({top:0,behavior:"smooth"});
- }
+ function startEditCat(c){setEditingCatId(c.id);setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});setTab("categories");window.scrollTo({top:0,behavior:"smooth"})}
  function cancelEditCat(){setEditingCatId(null);setCatForm(EMPTY_CATEGORY)}
 
  async function saveCat(e){
    e.preventDefault();
    if(editingCatId){
-     await fetch(API_BASE+"/admin/categories/"+editingCatId,{method:"PUT",headers,body:JSON.stringify({...catForm,active:1})});
-     flash("Category updated");
+     await fetch(API_BASE+"/admin/categories/"+editingCatId,{method:"PUT",headers,body:JSON.stringify({...catForm,active:1})});flash("Category updated");
    }else{
-     await fetch(API_BASE+"/admin/categories",{method:"POST",headers,body:JSON.stringify(catForm)});
-     flash("Category added");
+     await fetch(API_BASE+"/admin/categories",{method:"POST",headers,body:JSON.stringify(catForm)});flash("Category added");
    }
    cancelEditCat();load();
  }
@@ -515,153 +597,23 @@ function Admin(){
  const filteredEnquiries=data.enquiries.filter(x=>(x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()));
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
 
- const TABS=[
-   ["dashboard","Dashboard","◆"],
-   ["products","Products","💊"],
-   ["categories","Categories","🗂"],
-   ["enquiries","Enquiries","✉"],
-   ["logs","Activity Log","▤"]
- ];
+ const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["logs","Activity Log","▤"]];
 
  return(
    <main className="admin">
      <aside>
        <h2>ABENCIVO</h2>
-       {TABS.map(([id,label,icon])=>(
-         <button className={tab===id?"sel":""} onClick={()=>setTab(id)} key={id}><i>{icon}</i>{label}</button>
-       ))}
+       {TABS.map(([id,label,icon])=>(<button className={tab===id?"sel":""} onClick={()=>setTab(id)} key={id}><i>{icon}</i>{label}</button>))}
        <button className="logoutBtn" onClick={()=>{localStorage.removeItem("ab_token");setToken("")}}>Logout</button>
      </aside>
-
      <section className="adminMain">
-       <div className="adminTop">
-         <div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>
-         {toast&&<span className="adminToast">{toast}</span>}
-       </div>
+       <div className="adminTop"><div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>{toast&&<span className="adminToast">{toast}</span>}</div>
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
-
-       {tab==="dashboard"&&(
-         <>
-           <div className="grid3">
-             <div className="counterCard"><b>{data.products.length}</b><span>Active products</span></div>
-             <div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div>
-             <div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div>
-           </div>
-           <h3 className="adminSubhead">Enquiries by status</h3>
-           <div className="statusBreakdown">
-             {statusCounts.map(({s,n})=>(
-               <div className="statusBarRow" key={s}>
-                 <span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span>
-                 <div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div>
-                 <span className="statusBarCount">{n}</span>
-               </div>
-             ))}
-           </div>
-         </>
-       )}
-
-       {tab==="products"&&(
-         <>
-           <form className="adminForm productForm" onSubmit={save}>
-             {editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}
-             <div className="productFormGrid">
-               <div className="uploadBox">
-                 <img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" />
-                 <label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label>
-               </div>
-               <div className="productFields">
-                 <input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/>
-                 <input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/>
-                 <div className="fieldRow">
-                   <input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/>
-                   <input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/>
-                 </div>
-                 <textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/>
-               </div>
-             </div>
-             <button className="primary">{editingId?"Save changes":"Add Product"}</button>
-           </form>
-
-           <input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/>
-           <div className="table">
-             {filteredProducts.map(p=>(
-               <div className="row productRow" key={p.id}>
-                 <img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/>
-                 <span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span>
-                 <div className="rowActions">
-                   <button onClick={()=>startEdit(p)}>Edit</button>
-                   {confirmDeleteId===p.id
-                     ? <span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>
-                     : <button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}
-                 </div>
-               </div>
-             ))}
-             {filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}
-           </div>
-         </>
-       )}
-
-       {tab==="categories"&&(
-         <>
-           <form className="adminForm" onSubmit={saveCat}>
-             {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
-             <div className="fieldRow">
-               <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
-               <input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/>
-             </div>
-             <input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/>
-             <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
-           </form>
-
-           <div className="table">
-             {data.categories.map(c=>(
-               <div className="row" key={c.id}>
-                 <span style={{fontSize:"28px"}}>{c.icon||"💊"}</span>
-                 <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span>
-                 <div className="rowActions">
-                   <button onClick={()=>startEditCat(c)}>Edit</button>
-                   {confirmDeleteCatId===c.id
-                     ? <span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>
-                     : <button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}
-                 </div>
-               </div>
-             ))}
-             {data.categories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}
-           </div>
-         </>
-       )}
-
-       {tab==="enquiries"&&(
-         <>
-           <input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/>
-           <div className="table">
-             {filteredEnquiries.map(x=>(
-               <div className="row" key={x.id}>
-                 <span>
-                   <b>{x.name} <em className="typeBadge">{x.type}</em></b>
-                   <small>{x.phone} · {x.email} · {x.message}</small>
-                   <small className="assignedTo">Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small>
-                 </span>
-                 <select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>
-                   {ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}
-                 </select>
-               </div>
-             ))}
-             {filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}
-           </div>
-         </>
-       )}
-
-       {tab==="logs"&&(
-         <div className="table">
-           {data.logs.map(x=>(
-             <div className="row" key={x.id}>
-               <span>{x.action} · {x.entity} · #{x.entity_id}</span>
-               <small>{x.created_at}</small>
-             </div>
-           ))}
-         </div>
-       )}
+       {tab==="dashboard"&&(<><div className="grid3"><div className="counterCard"><b>{data.products.length}</b><span>Active products</span></div><div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div><div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div></div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
+       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
+       {tab==="categories"&&(<><form className="adminForm" onSubmit={saveCat}>{editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}<div className="fieldRow"><input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/><input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/></div><input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/><button className="primary">{editingCatId?"Save changes":"Add Category"}</button></form><div className="table">{data.categories.map(c=>(<div className="row" key={c.id}><span style={{fontSize:"28px"}}>{c.icon||"💊"}</span><span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{data.categories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
+       {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo">Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
+       {tab==="logs"&&(<div className="table">{data.logs.map(x=>(<div className="row" key={x.id}><span>{x.action} · {x.entity} · #{x.entity_id}</span><small>{x.created_at}</small></div>))}</div>)}
      </section>
    </main>
  );
