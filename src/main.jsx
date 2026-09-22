@@ -93,7 +93,8 @@ const FALLBACK_CATEGORIES = [
   {id:"f7", name:"Topical", icon:"🧴"},
 ];
 
-const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
+// REMOVED "pcd" from navigation
+const NAV_PAGES = ["home","about","products","quality","contact"];
 
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
@@ -129,7 +130,7 @@ function Layout({children, setPage, page}) {
             <div className="dropdownMenu">
               {NAV_PAGES.map(p => (
                 <button key={p} className={page === p ? "activeLink" : ""} onClick={() => handleNavClick(p)}>
-                  {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
+                  {p.replace(/^\w/, c => c.toUpperCase())}
                 </button>
               ))}
             </div>
@@ -152,8 +153,9 @@ function Layout({children, setPage, page}) {
         <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
         <div>
           <h4>Quick Links</h4>
-          {["products","pcd","quality"].map(p => (
-            <p key={p} className="footLink" onClick={() => setPage(p)}>{p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}</p>
+          {/* Removed pcd from footer links */}
+          {["products","quality"].map(p => (
+            <p key={p} className="footLink" onClick={() => setPage(p)}>{p.replace(/^\w/, c => c.toUpperCase())}</p>
           ))}
         </div>
         <div className="footNewsletter">
@@ -273,14 +275,10 @@ function Home({setPage}) {
 }
 function Card({t,d}){return <article className="card"><div className="icon">✦</div><h3>{t}</h3><p>{d}</p></article>}
 
-/* ============================================================
-   ABOUT PAGE — Refined Beautiful Layout
-   ============================================================ */
+/* ---------- ABOUT PAGE ---------- */
 function About({setPage}) {
   return (
     <main className="aboutPage">
-
-      {/* Section 1: Hero */}
       <section className="aboutHeroRefined">
         <div className="aboutHeroInner">
           <Reveal><span className="eyebrowRed">WHO WE ARE</span></Reveal>
@@ -299,21 +297,14 @@ function About({setPage}) {
         <div className="aboutDecorShape shapeB"></div>
       </section>
 
-      {/* Section 2: Scientific Thinking — Image LEFT (tall), Text RIGHT */}
       <section className="aboutScienceSection">
         <div className="aboutScienceGrid">
-          {/* LEFT: Tall image filling the whole column */}
           <Reveal className="aboutScienceImageWrap">
             <div className="aboutScienceImageFrame">
-              <img
-                src="/images/about-science.jpg"
-                alt="Scientific research at Abencivo Biotech"
-                className="aboutScienceImage"
-              />
+              <img src="/images/about-science.jpg" alt="Scientific research at Abencivo Biotech" className="aboutScienceImage" />
             </div>
           </Reveal>
 
-          {/* RIGHT: Text content */}
           <div className="aboutScienceText">
             <Reveal><span className="eyebrowRed">OUR APPROACH</span></Reveal>
             <Reveal delay={80}>
@@ -338,7 +329,6 @@ function About({setPage}) {
         </div>
       </section>
 
-      {/* Section 3: Milestone */}
       <section className="aboutMilestoneSectionRefined">
         <div className="aboutMilestoneGrid">
           <div className="aboutMilestoneLeft">
@@ -361,7 +351,6 @@ function About({setPage}) {
         </div>
       </section>
 
-      {/* Section 4: Mission + Bento */}
       <section className="aboutMissionSectionRefined">
         <div className="aboutMissionHeader">
           <Reveal><span className="eyebrowRed">OUR PURPOSE</span></Reveal>
@@ -384,24 +373,10 @@ function About({setPage}) {
         </div>
       </section>
 
-      {/* CTA */}
       <Reveal as="section" className="ctaBanner">
         <div><h2>Want to know more before partnering with us?</h2></div>
         <div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Get in touch</button></div>
       </Reveal>
-    </main>
-  );
-}
-
-function PCDFranchise({setPage}) {
-  return (
-    <main>
-      <section className="pageHero heroFade"><span className="eyebrow">PCD FRANCHISE</span><h1>Grow with a trusted pharma partner.</h1><p>Replace this with your verified franchise territories, benefits, terms and enquiry process.</p><button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button></section>
-      <section className="section"><Reveal><span className="eyebrow">WHY PARTNER WITH US</span></Reveal><Reveal delay={80}><h2>Franchise benefits.</h2></Reveal><div className="grid4"><Reveal delay={120} className="card"><h3>Monopoly Rights</h3><p>Add your verified territory-based monopoly terms.</p></Reveal><Reveal delay={200} className="card"><h3>Marketing Support</h3><p>Add details on visual aids, samples and promotional material.</p></Reveal><Reveal delay={280} className="card"><h3>Wide Product Range</h3><p>Add your verified therapeutic segments and formulation count.</p></Reveal><Reveal delay={360} className="card"><h3>Timely Delivery</h3><p>Add your verified logistics and dispatch commitments.</p></Reveal></div></section>
-      <section className="section altBg"><Reveal><span className="eyebrow">GETTING STARTED</span></Reveal><Reveal delay={80}><h2>Franchise process.</h2></Reveal><ProcessSteps /></section>
-      <section className="section"><Reveal><span className="eyebrow">PARTNER VOICES</span></Reveal><Reveal delay={80}><h2>What franchise partners say.</h2></Reveal><Testimonials /></section>
-      <section className="section altBg"><Reveal><span className="eyebrow">QUESTIONS</span></Reveal><Reveal delay={80}><h2>Franchise FAQs.</h2></Reveal><FAQ /></section>
-      <Reveal as="section" className="ctaBanner"><div><h2>Ready to open a franchise in your territory?</h2></div><div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button></div></Reveal>
     </main>
   );
 }
@@ -467,7 +442,7 @@ function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city
        <Reveal><h2>Contact details</h2><p>{COMPANY.address}</p><p>{COMPANY.phone}</p><p>{COMPANY.email}</p><a className="whatsappBig" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp →</a></Reveal>
        <Reveal delay={120} as="form" className="form" onSubmit={submit}>
          {["name","phone","email","city"].map(k=><input required={k!=="email"} key={k} placeholder={k[0].toUpperCase()+k.slice(1)} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/>)}
-         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>PCD Franchise</option><option>Third-Party Manufacturing</option><option>Product Enquiry</option></select>
+         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>Product Enquiry</option><option>Other</option></select>
          <textarea required placeholder="Message" rows="6" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/>
          <button className="primary">Submit Enquiry</button>{msg && <p className="notice">{msg}</p>}
        </Reveal>
@@ -634,12 +609,12 @@ function App() {
 
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
+  // PCD Franchise page REMOVED from router
   let content = page === "home" ? <Home setPage={go} /> :
                 page === "products" ? <Products setPage={go} /> :
                 page === "contact" ? <Contact /> :
                 page === "admin" ? <Admin /> :
                 page === "about" ? <About setPage={go} /> :
-                page === "pcd" ? <PCDFranchise setPage={go} /> :
                 page === "quality" ? <Quality setPage={go} /> :
                 <Home setPage={go} />;
 
