@@ -268,14 +268,12 @@ function Home({setPage}) {
           <a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download company brochure (PDF)</a>
         </div>
 
-        {/* ============ DNA HERO CARD ============ */}
         <div className="heroCard">
           <DnaHelix size={230} />
           <span>QUALITY</span>
           <strong>Trusted. Tested. Verified.</strong>
           <small>Where every batch meets uncompromising standards.</small>
         </div>
-        {/* ===================================== */}
       </section>
 
       <section className="section categorySection">
@@ -939,19 +937,56 @@ function Admin(){
  const headers={"Content-Type":"application/json","Authorization":"Bearer "+token};
  function flash(msg){setToast(msg);setTimeout(()=>setToast(""),2600)}
 
+ // ---- RESILIENT LOAD: never fails if one endpoint is missing ----
  async function load(){
    if(!token)return;
    setLoadError("");
-   try{
-     const [p,e,l,c]=await Promise.all([
-       fetch(API_BASE+"/admin/products",{headers}),
-       fetch(API_BASE+"/admin/enquiries",{headers}),
-       fetch(API_BASE+"/admin/audit-logs",{headers}),
-       fetch(API_BASE+"/admin/categories",{headers})
-     ]);
-     if(p.status===401){localStorage.removeItem("ab_token");setToken("");return}
-     setData({products:await p.json(),enquiries:await e.json(),logs:await l.json(),categories:await c.json()});
-   }catch(err){setLoadError(`Can't reach the backend at ${API_BASE}.`)}
+
+   // Safe fetch that always resolves to either JSON data or an empty array
+   async function safeFetch(url){
+     try {
+       const r = await fetch(url, {headers});
+       if(r.status === 401){
+         // Auth failed — force logout
+         localStorage.removeItem("ab_token");
+         setToken("");
+         return { unauthorized: true, data: [] };
+       }
+       if(!r.ok) return { unauthorized: false, data: [] };
+       const text = await r.text();
+       if(!text) return { unauthorized: false, data: [] };
+       try { return { unauthorized: false, data: JSON.parse(text) }; }
+       catch { return { unauthorized: false, data: [] }; }
+     } catch {
+       return { unauthorized: false, data: [], networkError: true };
+     }
+   }
+
+   const [p, e, l, c] = await Promise.all([
+     safeFetch(API_BASE + "/admin/products"),
+     safeFetch(API_BASE + "/admin/enquiries"),
+     safeFetch(API_BASE + "/admin/audit-logs"),
+     safeFetch(API_BASE + "/admin/categories"),
+   ]);
+
+   // If any returned 401, the setToken("") call inside safeFetch already ran
+   if(p.unauthorized || e.unauthorized || l.unauthorized || c.unauthorized) return;
+
+   // Only show the "cannot reach" error if everything failed (real network issue)
+   const allFailed =
+     p.data.length === 0 && e.data.length === 0 && l.data.length === 0 && c.data.length === 0 &&
+     (p.networkError || e.networkError || l.networkError || c.networkError);
+
+   if(allFailed){
+     setLoadError(`Can't reach the backend at ${API_BASE}. The server may be waking up — click Retry.`);
+   }
+
+   setData({
+     products: Array.isArray(p.data) ? p.data : [],
+     enquiries: Array.isArray(e.data) ? e.data : [],
+     logs: Array.isArray(l.data) ? l.data : [],
+     categories: Array.isArray(c.data) ? c.data : [],
+   });
  }
  useEffect(()=>{load()},[token]);
 
