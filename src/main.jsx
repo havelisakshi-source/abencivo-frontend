@@ -77,7 +77,7 @@ function FAQ({items = FAQS}) {
   return <div className="faqList">{items.map((f, i) => (<Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}><button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}><span>{f.q}</span><span className="faqIcon">{open === i ? "−" : "+"}</span></button>{open === i && <p className="faqA">{f.a}</p>}</Reveal>))}</div>;
 }
 
-/* ---------- Category Image helper (MATCHES YOUR FILENAMES) ---------- */
+/* ---------- Category Image helper ---------- */
 function getCategoryImage(name = "") {
   const key = name.toLowerCase();
   if (key.includes("tablet")) return "/images/categories/cat-tablets.png";
@@ -267,12 +267,15 @@ function Home({setPage}) {
           </div>
           <a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download company brochure (PDF)</a>
         </div>
+
+        {/* ============ DNA HERO CARD ============ */}
         <div className="heroCard">
           <DnaHelix size={230} />
           <span>QUALITY</span>
-          <strong>Carefully presented.<br/>Easy to manage.</strong>
-          <small>Replace demo content with your verified company information.</small>
+          <strong>Trusted. Tested. Verified.</strong>
+          <small>Where every batch meets uncompromising standards.</small>
         </div>
+        {/* ===================================== */}
       </section>
 
       <section className="section categorySection">
@@ -551,7 +554,6 @@ function PCDFranchise({setPage}) {
         <ProcessSteps />
       </section>
 
-      {/* PCD Franchise FAQs — now using FRANCHISE_FAQS */}
       <section className="section franchiseFaqSection">
         <div className="franchiseSectionHeader">
           <Reveal><span className="eyebrowRed">QUESTIONS</span></Reveal>
