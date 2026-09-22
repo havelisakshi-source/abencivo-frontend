@@ -244,3 +244,104 @@ export function ResearchPipeline({stages}) {
     </div>
   );
 }
+
+/* ================= Vertical scroll-fill timeline ================= */
+// An alternating left/right timeline whose spine fills top-to-bottom as
+// the section scrolls into view, via GSAP ScrollTrigger. Distinct from
+// the horizontal ProcessSteps grid used elsewhere on the site.
+export function VerticalTimeline({steps}) {
+  const wrapRef = useRef(null);
+  const fillRef = useRef(null);
+  useEffect(() => {
+    if (prefersReducedMotion()) { if (fillRef.current) fillRef.current.style.height = "100%"; return; }
+    const ctx = gsap.context(() => {
+      gsap.fromTo(fillRef.current,
+        {height: "0%"},
+        {
+          height: "100%",
+          ease: "none",
+          scrollTrigger: {trigger: wrapRef.current, start: "top 70%", end: "bottom 75%", scrub: 0.6},
+        }
+      );
+    }, wrapRef);
+    return () => ctx.revert();
+  }, []);
+  return (
+    <div className="vTimeline" ref={wrapRef}>
+      <div className="vTimelineTrack"><div className="vTimelineFill" ref={fillRef}></div></div>
+      <div className="vTimelineSteps">
+        {steps.map((s, i) => (
+          <div className={`vTimelineStep ${i % 2 === 0 ? "stepLeft" : "stepRight"}`} key={s.t}>
+            <span className="vTimelineDot"></span>
+            <div className="vTimelineContent">
+              <span className="vTimelineNum">{String(i + 1).padStart(2, "0")}</span>
+              <h3>{s.t}</h3>
+              <p>{s.d}</p>
+            </div>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+// A radial "territory" visual: a cluster of dots (like scattered towns on
+// a map), a handful lit up in brand-red, with expanding radar rings from
+// the centre — used to represent monopoly/exclusive-territory rights.
+// Deliberately different from the DNA helix used on the home hero.
+export function TerritoryPulse({size = 300}) {
+  const dots = useRef(
+    Array.from({length: 46}).map(() => {
+      const angle = Math.random() * Math.PI * 2;
+      const radius = Math.sqrt(Math.random()) * 132;
+      return {
+        x: 150 + Math.cos(angle) * radius,
+        y: 150 + Math.sin(angle) * radius,
+        r: 2 + Math.random() * 2.2,
+        active: Math.random() > 0.8,
+        delay: Math.random() * 3,
+      };
+    })
+  ).current;
+  return (
+    <div className="territoryWrap" style={{width: size, height: size}}>
+      <svg viewBox="0 0 300 300" style={{width: "100%", height: "100%"}}>
+        <circle className="radarRing" cx="150" cy="150" r="20" />
+        <circle className="radarRing radarRingDelay" cx="150" cy="150" r="20" />
+        {dots.map((d, i) => (
+          <circle
+            key={i}
+            cx={d.x} cy={d.y} r={d.r}
+            className={d.active ? "territoryDotActive" : "territoryDot"}
+            style={d.active ? {animationDelay: `${d.delay}s`} : undefined}
+          />
+        ))}
+        <circle cx="150" cy="150" r="7" fill="#c51f2b" />
+        <circle cx="150" cy="150" r="7" fill="none" stroke="#fff" strokeWidth="2" />
+      </svg>
+    </div>
+  );
+}
+
+/* ================= Draggable testimonial carousel ================= */
+// A horizontally draggable strip of testimonial slides (as opposed to a
+// static grid), with drag bounds computed from the number of slides.
+export function TestimonialCarousel({items, renderItem}) {
+  const constraint = Math.max(0, (items.length - 1) * 336);
+  return (
+    <div className="testiCarouselWrap">
+      <motion.div
+        className="testiTrack"
+        drag={prefersReducedMotion() ? false : "x"}
+        dragConstraints={{left: -constraint, right: 0}}
+        dragElastic={0.08}
+      >
+        {items.map((item, i) => (
+          <div className="testiSlide" key={item.name || i}>
+            {renderItem(item, i)}
+          </div>
+        ))}
+      </motion.div>
+      {constraint > 0 && <p className="testiHint">← drag to explore →</p>}
+    </div>
+  );
+}

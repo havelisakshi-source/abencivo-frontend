@@ -81,10 +81,26 @@ export const RESEARCH_STAGES = ["Discovery", "Preclinical", "Phase I", "Phase II
 
 export const GMP_STAGES = ["Raw Material Intake", "Clean-Room Processing", "In-Process QC", "Packaging & Labelling", "Batch Release"];
 
+export const FRANCHISE_BENEFITS = [
+  {t:"Monopoly Rights", d:"Exclusive, protected territory so you're the only partner representing us in your area.", icon:"🗺️"},
+  {t:"Wide Product Range", d:"200+ formulations across tablets, capsules, syrups and injectables to build a strong catalogue.", icon:"💊"},
+  {t:"Marketing Support", d:"Visual aids, MR bags, product cards and promotional inputs provided to every partner.", icon:"📣"},
+  {t:"Attractive Margins", d:"Competitive pricing structured to protect your margins as the territory grows.", icon:"💰"},
+  {t:"On-Time Delivery", d:"Reliable dispatch and logistics so stock reaches you without disruption.", icon:"🚚"},
+  {t:"Quality Assurance", d:"WHO-GMP certified manufacturing with batch-level testing and full traceability.", icon:"🛡️"},
+];
+
+export const FRANCHISE_FAQS = [
+  {q:"Is monopoly (exclusive territory) available?", a:"Yes — franchise territories are assigned on a monopoly basis, subject to availability in your district or region."},
+  {q:"What is the minimum investment to get started?", a:"Replace with your verified minimum order value and any security deposit or registration terms."},
+  {q:"What support is provided after onboarding?", a:"Replace with details on marketing material, sample stock, and ongoing account support you provide."},
+  {q:"How long does the application process take?", a:"Replace with your typical timeline from enquiry to agreement and first dispatch."},
+  {q:"Which areas are currently open for franchise?", a:"Replace with a list of open territories, or invite applicants to enquire for current availability."},
+];
+
 export const NUMBER_STATS = [
   {to: 200, suffix: "+", label: "Product formulations"},
   {to: 15, suffix: "+", label: "Years in operation"},
   {to: 500, suffix: "+", label: "Franchise & distribution partners"},
   {to: 12, suffix: "+", label: "States served"},
 ];
-

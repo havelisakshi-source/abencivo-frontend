@@ -1,8 +1,8 @@
 import React, {useEffect, useRef, useState} from "react";
 import {createRoot} from "react-dom/client";
 import {COMPANY, API_BASE} from "./config";
-import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
-import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
+import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, RESEARCH_STAGES, NUMBER_STATS, FRANCHISE_BENEFITS, FRANCHISE_FAQS} from "./content";
+import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline, TerritoryPulse, TestimonialCarousel, VerticalTimeline} from "./effects";
 import "./styles.css";
 
 /* ---------- Splash Screen ---------- */
@@ -93,7 +93,7 @@ const FALLBACK_CATEGORIES = [
   {id:"f7", name:"Topical", icon:"🧴"},
 ];
 
-const NAV_PAGES = ["home","about","products","quality","contact"];
+const NAV_PAGES = ["home","about","franchise","products","quality","contact"];
 
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
@@ -152,7 +152,7 @@ function Layout({children, setPage, page}) {
         <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
         <div>
           <h4>Quick Links</h4>
-          {["products","quality"].map(p => (
+          {["franchise","products","quality"].map(p => (
             <p key={p} className="footLink" onClick={() => setPage(p)}>{p.replace(/^\w/, c => c.toUpperCase())}</p>
           ))}
         </div>
@@ -466,6 +466,191 @@ function Quality({setPage}) {
   );
 }
 
+/* ============================================================
+   FRANCHISE PAGE — a deliberately different layout language from
+   Home: radar-style hero visual, scrolling ticker, a horizontal
+   "poster" benefit strip, a live earnings calculator, a scroll-fill
+   vertical timeline and a drag carousel for testimonials.
+   ============================================================ */
+const FRANCHISE_TICKER = [
+  "MONOPOLY TERRITORY RIGHTS", "WHO-GMP CERTIFIED", "200+ PRODUCTS", "PAN-INDIA SUPPLY",
+  "MARKETING SUPPORT INCLUDED", "500+ PARTNERS ONBOARD",
+];
+
+function TickerBand({items}) {
+  return (
+    <div className="tickerBand" aria-hidden="true">
+      <div className="tickerTrack">
+        {[...items, ...items].map((t, i) => (
+          <span className="tickerItem" key={i}>{t}<i className="tickerDot">●</i></span>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// Small live "estimate your earnings" widget — a slider-driven demo
+// calculator. Purely illustrative content, but a genuinely interactive
+// piece the rest of the site doesn't have anywhere else.
+function FranchiseCalculator() {
+  const [orderValue, setOrderValue] = useState(150000);
+  const marginPct = 0.22;
+  const monthly = Math.round(orderValue * marginPct);
+  const yearly = monthly * 12;
+  const fmt = n => "₹" + n.toLocaleString("en-IN");
+  return (
+    <div className="calcCard">
+      <span className="eyebrowRed">ESTIMATE YOUR EARNINGS</span>
+      <h2 className="aboutSectionTitle calcTitle">See what a territory could look like.</h2>
+      <label className="calcLabel" htmlFor="calcSlider">Estimated monthly order value</label>
+      <input
+        id="calcSlider" type="range" min="50000" max="1000000" step="10000"
+        value={orderValue} onChange={e => setOrderValue(Number(e.target.value))}
+        className="calcSlider"
+      />
+      <div className="calcValue">{fmt(orderValue)}<span>/month</span></div>
+      <div className="calcResults">
+        <div className="calcResultCard"><b>{fmt(monthly)}</b><span>Estimated monthly margin*</span></div>
+        <div className="calcResultCard"><b>{fmt(yearly)}</b><span>Estimated yearly margin*</span></div>
+      </div>
+      <small className="calcNote">*Indicative only, at a demo {Math.round(marginPct * 100)}% margin — replace with your verified franchise margin structure. Actual returns vary by product mix and territory.</small>
+    </div>
+  );
+}
+
+function Franchise({setPage}) {
+  const [categories, setCategories] = useState(FALLBACK_CATEGORIES);
+
+  useEffect(() => {
+    fetch(API_BASE + "/categories")
+      .then(r => r.ok ? r.json() : [])
+      .then(x => { if (Array.isArray(x) && x.length) setCategories(x); })
+      .catch(() => {});
+  }, []);
+
+  // Stash the enquiry type before navigating so the Contact page can
+  // pre-select "PCD Franchise" in its dropdown without needing query
+  // params in the hash router.
+  function applyNow() {
+    sessionStorage.setItem("ab_enquiry_type", "PCD Franchise");
+    setPage("contact");
+  }
+
+  return (
+    <main className="franchisePage">
+
+      {/* ---------- Hero: radar/territory visual, centered layout ---------- */}
+      <section className="franchiseHero2">
+        <div className="franchiseHeroGlow" />
+        <Reveal><span className="eyebrowRed">PCD PHARMA FRANCHISE</span></Reveal>
+        <Reveal delay={80}>
+          <h1 className="franchiseHeroTitle">One territory.<br/><span className="franchiseHeroAccent">Zero competition.</span></h1>
+        </Reveal>
+        <Reveal delay={160}>
+          <p className="franchiseHeroLead">
+            Monopoly-based PCD franchise rights, a 200+ product catalogue and marketing support that's ready on day one — Abencivo Biotech backs every partner from first enquiry to first delivery.
+          </p>
+        </Reveal>
+        <Reveal delay={240}>
+          <div className="actions franchiseHeroActions">
+            <Magnetic className="primary" onClick={applyNow}>Apply for Franchise</Magnetic>
+            <a className="secondary" href={COMPANY.brochure} target="_blank">Download Brochure</a>
+          </div>
+        </Reveal>
+        <Reveal delay={320} className="franchiseHeroVisual">
+          <TerritoryPulse size={300} />
+        </Reveal>
+      </section>
+
+      <TickerBand items={FRANCHISE_TICKER} />
+
+      {/* ---------- Trust stats ---------- */}
+      <section className="section numberStats">
+        {NUMBER_STATS.map(s => <Counter key={s.label} to={s.to} suffix={s.suffix} label={s.label} />)}
+      </section>
+
+      {/* ---------- Why partner: horizontal poster scroll ---------- */}
+      <section className="section">
+        <Reveal><span className="eyebrow">WHY PARTNER WITH US</span></Reveal>
+        <Reveal delay={80}><h2>Everything a franchise partner needs to grow.</h2></Reveal>
+        <div className="benefitScrollWrap">
+          {FRANCHISE_BENEFITS.map((b, i) => (
+            <div className="benefitPoster" key={b.t}>
+              <span className="benefitPosterNum">{String(i + 1).padStart(2, "0")}</span>
+              <div className="benefitPosterIcon">{b.icon}</div>
+              <h3>{b.t}</h3>
+              <p>{b.d}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- Live earnings calculator ---------- */}
+      <section className="section altBg franchiseCalcSection">
+        <FranchiseCalculator />
+      </section>
+
+      {/* ---------- Product segments as a chip cloud ---------- */}
+      <section className="section">
+        <Reveal><span className="eyebrow">PRODUCT RANGE UNDER FRANCHISE</span></Reveal>
+        <Reveal delay={80}><h2>Build your catalogue across every segment.</h2></Reveal>
+        <div className="segmentChipCloud">
+          {categories.map((c, i) => (
+            <Reveal delay={i * 60} key={c.id} as="button" className="segmentChip" onClick={() => setPage("products")}>
+              <span>{c.icon_url ? <img src={c.icon_url} alt="" className="segmentChipImg" /> : (c.icon || "💊")}</span>
+              {c.name}
+            </Reveal>
+          ))}
+        </div>
+      </section>
+
+      {/* ---------- How to apply: scroll-fill vertical timeline ---------- */}
+      <section className="section altBg">
+        <Reveal><span className="eyebrow">HOW TO APPLY</span></Reveal>
+        <Reveal delay={80}><h2>From enquiry to onboarded partner.</h2></Reveal>
+        <VerticalTimeline steps={PROCESS_STEPS} />
+      </section>
+
+      {/* ---------- Testimonials: drag carousel ---------- */}
+      <section className="section">
+        <Reveal><span className="eyebrow">PARTNER VOICES</span></Reveal>
+        <Reveal delay={80}><h2>What our franchise partners say.</h2></Reveal>
+        <TestimonialCarousel
+          items={TESTIMONIALS}
+          renderItem={t => (
+            <>
+              <p className="franchiseQuote">"{t.quote}"</p>
+              <strong>{t.name}</strong>
+              <span className="franchiseRole">{t.role}</span>
+            </>
+          )}
+        />
+      </section>
+
+      {/* ---------- FAQ: two-column layout ---------- */}
+      <section className="section franchiseFaqSection">
+        <Reveal><span className="eyebrow">FRANCHISE FAQS</span></Reveal>
+        <Reveal delay={80}><h2>Common questions from applicants.</h2></Reveal>
+        <div className="franchiseFaqWrap">
+          <FAQ items={FRANCHISE_FAQS} />
+        </div>
+      </section>
+
+      {/* ---------- CTA ---------- */}
+      <Reveal as="section" className="ctaBanner franchiseCtaBanner">
+        <div>
+          <span className="eyebrow" style={{color:"#f5d7da"}}>START YOUR JOURNEY</span>
+          <h2>Apply for a PCD franchise in your territory today.</h2>
+        </div>
+        <div className="actions">
+          <button className="primary" onClick={applyNow}>Apply Now</button>
+          <a className="secondary ctaWhatsapp" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp</a>
+        </div>
+      </Reveal>
+    </main>
+  );
+}
+
 function Products({setPage}) {
  const [items,setItems]=useState(demoProducts),[q,setQ]=useState(""),[cat,setCat]=useState("All");
  const [categories,setCategories]=useState([]);
@@ -507,7 +692,8 @@ function Products({setPage}) {
  );
 }
 
-function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city:"",type:"General",message:""}),[msg,setMsg]=useState("");
+function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city:"",type:sessionStorage.getItem("ab_enquiry_type")||"General",message:""}),[msg,setMsg]=useState("");
+ useEffect(()=>{sessionStorage.removeItem("ab_enquiry_type")},[]);
  async function submit(e){e.preventDefault();setMsg("Sending...");try{const r=await fetch(API_BASE+"/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(form)});const d=await r.json();setMsg(r.ok?(d.message||"Enquiry submitted successfully."):"Unable to submit. Check your details.");}catch{setMsg("Backend not running. Start the server, then try again.");}}
  return (
    <main>
@@ -516,7 +702,7 @@ function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city
        <Reveal><h2>Contact details</h2><p>{COMPANY.address}</p><p>{COMPANY.phone}</p><p>{COMPANY.email}</p><a className="whatsappBig" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp →</a></Reveal>
        <Reveal delay={120} as="form" className="form" onSubmit={submit}>
          {["name","phone","email","city"].map(k=><input required={k!=="email"} key={k} placeholder={k[0].toUpperCase()+k.slice(1)} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/>)}
-         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>Product Enquiry</option><option>Other</option></select>
+         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>PCD Franchise</option><option>Product Enquiry</option><option>Other</option></select>
          <textarea required placeholder="Message" rows="6" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/>
          <button className="primary">Submit Enquiry</button>{msg && <p className="notice">{msg}</p>}
        </Reveal>
@@ -689,6 +875,7 @@ function App() {
                 page === "admin" ? <Admin /> :
                 page === "about" ? <About setPage={go} /> :
                 page === "quality" ? <Quality setPage={go} /> :
+                page === "franchise" ? <Franchise setPage={go} /> :
                 <Home setPage={go} />;
 
   return page === "admin" ? content : (
