@@ -77,6 +77,27 @@ function FAQ({items = FAQS}) {
   return <div className="faqList">{items.map((f, i) => (<Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}><button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}><span>{f.q}</span><span className="faqIcon">{open === i ? "−" : "+"}</span></button>{open === i && <p className="faqA">{f.a}</p>}</Reveal>))}</div>;
 }
 
+/* ---------- Category Image helper (MATCHES YOUR FILENAMES) ---------- */
+function getCategoryImage(name = "") {
+  const key = name.toLowerCase();
+  if (key.includes("tablet")) return "/images/categories/cat-tablets.png";
+  if (key.includes("capsule")) return "/images/categories/cat-capsules.png";
+  if (key.includes("dry syrup")) return "/images/categories/cat-dry-syrup.png";
+  if (key.includes("syrup")) return "/images/categories/cat-syrups.png";
+  if (key.includes("liquid")) return "/images/categories/cat-syrups.png";
+  if (key.includes("drop")) return "/images/categories/cat-drops.png";
+  if (key.includes("inject")) return "/images/categories/cat-injections.png";
+  if (key.includes("ointment") || key.includes("topical")) return "/images/categories/cat-topical.png";
+  if (key.includes("herbal")) return "/images/categories/cat-syrups.png";
+  if (key.includes("energy")) return "/images/categories/cat-syrups.png";
+  return "/images/categories/cat-tablets.png";
+}
+
+/* ---------- Product Image helper ---------- */
+function getProductImage(category) {
+  return getCategoryImage(category);
+}
+
 /* ============================================================
    REAL PRODUCT CATALOGUE — fallback
    ============================================================ */
@@ -87,16 +108,10 @@ const REAL_PRODUCTS = [
   {id:"t4", name:"ABC-500", composition:"Levofloxacin 500mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:840.00},
   {id:"t5", name:"ABCNET-FX", composition:"Montelukast 10mg + Fexofenadine 120mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:1500.00},
   {id:"t6", name:"ABNZID-600", composition:"Linezolid 600mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x10 Alu", mrp:3320.00},
-  {id:"t7", name:"ABNCOLD-PLUS", composition:"Paracetamol 325mg + Levocetirizine 2.5mg", dosage_form:"Tablet", category:"Tablets", packing:"20x10 Blister", mrp:1600.00},
-  {id:"t8", name:"ABNFER-XT", composition:"Ferrous Ascorbate 100mg + Folic Acid 1.5mg + Zinc", dosage_form:"Tablet", category:"Tablets", packing:"10x10", mrp:1100.00},
-  {id:"t9", name:"ABQ10", composition:"Ubidecarenone (Coenzyme Q10) 300mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x10", mrp:7500.00},
-  {id:"t10", name:"ABC", composition:"Cinnarizine 20mg + Domperidone 15mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:650.00},
   {id:"c1", name:"PENCIV-DSR", composition:"Pantoprazole 40mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1200},
   {id:"c2", name:"REBCIV-DSR", composition:"Rabeprazole 20mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1250},
   {id:"c3", name:"ABNRAB-LSR", composition:"Rabeprazole 20mg + Levosulpride 75mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1450},
   {id:"c4", name:"ESOABN-DSR", composition:"Esomeprazole 40mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1100},
-  {id:"c5", name:"ABNMOX-250", composition:"Amoxycillin 250mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Blister", mrp:550},
-  {id:"c6", name:"ABNMOX-500", composition:"Amoxycillin 500mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Blister", mrp:720},
   {id:"d1", name:"ABNMOX-CV-457", composition:"Amoxycillin 400mg + Clavulanic Acid 57mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:135},
   {id:"d3", name:"FIXOBEN-DS", composition:"Cefixime 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:70},
   {id:"dr1", name:"ABNSVIT-L", composition:"Multivitamin & Multimineral Drop", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:55},
@@ -114,14 +129,15 @@ const REAL_PRODUCTS = [
 
 const demoProducts = REAL_PRODUCTS;
 
+/* Categories — MATCHES YOUR FILENAMES */
 const FALLBACK_CATEGORIES = [
-  {id:"f1", name:"Tablets", icon:"💊"},
-  {id:"f2", name:"Capsules", icon:"💊"},
-  {id:"f3", name:"Syrups", icon:"🧴"},
-  {id:"f4", name:"Dry Syrup", icon:"🥤"},
-  {id:"f5", name:"Drops", icon:"💧"},
-  {id:"f6", name:"Injections", icon:"💉"},
-  {id:"f7", name:"Topical", icon:"🧴"},
+  {id:"f1", name:"Tablets",     image:"/images/categories/cat-tablets.png"},
+  {id:"f2", name:"Capsules",    image:"/images/categories/cat-capsules.png"},
+  {id:"f3", name:"Syrups",      image:"/images/categories/cat-syrups.png"},
+  {id:"f4", name:"Dry Syrup",   image:"/images/categories/cat-dry-syrup.png"},
+  {id:"f5", name:"Drops",       image:"/images/categories/cat-drops.png"},
+  {id:"f6", name:"Injections",  image:"/images/categories/cat-injections.png"},
+  {id:"f7", name:"Topical",     image:"/images/categories/cat-topical.png"},
 ];
 
 const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
@@ -146,7 +162,6 @@ function Layout({children, setPage, page}) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Close mobile menu when window resizes back to desktop
   useEffect(() => {
     const onResize = () => {
       if (window.innerWidth > 900 && menuOpen) setMenuOpen(false);
@@ -165,7 +180,6 @@ function Layout({children, setPage, page}) {
           <img src="/images/logo.png" alt="Abencivo Biotech" className="headerLogo" />
         </div>
 
-        {/* DESKTOP NAV — horizontal links */}
         <nav className="desktopNav">
           {NAV_PAGES.map(p => (
             <button
@@ -178,7 +192,6 @@ function Layout({children, setPage, page}) {
           ))}
         </nav>
 
-        {/* MOBILE NAV — hamburger menu */}
         <div className="menuContainer">
           <button
             className="hamburgerBtn"
@@ -276,10 +289,12 @@ function Home({setPage}) {
             {[...categories, ...categories].map((c, i) => (
               <button className="categoryCard" onClick={() => setPage("products")} key={`${c.id}-${i}`}>
                 <div className="categoryIcon">
-                  {c.icon_url
-                    ? <img src={c.icon_url} alt={c.name} />
-                    : <span className="categoryEmoji">{c.icon || "💊"}</span>
-                  }
+                  <img
+                    src={c.image_url || c.image || getCategoryImage(c.name)}
+                    alt={c.name}
+                    loading="lazy"
+                    onError={(e) => { e.target.src = getCategoryImage(c.name); }}
+                  />
                 </div>
                 <span className="categoryName">{c.name}</span>
               </button>
@@ -674,25 +689,23 @@ function Products({setPage}) {
         <div className="productsBlob productsBlob2"></div>
         <div className="productsBlob productsBlob3"></div>
 
-        {/* 4 ANIMATED CATALOGUE IMAGES */}
         <div className="catalogueFloat catalogueFloat1">
-          <img src="/images/catalogue-tablets.jpg" alt="Tablets" />
+          <img src="/images/categories/cat-tablets.png" alt="Tablets" />
           <span className="catalogueFloatTag">Tablets</span>
         </div>
         <div className="catalogueFloat catalogueFloat2">
-          <img src="/images/catalogue-syrup.jpg" alt="Syrups" />
+          <img src="/images/categories/cat-syrups.png" alt="Syrups" />
           <span className="catalogueFloatTag">Syrups</span>
         </div>
         <div className="catalogueFloat catalogueFloat3">
-          <img src="/images/catalogue-injections.jpg" alt="Injections" />
+          <img src="/images/categories/cat-injections.png" alt="Injections" />
           <span className="catalogueFloatTag">Injections</span>
         </div>
         <div className="catalogueFloat catalogueFloat4">
-          <img src="/images/catalogue-capsules.jpg" alt="Capsules" />
+          <img src="/images/categories/cat-capsules.png" alt="Capsules" />
           <span className="catalogueFloatTag">Capsules</span>
         </div>
 
-        {/* Floating pharma icons (subtle) */}
         <div className="pharmaFloat pharmaFloat1">💊</div>
         <div className="pharmaFloat pharmaFloat2">🧪</div>
         <div className="pharmaFloat pharmaFloat3">💉</div>

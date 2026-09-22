@@ -2656,3 +2656,108 @@ footer h3,footer h4{color:#fff}
     display: flex !important;
   }
 }
+
+/* ============================================================
+   PRODUCT CATEGORIES — Images instead of emojis
+   ============================================================ */
+
+/* Hide the old emoji style */
+.categoryEmoji { display: none; }
+
+/* The circular frame holding the image */
+.categoryIcon {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #fff8f8;
+  border: 3px solid #e21b2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), border-color .3s ease, box-shadow .3s ease;
+  flex-shrink: 0;
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(226, 27, 45, 0.10);
+}
+
+/* The actual image inside */
+.categoryIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  transition: transform .6s cubic-bezier(.16, .84, .44, 1);
+}
+
+/* Hover effects */
+.categoryCard:hover .categoryIcon {
+  transform: scale(1.12) rotate(6deg);
+  border-color: #c51f2b;
+  box-shadow: 0 12px 28px rgba(226, 27, 45, 0.22);
+}
+
+.categoryCard:hover .categoryIcon img {
+  transform: scale(1.15);
+}
+
+/* Responsive tweaks */
+@media (max-width: 600px) {
+  .categoryIcon {
+    width: 80px;
+    height: 80px;
+    border-width: 2px;
+    padding: 3px;
+  }
+}
+
+/* ============================================================
+   PRODUCT CATEGORIES — Images instead of emojis
+   ============================================================ */
+
+.categoryEmoji { display: none; }
+
+.categoryIcon {
+  width: 110px;
+  height: 110px;
+  border-radius: 50%;
+  background: #fff8f8;
+  border: 3px solid #e21b2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform .4s cubic-bezier(.34, 1.56, .64, 1), border-color .3s ease, box-shadow .3s ease;
+  flex-shrink: 0;
+  padding: 4px;
+  box-shadow: 0 6px 18px rgba(226, 27, 45, 0.10);
+}
+
+.categoryIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 50%;
+  display: block;
+  transition: transform .6s cubic-bezier(.16, .84, .44, 1);
+}
+
+.categoryCard:hover .categoryIcon {
+  transform: scale(1.12) rotate(6deg);
+  border-color: #c51f2b;
+  box-shadow: 0 12px 28px rgba(226, 27, 45, 0.22);
+}
+
+.categoryCard:hover .categoryIcon img {
+  transform: scale(1.15);
+}
+
+@media (max-width: 600px) {
+  .categoryIcon {
+    width: 80px;
+    height: 80px;
+    border-width: 2px;
+    padding: 3px;
+  }
+}
