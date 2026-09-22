@@ -126,6 +126,9 @@ const FALLBACK_CATEGORIES = [
 
 const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
 
+/* ============================================================
+   LAYOUT — Responsive header
+   ============================================================ */
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
@@ -143,6 +146,15 @@ function Layout({children, setPage, page}) {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Close mobile menu when window resizes back to desktop
+  useEffect(() => {
+    const onResize = () => {
+      if (window.innerWidth > 900 && menuOpen) setMenuOpen(false);
+    };
+    window.addEventListener("resize", onResize);
+    return () => window.removeEventListener("resize", onResize);
+  }, [menuOpen]);
+
   const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
 
   return (
@@ -152,14 +164,38 @@ function Layout({children, setPage, page}) {
         <div className="brand" onClick={() => handleNavClick("home")}>
           <img src="/images/logo.png" alt="Abencivo Biotech" className="headerLogo" />
         </div>
+
+        {/* DESKTOP NAV — horizontal links */}
+        <nav className="desktopNav">
+          {NAV_PAGES.map(p => (
+            <button
+              key={p}
+              className={page === p ? "activeLink" : ""}
+              onClick={() => handleNavClick(p)}
+            >
+              {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
+            </button>
+          ))}
+        </nav>
+
+        {/* MOBILE NAV — hamburger menu */}
         <div className="menuContainer">
-          <button className="hamburgerBtn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+          <button
+            className="hamburgerBtn"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Menu"
+            aria-expanded={menuOpen}
+          >
             <span></span><span></span><span></span>
           </button>
           {menuOpen && (
             <div className="dropdownMenu">
               {NAV_PAGES.map(p => (
-                <button key={p} className={page === p ? "activeLink" : ""} onClick={() => handleNavClick(p)}>
+                <button
+                  key={p}
+                  className={page === p ? "activeLink" : ""}
+                  onClick={() => handleNavClick(p)}
+                >
                   {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
                 </button>
               ))}
@@ -605,9 +641,7 @@ function Quality({setPage}) {
   );
 }
 
-/* ============================================================
-   PRODUCTS PAGE
-   ============================================================ */
+/* ---------- PRODUCTS PAGE ---------- */
 function Products({setPage}) {
   const [items, setItems] = useState(demoProducts);
   const [categories, setCategories] = useState([]);
@@ -636,7 +670,6 @@ function Products({setPage}) {
   return (
     <main className="productsPage">
       <section className="productsHero">
-        {/* Floating ambient blobs */}
         <div className="productsBlob productsBlob1"></div>
         <div className="productsBlob productsBlob2"></div>
         <div className="productsBlob productsBlob3"></div>

@@ -2569,3 +2569,90 @@ footer h3,footer h4{color:#fff}
 @media (prefers-reduced-motion: reduce) {
   .catalogueFloat, .pharmaFloat, .productsBlob { animation: none !important; }
 }
+
+/* ============================================================
+   RESPONSIVE HEADER — Desktop nav bar / Mobile hamburger
+   ============================================================ */
+
+/* -------- DESKTOP NAV (shown by default on large screens) -------- */
+.desktopNav {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin-left: auto;
+  margin-right: 20px;
+}
+
+.desktopNav button {
+  background: none;
+  border: 0;
+  padding: 10px 16px;
+  font-size: 15px;
+  font-weight: 600;
+  color: #6b4a4c;
+  cursor: pointer;
+  border-radius: 8px;
+  position: relative;
+  transition: color .25s ease, background .25s ease;
+}
+
+.desktopNav button:hover {
+  color: #c51f2b;
+  background: #fff5f6;
+}
+
+.desktopNav button.activeLink {
+  color: #c51f2b;
+  font-weight: 800;
+  background: #fff0f1;
+}
+
+.desktopNav button::after {
+  content: "";
+  position: absolute;
+  left: 16px;
+  right: 16px;
+  bottom: 4px;
+  height: 2px;
+  background: #c51f2b;
+  border-radius: 2px;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .3s cubic-bezier(.16,.84,.44,1);
+}
+.desktopNav button:hover::after,
+.desktopNav button.activeLink::after {
+  transform: scaleX(1);
+}
+
+/* -------- MOBILE MENU (hidden by default on desktop) -------- */
+.menuContainer {
+  display: none;
+  position: relative;
+  align-items: center;
+  margin-left: auto;
+}
+
+/* ============================================================
+   BREAKPOINT: below 900px — hide desktop, show hamburger
+   ============================================================ */
+@media (max-width: 900px) {
+  .desktopNav {
+    display: none !important;
+  }
+  .menuContainer {
+    display: flex !important;
+  }
+}
+
+/* ============================================================
+   Above 900px — ensure hamburger is hidden, desktop is shown
+   ============================================================ */
+@media (min-width: 901px) {
+  .menuContainer {
+    display: none !important;
+  }
+  .desktopNav {
+    display: flex !important;
+  }
+}
