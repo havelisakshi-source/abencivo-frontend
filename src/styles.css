@@ -298,41 +298,6 @@ button{cursor:pointer}
 .wideCard{max-width:900px}
 
 /* ============================================================
-   PRODUCTS
-   ============================================================ */
-.filters{display:flex;gap:10px;flex-wrap:wrap;margin-bottom:30px}
-.filters input{min-width:260px;flex:1;padding:14px 18px;border:1px solid #e3cdd0;border-radius:14px}
-.filters button{border:1px solid #e3cdd0;background:#fff;border-radius:999px;padding:10px 15px}
-.filters .active{background:#c51f2b;color:#fff}
-.productGrid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px}
-.product{
-  background:#fff;
-  border:1px solid #f0dfe1;
-  border-radius:22px;
-  overflow:hidden;
-  transition:transform .4s cubic-bezier(.16,.84,.44,1),box-shadow .4s ease;
-}
-.product:hover{transform:translateY(-8px);box-shadow:0 30px 60px #8f16201a}
-.product>img{
-  width:100%;height:240px;
-  object-fit:contain;
-  background:#f2f7f4;
-  transition:transform .5s ease;
-}
-.product:hover>img{transform:scale(1.07)}
-.product>div{padding:22px}
-.product span{font-size:12px;color:#c51f2b;font-weight:700}
-.product p{color:#766363}
-.product small{background:#fff0f1;padding:6px 9px;border-radius:8px}
-.productActions{display:flex;gap:8px;margin-top:20px}
-.productActions a,.productActions button{border:0;border-radius:10px;padding:10px 12px;text-decoration:none}
-.productActions a{background:#ffe7e9;color:#c51f2b}
-.productActions button{background:#4b0d12;color:white}
-.filters button,.filters .active,.productActions a,.productActions button{transition:transform .25s ease,background .25s ease,box-shadow .25s ease}
-.filters button:hover{transform:translateY(-2px)}
-.productActions a:hover,.productActions button:hover{transform:translateY(-2px);box-shadow:0 8px 18px #4b0d1226}
-
-/* ============================================================
    CONTACT & FORM
    ============================================================ */
 .contactGrid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}
@@ -859,7 +824,7 @@ footer h3,footer h4{color:#fff}
 .bento4{grid-column:span 4}
 
 /* ============================================================
-   PCD FRANCHISE PAGE — Hero with background image
+   PCD FRANCHISE PAGE
    ============================================================ */
 .franchisePage{background:#ffffff}
 
@@ -1306,171 +1271,94 @@ footer h3,footer h4{color:#fff}
 .adminLoginError{background:#fff0e0;color:#8a4b00}
 
 /* ============================================================
-   RESPONSIVE
+   PRODUCTS PAGE — Beautiful animated catalogue with images
    ============================================================ */
-@media (max-width:1100px){
-  .headerLogo{height:100px}
-  .nav.scrolled .headerLogo{height:75px}
-  .nav{min-height:110px;padding:8px 4%}
-  .franchiseBenefitsGrid{grid-template-columns:repeat(2,1fr)}
-}
-
-@media (max-width:900px){
-  .nav{min-height:100px;padding:8px 4%}
-  .headerLogo{height:85px}
-  .nav.scrolled .headerLogo{height:65px}
-  .hero,.contactGrid{grid-template-columns:1fr}
-  .productGrid,.grid3{grid-template-columns:1fr 1fr}
-  .stats{grid-template-columns:1fr 1fr}
-  .grid4{grid-template-columns:1fr 1fr}
-  .processGrid{grid-template-columns:1fr 1fr}
-  .grid2{grid-template-columns:1fr}
-  .ctaBanner{border-radius:24px;margin:0 5% 60px;padding:36px 6%}
-  .numberStats{grid-template-columns:1fr 1fr}
-  .cursorGlow{display:none}
-  .categoryHeading{font-size:2rem;margin-bottom:45px}
-  .aboutScienceGrid{grid-template-columns:1fr;gap:55px}
-  .aboutMilestoneGrid{grid-template-columns:1fr;gap:50px}
-  .aboutMilestoneLeft{position:static}
-  .aboutBentoGrid{grid-template-columns:repeat(2,1fr)}
-  .bento1,.bento2,.bento3,.bento4{grid-column:span 1}
-  .admin{grid-template-columns:1fr}
-  .admin aside{position:static}
-  .adminForm{grid-template-columns:1fr}
-  .qualityHero{padding:80px 6%;min-height:480px}
-  .qualityCardsGrid{grid-template-columns:1fr;gap:22px}
-  .qualityPrinciplesGrid{grid-template-columns:1fr 1fr}
-  .qualityPrinciplesSection{padding:30px 6% 80px}
-  .qualityCardsSection{padding:70px 6%}
-  .franchiseHero{padding:90px 6% 80px;min-height:520px}
-  .franchiseBenefitsSection,
-  .franchiseProcessSection,
-  .franchiseFaqSection{padding:75px 6%}
-  .franchiseSectionHeader{margin-bottom:45px}
-  .franchiseTickerItem{font-size:12px;letter-spacing:1.2px}
-}
-
-@media (max-width:700px){
-  .productFormGrid{grid-template-columns:1fr}
-  .productRow{
-    grid-template-columns:44px 1fr;
-    grid-template-areas:"thumb name" "actions actions";
-  }
-  .statusBarRow{grid-template-columns:100px 1fr 26px}
-}
-
-@media (max-width:600px){
-  .hero{padding:60px 5%}
-  .section,.pageHero{padding:60px 5%}
-  .productGrid,.grid3,.stats,footer{grid-template-columns:1fr}
-  .hero h1,.pageHero h1{font-size:46px}
-  .heroCard{min-height:320px}
-  .navcta{display:none}
-  .headerLogo{height:65px}
-  .nav.scrolled .headerLogo{height:52px}
-  .nav{min-height:80px;padding:6px 4%}
-  .categorySection{padding:55px 0}
-  .categoryHeading{font-size:1.7rem;margin-bottom:35px}
-  .categoryCard{
-    width:150px;height:150px;
-    padding:18px 12px;gap:10px;border-radius:14px;
-  }
-  .categoryIcon{width:65px;height:65px}
-  .categoryEmoji{font-size:32px}
-  .categoryName{font-size:13px}
-  .marqueeTrack{gap:16px}
-  .grid4,.processGrid{grid-template-columns:1fr}
-  .ctaBanner h2{font-size:24px}
-  .newsletterForm{flex-direction:column}
-  .numberStats{grid-template-columns:1fr}
-  .aboutHeroRefined{padding:75px 5% 65px}
-  .aboutHeroLead{font-size:1.02rem}
-  .aboutScienceSection{padding:70px 5%}
-  .aboutMilestoneSectionRefined,.aboutMissionSectionRefined{padding:75px 5%}
-  .aboutMissionHeader{margin-bottom:45px}
-  .aboutMissionIntro{font-size:1rem}
-  .aboutBentoGrid{grid-template-columns:1fr;gap:16px}
-  .aboutBentoCard{padding:24px}
-  .bentoNumber{font-size:2.4rem}
-  .qualityHero{padding:60px 5%;min-height:420px}
-  .qualityHero h1{font-size:2rem}
-  .qualityHero p{font-size:1rem}
-  .qualityCard{padding:30px 24px;border-radius:20px}
-  .qualityCardIcon{width:54px;height:54px;font-size:26px}
-  .qualityCard h2{font-size:1.3rem}
-  .qualityCard p{font-size:0.98rem}
-  .qualityPrinciplesGrid{grid-template-columns:1fr;gap:16px}
-  .qualityPrinciple{padding:28px 22px}
-  .principleNumber{font-size:2.4rem}
-  .franchiseHero{padding:70px 5% 65px;min-height:460px}
-  .franchiseHeroTitle{font-size:1.85rem;letter-spacing:-0.5px}
-  .franchiseHeroLead{font-size:1.02rem}
-  .franchiseHeroActions{flex-direction:column;align-items:stretch}
-  .franchiseHeroActions .primary,
-  .franchiseHeroActions .secondary{width:100%;text-align:center}
-  .franchiseBenefitsGrid{grid-template-columns:1fr;gap:16px}
-  .franchiseBenefitCard{padding:26px 22px}
-  .franchiseBenefitIcon{width:48px;height:48px;font-size:22px}
-  .franchiseSectionHeader h2{font-size:1.6rem}
-  .franchiseSectionIntro{font-size:1rem}
-  .franchiseTicker{padding:12px 0}
-  .franchiseTickerTrack{gap:34px;padding-left:34px}
-  .franchiseTickerItem{font-size:11px;letter-spacing:1px}
-}
-
-/* ============================================================
-   PREFERS REDUCED MOTION
-   ============================================================ */
-@media(prefers-reduced-motion: reduce){
-  *,*::before,*::after{
-    animation-duration:.001ms!important;
-    animation-iteration-count:1!important;
-    transition-duration:.001ms!important;
-    scroll-behavior:auto!important;
-  }
-  .dnaSpin,.particleDot,.liquidWave,.qualityHeroBg,.franchiseHeroBg{animation:none!important}
-}
-
-/* ============================================================
-   PRODUCTS PAGE — Beautiful animated catalogue
-   ============================================================ */
-
 .productsPage { background: #ffffff; }
 
 .productsHero {
   position: relative;
-  padding: 110px 7% 80px;
+  padding: 130px 7% 100px;
   background: linear-gradient(160deg, #fff8f8 0%, #ffffff 55%, #ffe9eb 100%);
   text-align: center;
   overflow: hidden;
+  isolation: isolate;
 }
-.productsHero::before {
-  content: "";
+
+/* Ambient gradient blobs */
+.productsBlob {
   position: absolute;
-  top: -80px; right: -80px;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.productsBlob1 {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(226,27,45,0.18) 0%, rgba(226,27,45,0) 70%);
+  top: -180px; left: -120px;
+  animation: productsBlobFloat1 14s ease-in-out infinite;
+}
+.productsBlob2 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(255,145,155,0.22) 0%, rgba(255,145,155,0) 70%);
+  bottom: -160px; right: -120px;
+  animation: productsBlobFloat2 16s ease-in-out infinite;
+}
+.productsBlob3 {
   width: 320px; height: 320px;
-  background: radial-gradient(circle, rgba(226,27,45,0.12) 0%, rgba(226,27,45,0) 70%);
-  border-radius: 50%;
-  animation: productsHeroBlob 14s ease-in-out infinite;
+  background: radial-gradient(circle, rgba(255,200,208,0.35) 0%, rgba(255,200,208,0) 70%);
+  top: 40%; left: 45%;
+  transform: translate(-50%, -50%);
+  animation: productsBlobFloat3 18s ease-in-out infinite;
 }
-.productsHero::after {
-  content: "";
-  position: absolute;
-  bottom: -100px; left: -100px;
-  width: 380px; height: 380px;
-  background: radial-gradient(circle, rgba(255,145,155,0.14) 0%, rgba(255,145,155,0) 70%);
-  border-radius: 50%;
-  animation: productsHeroBlob 18s ease-in-out infinite reverse;
-}
-@keyframes productsHeroBlob {
+@keyframes productsBlobFloat1 {
   0%, 100% { transform: scale(1) translate(0, 0); }
-  50% { transform: scale(1.15) translate(20px, 15px); }
+  50%      { transform: scale(1.15) translate(40px, 30px); }
 }
+@keyframes productsBlobFloat2 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50%      { transform: scale(1.18) translate(-40px, -30px); }
+}
+@keyframes productsBlobFloat3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50%      { transform: translate(-50%, -50%) scale(1.25); opacity: 0.9; }
+}
+
+/* Floating pharmaceutical icons */
+.pharmaFloat {
+  position: absolute;
+  font-size: 40px;
+  line-height: 1;
+  opacity: 0.14;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+  filter: drop-shadow(0 6px 14px rgba(226, 27, 45, 0.25));
+}
+.pharmaFloat1 { top: 18%; left: 8%; font-size: 52px; animation: pharmaBob 6s ease-in-out infinite, pharmaRotate 14s linear infinite; }
+.pharmaFloat2 { top: 30%; right: 10%; font-size: 58px; animation: pharmaBob 7s ease-in-out infinite 0.5s, pharmaRotate 16s linear infinite reverse; }
+.pharmaFloat3 { bottom: 18%; left: 12%; font-size: 48px; animation: pharmaBob 5.5s ease-in-out infinite 0.8s; }
+.pharmaFloat4 { top: 12%; right: 22%; font-size: 44px; animation: pharmaBob 6.5s ease-in-out infinite 1.2s, pharmaRotate 18s linear infinite; }
+.pharmaFloat5 { bottom: 14%; right: 18%; font-size: 46px; animation: pharmaBob 7.5s ease-in-out infinite 0.3s; }
+.pharmaFloat6 { top: 55%; left: 5%; font-size: 38px; animation: pharmaBob 5s ease-in-out infinite 1.5s; }
+.pharmaFloat7 { top: 20%; left: 30%; font-size: 36px; animation: pharmaBob 6.8s ease-in-out infinite 1s; }
+.pharmaFloat8 { bottom: 30%; right: 6%; font-size: 42px; animation: pharmaBob 7.2s ease-in-out infinite 0.6s, pharmaRotate 20s linear infinite reverse; }
+
+@keyframes pharmaBob {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  33%      { transform: translateY(-22px) translateX(8px); }
+  66%      { transform: translateY(12px) translateX(-8px); }
+}
+@keyframes pharmaRotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+
 .productsHeroInner {
   max-width: 900px;
   margin: 0 auto;
   position: relative;
-  z-index: 2;
+  z-index: 3;
 }
 .productsHeroTitle {
   font-size: clamp(2rem, 5vw, 3.4rem);
@@ -1579,6 +1467,914 @@ footer h3,footer h4{color:#fff}
   margin: 0 auto;
 }
 
+/* ---------- Product Card with Image ---------- */
+.productCardNew {
+  position: relative;
+  background: #ffffff;
+  border: 1.5px solid #f0dfe1;
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  transition: all .4s cubic-bezier(.16,.84,.44,1);
+}
+
+.productCardNew:hover {
+  transform: translateY(-8px);
+  border-color: #e21b2d;
+  box-shadow: 0 22px 45px rgba(226,27,45,0.18);
+}
+
+.productCardImage {
+  position: relative;
+  width: 100%;
+  height: 190px;
+  overflow: hidden;
+  background: #f2f7f4;
+}
+
+.productCardImage img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  transition: transform .8s cubic-bezier(.16,.84,.44,1);
+}
+
+.productCardNew:hover .productCardImage img {
+  transform: scale(1.12);
+}
+
+.productCardImageOverlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(0,0,0,0) 40%, rgba(75,13,18,0.35) 100%);
+  pointer-events: none;
+  transition: opacity .4s ease;
+}
+
+.productCardNew:hover .productCardImageOverlay {
+  background: linear-gradient(180deg, rgba(226,27,45,0.10) 0%, rgba(75,13,18,0.55) 100%);
+}
+
+.productCardImageBadge {
+  position: absolute;
+  top: 14px;
+  left: 14px;
+  background: rgba(255, 255, 255, 0.95);
+  color: #8f1620;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 6px 12px;
+  border-radius: 999px;
+  backdrop-filter: blur(6px);
+  box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+  z-index: 2;
+}
+
+.productCardBody {
+  padding: 20px 22px 22px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.productCardTop {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: 8px;
+}
+
+.productCardCat {
+  background: #fff0f1;
+  color: #c51f2b;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.8px;
+  text-transform: uppercase;
+  padding: 5px 10px;
+  border-radius: 999px;
+}
+.productCardForm {
+  font-size: 11px;
+  font-weight: 700;
+  color: #8f1620;
+  background: #ffffff;
+  border: 1.5px solid #f0dfe1;
+  padding: 4px 10px;
+  border-radius: 999px;
+}
+.productCardName {
+  font-size: 1.15rem;
+  font-weight: 800;
+  color: #4b0d12;
+  margin: 4px 0 0;
+  line-height: 1.3;
+}
+.productCardComposition {
+  font-size: 0.9rem;
+  line-height: 1.6;
+  color: #5a3a3c;
+  margin: 0;
+  min-height: 44px;
+}
+.productCardMeta {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 8px 0;
+  border-top: 1px dashed #f0dfe1;
+}
+.productCardMetaLabel {
+  font-size: 0.78rem;
+  color: #b39b9d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+.productCardMetaValue {
+  font-size: 0.85rem;
+  color: #4b0d12;
+  font-weight: 700;
+}
+.productCardPrice {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+  padding: 10px 0;
+  border-top: 1px dashed #f0dfe1;
+}
+.productCardPriceLabel {
+  font-size: 0.78rem;
+  color: #b39b9d;
+  text-transform: uppercase;
+  letter-spacing: 1px;
+  font-weight: 700;
+}
+.productCardPriceValue {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #e21b2d;
+  letter-spacing: -0.5px;
+}
+.productCardActions {
+  display: flex;
+  gap: 8px;
+  margin-top: 8px;
+}
+.productCardBtn {
+  flex: 1;
+  border: 0;
+  border-radius: 10px;
+  padding: 11px 12px;
+  font-size: 13px;
+  font-weight: 700;
+  cursor: pointer;
+  text-decoration: none;
+  text-align: center;
+  transition: transform .25s ease, box-shadow .25s ease, background .25s ease;
+}
+.productCardBtn:hover { transform: translateY(-2px); }
+.productCardBtnWa { background: #25D366; color: #ffffff; }
+.productCardBtnWa:hover { background: #1eb355; box-shadow: 0 8px 18px rgba(37,211,102,0.35); }
+.productCardBtnEnquire { background: #4b0d12; color: #ffffff; }
+.productCardBtnEnquire:hover { background: #c51f2b; box-shadow: 0 8px 18px rgba(197,31,43,0.35); }
+
+/* ============================================================
+   CONTACT PAGE — Modern two-column with animations
+   ============================================================ */
+.contactModern {
+  position: relative;
+  overflow: hidden;
+  background: #FFF5F5;
+  padding: 100px 7% 110px;
+}
+
+.contactOrb {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(90px);
+  pointer-events: none;
+}
+.contactOrbA {
+  top: -160px;
+  right: -160px;
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, #FFD1D6 0%, #FFB3BC 45%, transparent 70%);
+  opacity: 0.75;
+  animation: contactOrbPulse 9s ease-in-out infinite;
+}
+.contactOrbB {
+  bottom: -180px;
+  left: -180px;
+  width: 520px;
+  height: 520px;
+  background: radial-gradient(circle, #FFE0E4 0%, #FFC9CE 45%, transparent 70%);
+  opacity: 0.55;
+  animation: contactOrbPulse 11s ease-in-out infinite 1.5s;
+}
+@keyframes contactOrbPulse {
+  0%, 100% { transform: scale(1); opacity: 0.55; }
+  50%      { transform: scale(1.18); opacity: 0.85; }
+}
+
+.contactModernGrid {
+  position: relative;
+  z-index: 2;
+  max-width: 1300px;
+  margin: 0 auto;
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 70px;
+  align-items: start;
+}
+
+.contactLeft {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.contactAccent {
+  display: inline-block;
+  color: #C1272D;
+  font-size: 11px;
+  font-weight: 800;
+  letter-spacing: 0.28em;
+  text-transform: uppercase;
+}
+
+.contactTitle {
+  font-size: clamp(2.4rem, 5vw, 4rem);
+  font-weight: 900;
+  color: #1a1a1a;
+  line-height: 1.05;
+  margin: 0;
+  letter-spacing: -1px;
+}
+.contactDot { color: #C1272D; }
+
+.contactLead {
+  font-size: 1.05rem;
+  line-height: 1.85;
+  color: #6b6b6b;
+  max-width: 560px;
+  margin: 0;
+}
+
+.contactForm {
+  display: grid;
+  gap: 14px;
+  margin-top: 20px;
+}
+
+.contactFormRow {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 14px;
+}
+
+.contactForm input,
+.contactForm textarea {
+  width: 100%;
+  border: 1.5px solid #F1D8DB;
+  border-radius: 16px;
+  padding: 15px 20px;
+  font-size: 15px;
+  color: #1a1a1a;
+  background: #ffffff;
+  outline: none;
+  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
+  font-family: inherit;
+}
+
+.contactForm input::placeholder,
+.contactForm textarea::placeholder { color: #a89a9b; }
+
+.contactForm input:focus,
+.contactForm textarea:focus {
+  border-color: #C1272D;
+  box-shadow: 0 0 0 4px rgba(193, 39, 45, 0.10);
+  transform: translateY(-1px);
+}
+
+.contactForm textarea {
+  resize: vertical;
+  min-height: 140px;
+  font-family: inherit;
+}
+
+.contactSubmit {
+  justify-self: start;
+  padding: 15px 36px !important;
+  font-size: 15px;
+  font-weight: 800;
+  letter-spacing: 0.02em;
+  margin-top: 6px;
+}
+
+.contactMsg {
+  margin: 6px 0 0;
+  padding: 12px 18px;
+  background: #FFF0F1;
+  color: #C1272D;
+  border-radius: 12px;
+  font-size: 14px;
+  font-weight: 600;
+  animation: contactMsgIn .35s ease;
+}
+@keyframes contactMsgIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.contactRight {
+  display: flex;
+  justify-content: center;
+  position: sticky;
+  top: 120px;
+  align-self: start;
+}
+
+.contactWidget {
+  position: relative;
+  background: #ffffff;
+  border-radius: 32px;
+  padding: 36px 32px;
+  box-shadow: 0 30px 70px rgba(193, 39, 45, 0.12), 0 4px 12px rgba(0,0,0,0.04);
+  max-width: 460px;
+  width: 100%;
+  animation: contactWidgetBob 4.5s ease-in-out infinite;
+  border: 1px solid rgba(0, 0, 0, 0.04);
+}
+@keyframes contactWidgetBob {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-14px); }
+}
+
+.contactWidgetBadge {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 64px;
+  height: 64px;
+  border-radius: 20px;
+  background: linear-gradient(135deg, #C1272D 0%, #8F1620 100%);
+  color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 28px;
+  box-shadow: 0 14px 30px rgba(193, 39, 45, 0.4);
+  animation: contactBadgeFloat 5s ease-in-out infinite;
+}
+@keyframes contactBadgeFloat {
+  0%, 100% { transform: translateY(0) rotate(0deg); }
+  50%      { transform: translateY(-10px) rotate(5deg); }
+}
+
+.contactWidgetTitle {
+  font-size: 1.35rem;
+  font-weight: 900;
+  color: #1a1a1a;
+  margin: 0 0 8px;
+}
+.contactWidgetLead {
+  font-size: 0.92rem;
+  color: #6b6b6b;
+  margin: 0 0 24px;
+  line-height: 1.65;
+}
+.contactInfoList { display: grid; gap: 6px; }
+.contactInfoRow {
+  display: flex;
+  align-items: flex-start;
+  gap: 14px;
+  padding: 12px;
+  border-radius: 16px;
+  transition: background 0.25s ease, transform 0.25s ease;
+}
+.contactInfoRow:hover {
+  background: #FFF5F5;
+  transform: translateX(3px);
+}
+.contactInfoIcon {
+  flex-shrink: 0;
+  width: 42px;
+  height: 42px;
+  border-radius: 12px;
+  background: #FFF0F1;
+  color: #C1272D;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 18px;
+  font-weight: 900;
+}
+.contactInfoLabel {
+  font-size: 10px;
+  font-weight: 800;
+  color: rgba(143, 22, 32, 0.6);
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  margin-bottom: 3px;
+}
+.contactInfoValue {
+  font-size: 14px;
+  font-weight: 700;
+  color: #1a1a1a;
+  word-break: break-word;
+}
+
+.contactLiveRow {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-top: 24px;
+  padding: 14px 20px;
+  background: #FFF5F5;
+  border-radius: 16px;
+}
+.contactLivePulse {
+  position: relative;
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  background: #10b981;
+  flex-shrink: 0;
+}
+.contactLivePulse::before {
+  content: "";
+  position: absolute;
+  inset: -4px;
+  border-radius: 50%;
+  background: #10b981;
+  opacity: 0.5;
+  animation: contactLivePing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
+}
+@keyframes contactLivePing {
+  0%   { transform: scale(1); opacity: 0.6; }
+  75%  { transform: scale(2.2); opacity: 0; }
+  100% { transform: scale(1); opacity: 0; }
+}
+.contactLiveText {
+  font-size: 11px;
+  font-weight: 800;
+  color: #8F1620;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+@media (max-width:1100px){
+  .headerLogo{height:100px}
+  .nav.scrolled .headerLogo{height:75px}
+  .nav{min-height:110px;padding:8px 4%}
+  .franchiseBenefitsGrid{grid-template-columns:repeat(2,1fr)}
+}
+
+@media (max-width:900px){
+  .nav{min-height:100px;padding:8px 4%}
+  .headerLogo{height:85px}
+  .nav.scrolled .headerLogo{height:65px}
+  .hero,.contactGrid{grid-template-columns:1fr}
+  .productGrid,.grid3{grid-template-columns:1fr 1fr}
+  .stats{grid-template-columns:1fr 1fr}
+  .grid4{grid-template-columns:1fr 1fr}
+  .processGrid{grid-template-columns:1fr 1fr}
+  .grid2{grid-template-columns:1fr}
+  .ctaBanner{border-radius:24px;margin:0 5% 60px;padding:36px 6%}
+  .numberStats{grid-template-columns:1fr 1fr}
+  .cursorGlow{display:none}
+  .categoryHeading{font-size:2rem;margin-bottom:45px}
+  .aboutScienceGrid{grid-template-columns:1fr;gap:55px}
+  .aboutMilestoneGrid{grid-template-columns:1fr;gap:50px}
+  .aboutMilestoneLeft{position:static}
+  .aboutBentoGrid{grid-template-columns:repeat(2,1fr)}
+  .bento1,.bento2,.bento3,.bento4{grid-column:span 1}
+  .admin{grid-template-columns:1fr}
+  .admin aside{position:static}
+  .adminForm{grid-template-columns:1fr}
+  .qualityHero{padding:80px 6%;min-height:480px}
+  .qualityCardsGrid{grid-template-columns:1fr;gap:22px}
+  .qualityPrinciplesGrid{grid-template-columns:1fr 1fr}
+  .qualityPrinciplesSection{padding:30px 6% 80px}
+  .qualityCardsSection{padding:70px 6%}
+  .franchiseHero{padding:90px 6% 80px;min-height:520px}
+  .franchiseBenefitsSection,
+  .franchiseProcessSection,
+  .franchiseFaqSection{padding:75px 6%}
+  .franchiseSectionHeader{margin-bottom:45px}
+  .franchiseTickerItem{font-size:12px;letter-spacing:1.2px}
+  .productsHero { padding: 90px 6% 70px; }
+  .productsGridSection { padding: 55px 6% 80px; }
+  .productsHeroStats { gap: 30px; }
+  .productsHeroStats b { font-size: 1.4rem; }
+  .pharmaFloat { font-size: 32px; }
+  .pharmaFloat1, .pharmaFloat2 { font-size: 40px; }
+  .pharmaFloat3, .pharmaFloat4, .pharmaFloat5, .pharmaFloat8 { font-size: 34px; }
+  .contactModernGrid { grid-template-columns: 1fr; gap: 60px; }
+  .contactRight { position: static; }
+  .contactWidget { max-width: 100%; }
+}
+
+@media (max-width:700px){
+  .productFormGrid{grid-template-columns:1fr}
+  .productRow{
+    grid-template-columns:44px 1fr;
+    grid-template-areas:"thumb name" "actions actions";
+  }
+  .statusBarRow{grid-template-columns:100px 1fr 26px}
+}
+
+@media (max-width:600px){
+  .hero{padding:60px 5%}
+  .section,.pageHero{padding:60px 5%}
+  .productGrid,.grid3,.stats,footer{grid-template-columns:1fr}
+  .hero h1,.pageHero h1{font-size:46px}
+  .heroCard{min-height:320px}
+  .navcta{display:none}
+  .headerLogo{height:65px}
+  .nav.scrolled .headerLogo{height:52px}
+  .nav{min-height:80px;padding:6px 4%}
+  .categorySection{padding:55px 0}
+  .categoryHeading{font-size:1.7rem;margin-bottom:35px}
+  .categoryCard{
+    width:150px;height:150px;
+    padding:18px 12px;gap:10px;border-radius:14px;
+  }
+  .categoryIcon{width:65px;height:65px}
+  .categoryEmoji{font-size:32px}
+  .categoryName{font-size:13px}
+  .marqueeTrack{gap:16px}
+  .grid4,.processGrid{grid-template-columns:1fr}
+  .ctaBanner h2{font-size:24px}
+  .newsletterForm{flex-direction:column}
+  .numberStats{grid-template-columns:1fr}
+  .aboutHeroRefined{padding:75px 5% 65px}
+  .aboutHeroLead{font-size:1.02rem}
+  .aboutScienceSection{padding:70px 5%}
+  .aboutMilestoneSectionRefined,.aboutMissionSectionRefined{padding:75px 5%}
+  .aboutMissionHeader{margin-bottom:45px}
+  .aboutMissionIntro{font-size:1rem}
+  .aboutBentoGrid{grid-template-columns:1fr;gap:16px}
+  .aboutBentoCard{padding:24px}
+  .bentoNumber{font-size:2.4rem}
+  .qualityHero{padding:60px 5%;min-height:420px}
+  .qualityHero h1{font-size:2rem}
+  .qualityHero p{font-size:1rem}
+  .qualityCard{padding:30px 24px;border-radius:20px}
+  .qualityCardIcon{width:54px;height:54px;font-size:26px}
+  .qualityCard h2{font-size:1.3rem}
+  .qualityCard p{font-size:0.98rem}
+  .qualityPrinciplesGrid{grid-template-columns:1fr;gap:16px}
+  .qualityPrinciple{padding:28px 22px}
+  .principleNumber{font-size:2.4rem}
+  .franchiseHero{padding:70px 5% 65px;min-height:460px}
+  .franchiseHeroTitle{font-size:1.85rem;letter-spacing:-0.5px}
+  .franchiseHeroLead{font-size:1.02rem}
+  .franchiseHeroActions{flex-direction:column;align-items:stretch}
+  .franchiseHeroActions .primary,
+  .franchiseHeroActions .secondary{width:100%;text-align:center}
+  .franchiseBenefitsGrid{grid-template-columns:1fr;gap:16px}
+  .franchiseBenefitCard{padding:26px 22px}
+  .franchiseBenefitIcon{width:48px;height:48px;font-size:22px}
+  .franchiseSectionHeader h2{font-size:1.6rem}
+  .franchiseSectionIntro{font-size:1rem}
+  .franchiseTicker{padding:12px 0}
+  .franchiseTickerTrack{gap:34px;padding-left:34px}
+  .franchiseTickerItem{font-size:11px;letter-spacing:1px}
+  .productsHero { padding: 70px 5% 55px; }
+  .productsGridSection { padding: 45px 5% 65px; }
+  .productsHeroTitle { font-size: 1.85rem; }
+  .productsHeroLead { font-size: 1rem; }
+  .productsHeroStats { gap: 22px; margin-top: 26px; }
+  .productsHeroStats b { font-size: 1.25rem; }
+  .productsCatBtn { font-size: 0.82rem; padding: 8px 14px; }
+  .productsGridNew { grid-template-columns: 1fr; gap: 16px; }
+  .productCardBody { padding: 18px; }
+  .productCardImage { height: 170px; }
+  .productCardName { font-size: 1.05rem; }
+  .productCardComposition { font-size: 0.85rem; }
+  .productCardPriceValue { font-size: 1.2rem; }
+  .pharmaFloat6, .pharmaFloat7 { display: none; }
+  .pharmaFloat { font-size: 26px; opacity: 0.1; }
+  .pharmaFloat1, .pharmaFloat2 { font-size: 32px; }
+  .contactModern { padding: 70px 6% 80px; }
+  .contactFormRow { grid-template-columns: 1fr; }
+  .contactTitle { font-size: 2.2rem; }
+  .contactLead { font-size: 1rem; }
+  .contactWidget { padding: 28px 22px; border-radius: 24px; }
+  .contactWidgetBadge { width: 52px; height: 52px; font-size: 22px; top: -16px; right: -16px; }
+  .contactSubmit { width: 100%; justify-self: stretch; text-align: center; }
+  .contactOrbA { width: 380px; height: 380px; }
+  .contactOrbB { width: 340px; height: 340px; }
+}
+
+/* ============================================================
+   PREFERS REDUCED MOTION
+   ============================================================ */
+@media(prefers-reduced-motion: reduce){
+  *,*::before,*::after{
+    animation-duration:.001ms!important;
+    animation-iteration-count:1!important;
+    transition-duration:.001ms!important;
+    scroll-behavior:auto!important;
+  }
+  .dnaSpin,.particleDot,.liquidWave,.qualityHeroBg,.franchiseHeroBg,
+  .pharmaFloat,.productsBlob,.contactOrb {animation:none!important}
+}
+
+/* ============================================================
+   PRODUCTS PAGE HERO — Animated floating catalogue images
+   ============================================================ */
+
+.productsHero {
+  position: relative;
+  padding: 130px 7% 100px;
+  background: linear-gradient(160deg, #fff8f8 0%, #ffffff 55%, #ffe9eb 100%);
+  text-align: center;
+  overflow: hidden;
+  isolation: isolate;
+  min-height: 620px;
+}
+
+/* Ambient gradient blobs (behind everything) */
+.productsBlob {
+  position: absolute;
+  border-radius: 50%;
+  filter: blur(80px);
+  pointer-events: none;
+  z-index: 0;
+}
+.productsBlob1 {
+  width: 480px; height: 480px;
+  background: radial-gradient(circle, rgba(226,27,45,0.18) 0%, rgba(226,27,45,0) 70%);
+  top: -180px; left: -120px;
+  animation: productsBlobFloat1 14s ease-in-out infinite;
+}
+.productsBlob2 {
+  width: 420px; height: 420px;
+  background: radial-gradient(circle, rgba(255,145,155,0.22) 0%, rgba(255,145,155,0) 70%);
+  bottom: -160px; right: -120px;
+  animation: productsBlobFloat2 16s ease-in-out infinite;
+}
+.productsBlob3 {
+  width: 320px; height: 320px;
+  background: radial-gradient(circle, rgba(255,200,208,0.35) 0%, rgba(255,200,208,0) 70%);
+  top: 40%; left: 45%;
+  transform: translate(-50%, -50%);
+  animation: productsBlobFloat3 18s ease-in-out infinite;
+}
+@keyframes productsBlobFloat1 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50%      { transform: scale(1.15) translate(40px, 30px); }
+}
+@keyframes productsBlobFloat2 {
+  0%, 100% { transform: scale(1) translate(0, 0); }
+  50%      { transform: scale(1.18) translate(-40px, -30px); }
+}
+@keyframes productsBlobFloat3 {
+  0%, 100% { transform: translate(-50%, -50%) scale(1); opacity: 0.6; }
+  50%      { transform: translate(-50%, -50%) scale(1.25); opacity: 0.9; }
+}
+
+/* ============================================================
+   FLOATING CATALOGUE IMAGES — 4 animated image cards
+   ============================================================ */
+
+.catalogueFloat {
+  position: absolute;
+  z-index: 1;
+  width: 180px;
+  height: 180px;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 20px 45px rgba(143, 22, 32, 0.22);
+  border: 3px solid #ffffff;
+  opacity: 0.9;
+  pointer-events: none;
+  transition: transform .6s cubic-bezier(.16,.84,.44,1);
+  background: #f2f7f4;
+}
+
+.catalogueFloat img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.catalogueFloatTag {
+  position: absolute;
+  bottom: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: rgba(255, 255, 255, 0.96);
+  color: #8f1620;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  padding: 5px 12px;
+  border-radius: 999px;
+  box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+  white-space: nowrap;
+  backdrop-filter: blur(6px);
+}
+
+/* Position 1 — Top Left (Tablets) */
+.catalogueFloat1 {
+  top: 12%;
+  left: 4%;
+  transform: rotate(-8deg);
+  animation: catFloat1 7s ease-in-out infinite;
+}
+@keyframes catFloat1 {
+  0%, 100% { transform: rotate(-8deg) translateY(0) translateX(0); }
+  50%      { transform: rotate(-6deg) translateY(-22px) translateX(10px); }
+}
+
+/* Position 2 — Top Right (Syrups) */
+.catalogueFloat2 {
+  top: 10%;
+  right: 4%;
+  transform: rotate(7deg);
+  animation: catFloat2 8s ease-in-out infinite 0.5s;
+}
+@keyframes catFloat2 {
+  0%, 100% { transform: rotate(7deg) translateY(0) translateX(0); }
+  50%      { transform: rotate(5deg) translateY(-25px) translateX(-12px); }
+}
+
+/* Position 3 — Bottom Left (Injections) */
+.catalogueFloat3 {
+  bottom: 10%;
+  left: 6%;
+  transform: rotate(6deg);
+  animation: catFloat3 7.5s ease-in-out infinite 1s;
+}
+@keyframes catFloat3 {
+  0%, 100% { transform: rotate(6deg) translateY(0) translateX(0); }
+  50%      { transform: rotate(4deg) translateY(20px) translateX(-10px); }
+}
+
+/* Position 4 — Bottom Right (Capsules) */
+.catalogueFloat4 {
+  bottom: 8%;
+  right: 5%;
+  transform: rotate(-6deg);
+  animation: catFloat4 8.5s ease-in-out infinite 0.8s;
+}
+@keyframes catFloat4 {
+  0%, 100% { transform: rotate(-6deg) translateY(0) translateX(0); }
+  50%      { transform: rotate(-4deg) translateY(22px) translateX(12px); }
+}
+
+/* Subtle pharma icons in background */
+.pharmaFloat {
+  position: absolute;
+  font-size: 40px;
+  line-height: 1;
+  opacity: 0.08;
+  z-index: 1;
+  pointer-events: none;
+  user-select: none;
+}
+.pharmaFloat1 { top: 40%; left: 20%; font-size: 44px; animation: pharmaBob 6s ease-in-out infinite; }
+.pharmaFloat2 { top: 55%; right: 22%; font-size: 40px; animation: pharmaBob 7s ease-in-out infinite 0.5s; }
+.pharmaFloat3 { bottom: 38%; left: 40%; font-size: 36px; animation: pharmaBob 5.5s ease-in-out infinite 1s; }
+.pharmaFloat4 { top: 30%; right: 38%; font-size: 42px; animation: pharmaBob 6.5s ease-in-out infinite 1.2s; }
+
+@keyframes pharmaBob {
+  0%, 100% { transform: translateY(0) translateX(0); }
+  50%      { transform: translateY(-22px) translateX(8px); }
+}
+
+/* Hero inner content (stays on top) */
+.productsHeroInner {
+  max-width: 900px;
+  margin: 0 auto;
+  position: relative;
+  z-index: 3;
+}
+.productsHeroTitle {
+  font-size: clamp(2rem, 5vw, 3.4rem);
+  font-weight: 900;
+  color: #4b0d12;
+  line-height: 1.12;
+  margin: 14px 0 24px;
+  letter-spacing: -1px;
+}
+.productsHeroLead {
+  font-size: 1.12rem;
+  line-height: 1.85;
+  color: #5a3a3c;
+  max-width: 780px;
+  margin: 0 auto;
+}
+.productsHeroStats {
+  display: flex;
+  justify-content: center;
+  gap: 44px;
+  margin-top: 34px;
+  flex-wrap: wrap;
+}
+.productsHeroStats span {
+  font-size: 0.95rem;
+  color: #5a3a3c;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+.productsHeroStats b {
+  font-size: 1.6rem;
+  font-weight: 900;
+  color: #e21b2d;
+  line-height: 1;
+}
+
+/* ============================================================
+   PRODUCT GRID & CARDS (text-only, no images)
+   ============================================================ */
+.productsGridSection { padding: 70px 7% 100px; }
+.productsFiltersRow { max-width: 720px; margin: 0 auto 24px; }
+.productsSearch {
+  width: 100%;
+  padding: 16px 22px;
+  font-size: 1rem;
+  border: 2px solid #f0dfe1;
+  border-radius: 999px;
+  background: #fff;
+  color: #4b0d12;
+  outline: none;
+  transition: all .3s ease;
+  box-shadow: 0 8px 20px rgba(143,22,32,0.05);
+}
+.productsSearch:focus {
+  border-color: #e21b2d;
+  box-shadow: 0 12px 30px rgba(226,27,45,0.15);
+}
+.productsSearch::placeholder { color: #b39b9d; }
+
+.productsCategoryRow {
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin: 0 auto 50px;
+  max-width: 1100px;
+}
+.productsCatBtn {
+  background: #fff;
+  border: 1.5px solid #f0dfe1;
+  color: #8f1620;
+  font-weight: 700;
+  font-size: 0.9rem;
+  padding: 10px 20px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: all .28s cubic-bezier(.16,.84,.44,1);
+}
+.productsCatBtn:hover {
+  border-color: #e21b2d;
+  color: #e21b2d;
+  transform: translateY(-2px);
+  box-shadow: 0 8px 18px rgba(226,27,45,0.12);
+}
+.productsCatBtn.active {
+  background: linear-gradient(120deg, #8f1620, #c51f2b);
+  color: #ffffff;
+  border-color: transparent;
+  box-shadow: 0 10px 22px rgba(197,31,43,0.35);
+}
+
+.productsEmpty {
+  text-align: center;
+  padding: 70px 20px;
+  max-width: 500px;
+  margin: 0 auto;
+}
+.productsEmptyIcon { font-size: 3rem; margin-bottom: 14px; opacity: 0.6; }
+.productsEmpty h3 { font-size: 1.4rem; color: #4b0d12; margin: 0 0 8px; }
+.productsEmpty p { color: #766363; margin: 0; }
+
+.productsGridNew {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 24px;
+  max-width: 1400px;
+  margin: 0 auto;
+}
+
+/* Text-only product card */
 .productCardNew {
   position: relative;
   background: #ffffff;
@@ -1720,19 +2516,48 @@ footer h3,footer h4{color:#fff}
 .productCardBtnEnquire { background: #4b0d12; color: #ffffff; }
 .productCardBtnEnquire:hover { background: #c51f2b; box-shadow: 0 8px 18px rgba(197,31,43,0.35); }
 
+/* ============================================================
+   RESPONSIVE — Products Hero
+   ============================================================ */
+@media (max-width: 1100px) {
+  .catalogueFloat { width: 150px; height: 150px; border-radius: 18px; }
+}
+
 @media (max-width: 900px) {
-  .productsHero { padding: 90px 6% 70px; }
+  .productsHero { padding: 100px 6% 80px; min-height: 560px; }
+  .catalogueFloat { width: 120px; height: 120px; border-radius: 16px; border-width: 2px; }
+  .catalogueFloatTag { font-size: 9px; padding: 4px 9px; }
+  .catalogueFloat1 { top: 8%; left: 2%; }
+  .catalogueFloat2 { top: 6%; right: 2%; }
+  .catalogueFloat3 { bottom: 6%; left: 2%; }
+  .catalogueFloat4 { bottom: 5%; right: 2%; }
   .productsGridSection { padding: 55px 6% 80px; }
   .productsHeroStats { gap: 30px; }
   .productsHeroStats b { font-size: 1.4rem; }
+  .pharmaFloat { display: none; }
 }
+
 @media (max-width: 600px) {
-  .productsHero { padding: 70px 5% 55px; }
-  .productsGridSection { padding: 45px 5% 65px; }
+  .productsHero { padding: 80px 5% 70px; min-height: 520px; }
   .productsHeroTitle { font-size: 1.85rem; }
   .productsHeroLead { font-size: 1rem; }
   .productsHeroStats { gap: 22px; margin-top: 26px; }
   .productsHeroStats b { font-size: 1.25rem; }
+
+  .catalogueFloat {
+    width: 90px;
+    height: 90px;
+    border-radius: 14px;
+    border-width: 2px;
+    opacity: 0.85;
+  }
+  .catalogueFloatTag { display: none; }
+  .catalogueFloat1 { top: 4%; left: 3%; }
+  .catalogueFloat2 { top: 3%; right: 3%; }
+  .catalogueFloat3 { bottom: 4%; left: 3%; }
+  .catalogueFloat4 { bottom: 3%; right: 3%; }
+
+  .productsGridSection { padding: 45px 5% 65px; }
   .productsCatBtn { font-size: 0.82rem; padding: 8px 14px; }
   .productsGridNew { grid-template-columns: 1fr; gap: 16px; }
   .productCardNew { padding: 20px; }
@@ -1741,332 +2566,6 @@ footer h3,footer h4{color:#fff}
   .productCardPriceValue { font-size: 1.2rem; }
 }
 
-/* ============================================================
-   CONTACT PAGE — Modern two-column with animations
-   ============================================================ */
-
-.contactModern {
-  position: relative;
-  overflow: hidden;
-  background: #FFF5F5;
-  padding: 100px 7% 110px;
-}
-
-/* Ambient gradient orbs */
-.contactOrb {
-  position: absolute;
-  border-radius: 50%;
-  filter: blur(90px);
-  pointer-events: none;
-}
-.contactOrbA {
-  top: -160px;
-  right: -160px;
-  width: 600px;
-  height: 600px;
-  background: radial-gradient(circle, #FFD1D6 0%, #FFB3BC 45%, transparent 70%);
-  opacity: 0.75;
-  animation: contactOrbPulse 9s ease-in-out infinite;
-}
-.contactOrbB {
-  bottom: -180px;
-  left: -180px;
-  width: 520px;
-  height: 520px;
-  background: radial-gradient(circle, #FFE0E4 0%, #FFC9CE 45%, transparent 70%);
-  opacity: 0.55;
-  animation: contactOrbPulse 11s ease-in-out infinite 1.5s;
-}
-@keyframes contactOrbPulse {
-  0%, 100% { transform: scale(1); opacity: 0.55; }
-  50%      { transform: scale(1.18); opacity: 0.85; }
-}
-
-.contactModernGrid {
-  position: relative;
-  z-index: 2;
-  max-width: 1300px;
-  margin: 0 auto;
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 70px;
-  align-items: start;
-}
-
-/* ---------- Left column ---------- */
-.contactLeft {
-  display: flex;
-  flex-direction: column;
-  gap: 20px;
-}
-
-.contactAccent {
-  display: inline-block;
-  color: #C1272D;
-  font-size: 11px;
-  font-weight: 800;
-  letter-spacing: 0.28em;
-  text-transform: uppercase;
-}
-
-.contactTitle {
-  font-size: clamp(2.4rem, 5vw, 4rem);
-  font-weight: 900;
-  color: #1a1a1a;
-  line-height: 1.05;
-  margin: 0;
-  letter-spacing: -1px;
-}
-.contactDot { color: #C1272D; }
-
-.contactLead {
-  font-size: 1.05rem;
-  line-height: 1.85;
-  color: #6b6b6b;
-  max-width: 560px;
-  margin: 0;
-}
-
-/* ---------- Form ---------- */
-.contactForm {
-  display: grid;
-  gap: 14px;
-  margin-top: 20px;
-}
-
-.contactFormRow {
-  display: grid;
-  grid-template-columns: 1fr 1fr;
-  gap: 14px;
-}
-
-.contactForm input,
-.contactForm textarea {
-  width: 100%;
-  border: 1.5px solid #F1D8DB;
-  border-radius: 16px;
-  padding: 15px 20px;
-  font-size: 15px;
-  color: #1a1a1a;
-  background: #ffffff;
-  outline: none;
-  transition: border-color 0.25s ease, box-shadow 0.25s ease, transform 0.25s ease;
-  font-family: inherit;
-}
-
-.contactForm input::placeholder,
-.contactForm textarea::placeholder {
-  color: #a89a9b;
-}
-
-.contactForm input:focus,
-.contactForm textarea:focus {
-  border-color: #C1272D;
-  box-shadow: 0 0 0 4px rgba(193, 39, 45, 0.10);
-  transform: translateY(-1px);
-}
-
-.contactForm textarea {
-  resize: vertical;
-  min-height: 140px;
-  font-family: inherit;
-}
-
-.contactSubmit {
-  justify-self: start;
-  padding: 15px 36px !important;
-  font-size: 15px;
-  font-weight: 800;
-  letter-spacing: 0.02em;
-  margin-top: 6px;
-}
-
-.contactMsg {
-  margin: 6px 0 0;
-  padding: 12px 18px;
-  background: #FFF0F1;
-  color: #C1272D;
-  border-radius: 12px;
-  font-size: 14px;
-  font-weight: 600;
-  animation: contactMsgIn .35s ease;
-}
-@keyframes contactMsgIn {
-  from { opacity: 0; transform: translateY(6px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ---------- Right column: floating widget ---------- */
-.contactRight {
-  display: flex;
-  justify-content: center;
-  position: sticky;
-  top: 120px;
-  align-self: start;
-}
-
-.contactWidget {
-  position: relative;
-  background: #ffffff;
-  border-radius: 32px;
-  padding: 36px 32px;
-  box-shadow: 0 30px 70px rgba(193, 39, 45, 0.12), 0 4px 12px rgba(0,0,0,0.04);
-  max-width: 460px;
-  width: 100%;
-  animation: contactWidgetBob 4.5s ease-in-out infinite;
-  border: 1px solid rgba(0, 0, 0, 0.04);
-}
-@keyframes contactWidgetBob {
-  0%, 100% { transform: translateY(0); }
-  50%      { transform: translateY(-14px); }
-}
-
-.contactWidgetBadge {
-  position: absolute;
-  top: -20px;
-  right: -20px;
-  width: 64px;
-  height: 64px;
-  border-radius: 20px;
-  background: linear-gradient(135deg, #C1272D 0%, #8F1620 100%);
-  color: #ffffff;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 28px;
-  box-shadow: 0 14px 30px rgba(193, 39, 45, 0.4);
-  animation: contactBadgeFloat 5s ease-in-out infinite;
-}
-@keyframes contactBadgeFloat {
-  0%, 100% { transform: translateY(0) rotate(0deg); }
-  50%      { transform: translateY(-10px) rotate(5deg); }
-}
-
-.contactWidgetTitle {
-  font-size: 1.35rem;
-  font-weight: 900;
-  color: #1a1a1a;
-  margin: 0 0 8px;
-}
-
-.contactWidgetLead {
-  font-size: 0.92rem;
-  color: #6b6b6b;
-  margin: 0 0 24px;
-  line-height: 1.65;
-}
-
-.contactInfoList {
-  display: grid;
-  gap: 6px;
-}
-
-.contactInfoRow {
-  display: flex;
-  align-items: flex-start;
-  gap: 14px;
-  padding: 12px;
-  border-radius: 16px;
-  transition: background 0.25s ease, transform 0.25s ease;
-}
-.contactInfoRow:hover {
-  background: #FFF5F5;
-  transform: translateX(3px);
-}
-
-.contactInfoIcon {
-  flex-shrink: 0;
-  width: 42px;
-  height: 42px;
-  border-radius: 12px;
-  background: #FFF0F1;
-  color: #C1272D;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  font-size: 18px;
-  font-weight: 900;
-}
-
-.contactInfoLabel {
-  font-size: 10px;
-  font-weight: 800;
-  color: rgba(143, 22, 32, 0.6);
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  margin-bottom: 3px;
-}
-
-.contactInfoValue {
-  font-size: 14px;
-  font-weight: 700;
-  color: #1a1a1a;
-  word-break: break-word;
-}
-
-.contactLiveRow {
-  display: flex;
-  align-items: center;
-  gap: 12px;
-  margin-top: 24px;
-  padding: 14px 20px;
-  background: #FFF5F5;
-  border-radius: 16px;
-}
-
-.contactLivePulse {
-  position: relative;
-  width: 10px;
-  height: 10px;
-  border-radius: 50%;
-  background: #10b981;
-  flex-shrink: 0;
-}
-.contactLivePulse::before {
-  content: "";
-  position: absolute;
-  inset: -4px;
-  border-radius: 50%;
-  background: #10b981;
-  opacity: 0.5;
-  animation: contactLivePing 1.8s cubic-bezier(0, 0, 0.2, 1) infinite;
-}
-@keyframes contactLivePing {
-  0%   { transform: scale(1); opacity: 0.6; }
-  75%  { transform: scale(2.2); opacity: 0; }
-  100% { transform: scale(1); opacity: 0; }
-}
-
-.contactLiveText {
-  font-size: 11px;
-  font-weight: 800;
-  color: #8F1620;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-}
-
-/* ---------- Responsive ---------- */
-@media (max-width: 1000px) {
-  .contactModernGrid {
-    grid-template-columns: 1fr;
-    gap: 60px;
-  }
-  .contactRight {
-    position: static;
-  }
-  .contactWidget {
-    max-width: 100%;
-  }
-}
-
-@media (max-width: 600px) {
-  .contactModern { padding: 70px 6% 80px; }
-  .contactFormRow { grid-template-columns: 1fr; }
-  .contactTitle { font-size: 2.2rem; }
-  .contactLead { font-size: 1rem; }
-  .contactWidget { padding: 28px 22px; border-radius: 24px; }
-  .contactWidgetBadge { width: 52px; height: 52px; font-size: 22px; top: -16px; right: -16px; }
-  .contactSubmit { width: 100%; justify-self: stretch; text-align: center; }
-  .contactOrbA { width: 380px; height: 380px; }
-  .contactOrbB { width: 340px; height: 340px; }
+@media (prefers-reduced-motion: reduce) {
+  .catalogueFloat, .pharmaFloat, .productsBlob { animation: none !important; }
 }

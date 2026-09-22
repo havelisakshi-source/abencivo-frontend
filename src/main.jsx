@@ -78,7 +78,7 @@ function FAQ({items = FAQS}) {
 }
 
 /* ============================================================
-   REAL PRODUCT CATALOGUE — from PRICE LIST ABENCIVO PDF
+   REAL PRODUCT CATALOGUE — fallback
    ============================================================ */
 const REAL_PRODUCTS = [
   {id:"t1", name:"ETOABN-TH", composition:"Etoricoxib 60mg + Thiocolchicoside 4mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:1850.00},
@@ -91,123 +91,25 @@ const REAL_PRODUCTS = [
   {id:"t8", name:"ABNFER-XT", composition:"Ferrous Ascorbate 100mg + Folic Acid 1.5mg + Zinc", dosage_form:"Tablet", category:"Tablets", packing:"10x10", mrp:1100.00},
   {id:"t9", name:"ABQ10", composition:"Ubidecarenone (Coenzyme Q10) 300mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x10", mrp:7500.00},
   {id:"t10", name:"ABC", composition:"Cinnarizine 20mg + Domperidone 15mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:650.00},
-  {id:"t11", name:"ABNPLEX-S", composition:"Silymarin 70mg + L-Ornithine", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:1680.00},
-  {id:"t12", name:"ABC (Enzyme)", composition:"Trypsin-48 + Bromelain-90 + Rutoside-100 + Diclofenac", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:2120.00},
-  {id:"t13", name:"ABNSVIT", composition:"Vitamin-C 500mg + Vitamin D3 1000 IU + Zinc Sulphate", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:950.00},
-  {id:"t14", name:"ABNFINE-250", composition:"Terbinafine 250mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x7 Blister", mrp:1650.00},
-
   {id:"c1", name:"PENCIV-DSR", composition:"Pantoprazole 40mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1200},
   {id:"c2", name:"REBCIV-DSR", composition:"Rabeprazole 20mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1250},
   {id:"c3", name:"ABNRAB-LSR", composition:"Rabeprazole 20mg + Levosulpride 75mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1450},
   {id:"c4", name:"ESOABN-DSR", composition:"Esomeprazole 40mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1100},
   {id:"c5", name:"ABNMOX-250", composition:"Amoxycillin 250mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Blister", mrp:550},
   {id:"c6", name:"ABNMOX-500", composition:"Amoxycillin 500mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Blister", mrp:720},
-  {id:"c7", name:"ABZOLE-D", composition:"Omeprazole 20mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"15x10 Strip", mrp:950},
-  {id:"c8", name:"ABZOLE-20", composition:"Omeprazole 20mg", dosage_form:"Capsule", category:"Capsules", packing:"15x10 Strip", mrp:800},
-  {id:"c9", name:"ABNSVIT-L", composition:"Lycopene + Multivitamin + Multimineral", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Blister", mrp:145},
-  {id:"c10", name:"ABNSVIT-G", composition:"Multivitamin + Multimineral + Antioxidant + Ginseng", dosage_form:"Capsule", category:"Capsules", packing:"10x10", mrp:145},
-  {id:"c11", name:"ABNSVIT-5G", composition:"Omega-3 + Green Tea Extract + Ginseng", dosage_form:"Capsule", category:"Capsules", packing:"10x1x10 Blister", mrp:1990},
-  {id:"c12", name:"ABNSVIT-9G", composition:"Ginseng + Grape Seed Extract + Green Tea", dosage_form:"Capsule", category:"Capsules", packing:"10x1x10 Blister", mrp:2800},
-  {id:"c13", name:"ABNCAL-500", composition:"Calcitriol 0.25mcg + Calcium", dosage_form:"Capsule", category:"Capsules", packing:"10x1x15 Blister", mrp:1000},
-  {id:"c14", name:"ABNCAL-K27", composition:"Calcitriol 0.25mcg + Calcium Carbonate 625mg", dosage_form:"Capsule", category:"Capsules", packing:"10x1x10 Blister", mrp:210},
-  {id:"c15", name:"ABNCAL-K27 DS", composition:"Calcium Citrate Malate 1250mg + Cyanocobalamin", dosage_form:"Capsule", category:"Capsules", packing:"10x1x10 Blister", mrp:2400},
-  {id:"c16", name:"ABNEURO-PLUS", composition:"Mecobalamin 1500mcg + Alpha Lipoic Acid", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1580},
-  {id:"c17", name:"ITRABEN-100", composition:"Itraconazole 100mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu", mrp:1800},
-  {id:"c18", name:"ITRABEN-200", composition:"Itraconazole 200mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu", mrp:2400},
-  {id:"c19", name:"ABNFER-XT", composition:"Ferrous Ascorbate 100mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10", mrp:1350},
-  {id:"c20", name:"ABNCAL-D3", composition:"Cholecalciferol", dosage_form:"Capsule", category:"Capsules", packing:"10x1x4 Alu-Alu", mrp:1150},
-  {id:"c21", name:"ABNPLEX-LB", composition:"Vitamin B Complex + Lactobacillus", dosage_form:"Capsule", category:"Capsules", packing:"10x15 Blister", mrp:750},
-  {id:"c22", name:"ABNPRO", composition:"Prebiotic & Probiotic", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1100},
-
   {id:"d1", name:"ABNMOX-CV-457", composition:"Amoxycillin 400mg + Clavulanic Acid 57mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:135},
-  {id:"d2", name:"ABNMOX", composition:"Amoxycillin 200mg + Clavulanic Acid 28.5mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:60.61},
   {id:"d3", name:"FIXOBEN-DS", composition:"Cefixime 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:70},
-  {id:"d4", name:"FIXOBEN-50", composition:"Cefixime 50mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:48.72},
-  {id:"d5", name:"FIXOBEN-50-LB", composition:"Cefixime 50mg + Lactobacillus", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:75},
-  {id:"d6", name:"FIXOBEN-O", composition:"Cefixime 50mg + Ofloxacin 125mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:105},
-  {id:"d7", name:"FIXOPOD-DS", composition:"Cefpodoxime 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:112},
-  {id:"d8", name:"FIXOPOD-50", composition:"Cefpodoxime 50mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:85},
-  {id:"d9", name:"FIXOPOD-CV", composition:"Cefpodoxime 50mg + Clavulanic Acid 28.5mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:155},
-  {id:"d10", name:"ABNZID", composition:"Linezolid 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:145},
-
   {id:"dr1", name:"ABNSVIT-L", composition:"Multivitamin & Multimineral Drop", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:55},
-  {id:"dr2", name:"ABNZYME", composition:"Digestive Enzyme Drop", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:55},
   {id:"dr3", name:"ABNTONE", composition:"Ondansetron 2mg", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:60},
-  {id:"dr4", name:"Vitamin D3", composition:"Vitamin D3 with Multivitamins", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:110},
-
   {id:"o1", name:"ABNDAC-GEL", composition:"Diclofenac Gel", dosage_form:"Ointment", category:"Ointment", packing:"30 GM", mrp:95},
-  {id:"o2", name:"ABNCON", composition:"Luliconazole 1% + Benzyl Alcohol 1%", dosage_form:"Ointment", category:"Ointment", packing:"20 GM", mrp:135},
-  {id:"o3", name:"ABNCORT-K5", composition:"Clobetasol Propionate 0.05% + Neomycin Sulphate", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
   {id:"o4", name:"KETOABN", composition:"Ketoconazole 2%", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
-  {id:"o5", name:"ITRABEN", composition:"Itraconazole 1% + Ofloxacin 0.75% + Ornidazole", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
-
-  {id:"e1", name:"ABNCIVO-ORS", composition:"ORS Drink", dosage_form:"Energy Drink", category:"Energy Drink", packing:"200 ML", mrp:55},
-  {id:"e2", name:"ABNCIVO POWDER", composition:"Energy Drink Powder", dosage_form:"Energy Drink", category:"Energy Drink", packing:"105 GM", mrp:70},
-
   {id:"h1", name:"ABNLIV-DS", composition:"Herbal Liver Tonic", dosage_form:"Herbal", category:"Herbal", packing:"225 ML", mrp:145},
-  {id:"h2", name:"UROBEN", composition:"Herbal Uterine Tonic", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:135},
-  {id:"h3", name:"ABNPURE", composition:"Blood Purifier Tonic", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:130},
-  {id:"h4", name:"ALKABEN", composition:"Alkaliser", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:150},
-  {id:"h5", name:"ORTHOABN-OIL", composition:"Pain Killer Oil", dosage_form:"Herbal", category:"Herbal", packing:"60 ML", mrp:124},
-  {id:"h6", name:"ABNCOF-H", composition:"Complete Ayurvedic Cough Syrup", dosage_form:"Herbal", category:"Herbal", packing:"100 ML", mrp:110},
   {id:"h7", name:"MINDSET", composition:"Complete Mind Health Solution", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:195},
-  {id:"h8", name:"ABNLIV-PLUS", composition:"Ayurvedic Liver Tonic with Enzymes", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:135},
-  {id:"h9", name:"ABNLIV", composition:"Liver Alkaliser Enzyme & Antacid", dosage_form:"Herbal", category:"Herbal", packing:"225 ML", mrp:180},
-  {id:"h10", name:"ABNLIV-PLUS Caps", composition:"Liver & Enzyme Capsule", dosage_form:"Herbal", category:"Herbal", packing:"1 x 30 Bottle", mrp:390},
-  {id:"h11", name:"PLETOABN-GROW", composition:"Carica Papaya Leaf + Neem + Tulsi + Giloy + Goat Milk", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:185},
-
-  {id:"l1", name:"ABNSVIT", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:90},
   {id:"l2", name:"ABNSVIT-L", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
-  {id:"l3", name:"ABNSVIT-PLUS", composition:"Lycopene 6% + Multivitamin", dosage_form:"Liquid", category:"Liquid", packing:"300 ML", mrp:195},
-  {id:"l4", name:"ABNZYME", composition:"Ginseng + Ginkgo Biloba + Green Tea Extract", dosage_form:"Liquid", category:"Liquid", packing:"300 ML", mrp:225},
-  {id:"l5", name:"ABNZYME", composition:"Fungal Diastase 50mg + Pepsin 10mg", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:90},
-  {id:"l6", name:"ABNZYME", composition:"Fungal Diastase 50mg + Pepsin 10mg", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:150},
-  {id:"l7", name:"ABNPLEX-L", composition:"B-Complex with L-Lysine", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:90},
-  {id:"l8", name:"ABNPLEX-L", composition:"B-Complex with L-Lysine", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:160},
-  {id:"l9", name:"ABNPLEX-S", composition:"Silymarin with B-Complex", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
-  {id:"l10", name:"APPICIV-T", composition:"Cyproheptadine 2mg + Tricholine Citrate 275mg", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
-  {id:"l11", name:"ABNFER-XT", composition:"Ferrous Ascorbate 30mg + Folic Acid 550mg", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:180},
-  {id:"l12", name:"ABNFER-XT", composition:"Ferrous Ascorbate 30mg + Folic Acid 550mg + Zinc 72mg", dosage_form:"Liquid", category:"Liquid", packing:"300 ML", mrp:210},
-  {id:"l13", name:"ABNCAL-200", composition:"Calcium Carbonate 250mg", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:150},
-  {id:"l14", name:"SUCABN", composition:"Sucralfate 1000mg + Oxetacaine 20mg", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:205},
-  {id:"l15", name:"ABNCID-MPS", composition:"Magaldrate 400mg + Simethicone 60mg", dosage_form:"Liquid", category:"Liquid", packing:"170 ML", mrp:70},
-  {id:"l16", name:"ABNTOSE", composition:"Lactulose Solution 10gm", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:114},
   {id:"l17", name:"COFRIBS-AM", composition:"Terbutaline 1.25mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:65},
-  {id:"l18", name:"ABNCOF-AM", composition:"Terbutaline 1.25mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:110},
-  {id:"l19", name:"ABNCOF-DX", composition:"Dextromethorphan 10mg + Chlorpheniramine Maleate", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:65},
-  {id:"l20", name:"ABNCOF-DX", composition:"Dextromethorphan 10mg + Chlorpheniramine Maleate", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:112},
-  {id:"l21", name:"ABNCOF-LS", composition:"Levosalbutamol 1mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:85},
-  {id:"l22", name:"ABNCOF-LS", composition:"Levosalbutamol 1mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:115},
-  {id:"l23", name:"ABNCOF-BS", composition:"Bromhexine HCl 8mg + Terbutaline Sulphate 2.5mg", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:75},
-  {id:"l24", name:"ABNFLOX-MZS", composition:"Ofloxacin 50mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:85},
-  {id:"l25", name:"ABNVACE-P", composition:"Aceclofenac 50mg + Paracetamol 125mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:60},
-  {id:"l26", name:"ABNMEF-P", composition:"Mefenamic Acid 50mg + Paracetamol 125mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:70},
-  {id:"l27", name:"ABNMEF-PLUS", composition:"Mefenamic Acid 100mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:85},
-  {id:"l28", name:"ABNCET-M", composition:"Levocetirizine 2.5mg + Montelukast 4mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:80},
-  {id:"l29", name:"ABNCOLD", composition:"Paracetamol 125mg + Chlorpheniramine 0.50mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:52},
-  {id:"l30", name:"ABNCOLD-PLUS", composition:"Paracetamol 250mg + Phenylephrine HCl 5mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:65},
-  {id:"l31", name:"ABNVACE-125", composition:"Paracetamol 125mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:21.50},
-  {id:"l32", name:"ABNVACE-250", composition:"Paracetamol 250mg", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:40},
-  {id:"l33", name:"ABNZITH", composition:"Azithromycin 100mg", dosage_form:"Liquid", category:"Liquid", packing:"15 ML", mrp:40},
-  {id:"l34", name:"ABNZITH", composition:"Azithromycin 200mg", dosage_form:"Liquid", category:"Liquid", packing:"15 ML", mrp:50},
-
   {id:"i1", name:"ABNCEFT-250", composition:"Ceftriaxone 250mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:27},
-  {id:"i2", name:"ABNCEFT-500", composition:"Ceftriaxone 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:49},
-  {id:"i3", name:"ABNCEFT-1GM", composition:"Ceftriaxone 1gm", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:69},
-  {id:"i4", name:"ABNCEFT-1.5GM", composition:"Ceftriaxone 1gm + Sulbactam 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:185},
-  {id:"i5", name:"ABNTROX-1GM", composition:"Cefoperazone 500mg + Sulbactam 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:205},
-  {id:"i6", name:"ABNTROX-1.5", composition:"Cefoperazone 1000mg + Sulbactam 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:305},
-  {id:"i7", name:"MEROABN-500", composition:"Meropenem 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:925},
   {id:"i8", name:"MEROABN-1GM", composition:"Meropenem 1gm", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:1850},
-  {id:"i9", name:"ABNRAB-20", composition:"Rabeprazole 20mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:95},
-  {id:"i10", name:"PENCIV-40", composition:"Pantoprazole 40mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:55},
-  {id:"i11", name:"ABNEURO-1500", composition:"Methylcobalamin 1500mcg", dosage_form:"Injection", category:"Injection", packing:"1x2 ML", mrp:80},
-  {id:"i12", name:"ABNEURO-2500", composition:"Methylcobalamin 2500mcg", dosage_form:"Injection", category:"Injection", packing:"1x2 ML", mrp:85},
-  {id:"i13", name:"ABNEURO-FORTE", composition:"Methylcobalamin 1500mcg + Pyridoxine 100mg", dosage_form:"Injection", category:"Injection", packing:"5x2 ML", mrp:55},
-  {id:"i14", name:"ABNDRON-25", composition:"Nandrolone Decanoate 25mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:160},
-  {id:"i15", name:"ABNDRON-50", composition:"Nandrolone Decanoate 50mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:300},
-  {id:"i16", name:"ABNDAC-AQ", composition:"Diclofenac 75mg + Benzyl Alcohol 4%", dosage_form:"Injection", category:"Injection", packing:"10x1 Ampul", mrp:190},
-  {id:"i17", name:"ABC α-8", composition:"Arteether 150mg", dosage_form:"Injection", category:"Injection", packing:"3x2 ML", mrp:75},
+  {id:"e1", name:"ABNCIVO-ORS", composition:"ORS Drink", dosage_form:"Energy Drink", category:"Energy Drink", packing:"200 ML", mrp:55},
 ];
 
 const demoProducts = REAL_PRODUCTS;
@@ -734,6 +636,35 @@ function Products({setPage}) {
   return (
     <main className="productsPage">
       <section className="productsHero">
+        {/* Floating ambient blobs */}
+        <div className="productsBlob productsBlob1"></div>
+        <div className="productsBlob productsBlob2"></div>
+        <div className="productsBlob productsBlob3"></div>
+
+        {/* 4 ANIMATED CATALOGUE IMAGES */}
+        <div className="catalogueFloat catalogueFloat1">
+          <img src="/images/catalogue-tablets.jpg" alt="Tablets" />
+          <span className="catalogueFloatTag">Tablets</span>
+        </div>
+        <div className="catalogueFloat catalogueFloat2">
+          <img src="/images/catalogue-syrup.jpg" alt="Syrups" />
+          <span className="catalogueFloatTag">Syrups</span>
+        </div>
+        <div className="catalogueFloat catalogueFloat3">
+          <img src="/images/catalogue-injections.jpg" alt="Injections" />
+          <span className="catalogueFloatTag">Injections</span>
+        </div>
+        <div className="catalogueFloat catalogueFloat4">
+          <img src="/images/catalogue-capsules.jpg" alt="Capsules" />
+          <span className="catalogueFloatTag">Capsules</span>
+        </div>
+
+        {/* Floating pharma icons (subtle) */}
+        <div className="pharmaFloat pharmaFloat1">💊</div>
+        <div className="pharmaFloat pharmaFloat2">🧪</div>
+        <div className="pharmaFloat pharmaFloat3">💉</div>
+        <div className="pharmaFloat pharmaFloat4">🧬</div>
+
         <div className="productsHeroInner">
           <Reveal><span className="eyebrowRed">OUR CATALOGUE</span></Reveal>
           <Reveal delay={80}>
@@ -833,9 +764,7 @@ function Products({setPage}) {
   );
 }
 
-/* ============================================================
-   CONTACT PAGE — Modern two-column layout with animations
-   ============================================================ */
+/* ---------- CONTACT PAGE ---------- */
 function Contact() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [msg, setMsg] = useState("");
@@ -864,12 +793,10 @@ function Contact() {
 
   return (
     <section className="contactModern">
-      {/* Ambient animated gradient orbs */}
       <div className="contactOrb contactOrbA"></div>
       <div className="contactOrb contactOrbB"></div>
 
       <div className="contactModernGrid">
-        {/* LEFT — Text + Form */}
         <Reveal className="contactLeft">
           <span className="contactAccent">GET IN TOUCH</span>
           <h2 className="contactTitle">
@@ -882,36 +809,11 @@ function Contact() {
 
           <form onSubmit={submit} className="contactForm">
             <div className="contactFormRow">
-              <input
-                name="name"
-                value={form.name}
-                onChange={handleChange}
-                placeholder="Name"
-                required
-              />
-              <input
-                name="phone"
-                value={form.phone}
-                onChange={handleChange}
-                placeholder="Phone"
-                required
-              />
+              <input name="name" value={form.name} onChange={handleChange} placeholder="Name" required />
+              <input name="phone" value={form.phone} onChange={handleChange} placeholder="Phone" required />
             </div>
-            <input
-              name="email"
-              type="email"
-              value={form.email}
-              onChange={handleChange}
-              placeholder="Email"
-            />
-            <textarea
-              name="message"
-              value={form.message}
-              onChange={handleChange}
-              placeholder="Message"
-              rows={5}
-              required
-            />
+            <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" />
+            <textarea name="message" value={form.message} onChange={handleChange} placeholder="Message" rows={5} required />
             <button type="submit" disabled={sending} className="primary contactSubmit">
               {sending ? "Sending..." : "Submit Enquiry →"}
             </button>
@@ -919,15 +821,11 @@ function Contact() {
           </form>
         </Reveal>
 
-        {/* RIGHT — Floating widget */}
         <Reveal delay={200} className="contactRight">
           <div className="contactWidget">
             <div className="contactWidgetBadge">✦</div>
-
             <h3 className="contactWidgetTitle">Reach us directly</h3>
-            <p className="contactWidgetLead">
-              Our team typically responds within one business day.
-            </p>
+            <p className="contactWidgetLead">Our team typically responds within one business day.</p>
 
             <div className="contactInfoList">
               <div className="contactInfoRow">

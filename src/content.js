@@ -99,8 +99,8 @@ export const FRANCHISE_FAQS = [
 ];
 
 export const NUMBER_STATS = [
-  {to: 200, suffix: "+", label: "Product formulations"},
-  {to: 15, suffix: "+", label: "Years in operation"},
-  {to: 500, suffix: "+", label: "Franchise & distribution partners"},
+  {to: 100, suffix: "+", label: "Product formulations"},
+  {to: 5, suffix: "+", label: "Years in operation"},
+  {to: 100, suffix: "+", label: "Franchise & distribution partners"},
   {to: 12, suffix: "+", label: "States served"},
 ];
