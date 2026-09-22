@@ -93,7 +93,6 @@ const FALLBACK_CATEGORIES = [
   {id:"f7", name:"Topical", icon:"🧴"},
 ];
 
-// REMOVED "pcd" from navigation
 const NAV_PAGES = ["home","about","products","quality","contact"];
 
 function Layout({children, setPage, page}) {
@@ -153,7 +152,6 @@ function Layout({children, setPage, page}) {
         <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
         <div>
           <h4>Quick Links</h4>
-          {/* Removed pcd from footer links */}
           {["products","quality"].map(p => (
             <p key={p} className="footLink" onClick={() => setPage(p)}>{p.replace(/^\w/, c => c.toUpperCase())}</p>
           ))}
@@ -381,13 +379,89 @@ function About({setPage}) {
   );
 }
 
+/* ============================================================
+   QUALITY PAGE — Hero + Cards + Principles
+   ============================================================ */
 function Quality({setPage}) {
   return (
-    <main>
-      <section className="pageHero heroFade"><span className="eyebrow">QUALITY</span><h1>Quality at every step.</h1><p>Replace this with verified quality systems, certifications and process information.</p></section>
-      <section className="section"><div className="grid2"><Reveal className="wideCard"><h2>Quality Policy</h2><p>Replace with your verified quality policy statement.</p></Reveal><Reveal delay={100} className="wideCard"><h2>Quality Control</h2><p>Replace with your verified in-process and finished-product testing procedures.</p></Reveal></div></section>
-      <section className="section altBg"><Reveal><span className="eyebrow">CERTIFICATIONS</span></Reveal><Reveal delay={80}><h2>Standards we're certified against.</h2></Reveal><BadgeStrip /></section>
-      <section className="section"><Reveal><span className="eyebrow">QUESTIONS</span></Reveal><Reveal delay={80}><h2>Quality FAQs.</h2></Reveal><FAQ /></section>
+    <main className="qualityPage">
+
+      {/* ---------- Hero Section with full background image ---------- */}
+      <section className="qualityHero">
+        <div className="qualityHeroBg"></div>
+        <div className="qualityHeroOverlay"></div>
+        <div className="qualityHeroInner">
+          <Reveal><span className="eyebrow">QUALITY</span></Reveal>
+          <Reveal delay={80}>
+            <h1>Quality at Every Step</h1>
+          </Reveal>
+          <Reveal delay={160}>
+            <p>
+              At Abencivo Biotech, quality is built into every stage of our pharmaceutical journey. We focus on consistency, reliability, responsible processes, and continuous improvement to deliver products that meet defined quality expectations.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- Quality Policy + Control Cards ---------- */}
+      <section className="section qualityCardsSection">
+        <div className="qualityCardsGrid">
+          <Reveal className="qualityCard">
+            <div className="qualityCardIcon">🛡️</div>
+            <h2>Quality Policy</h2>
+            <p>
+              Our quality approach is centered on consistency, responsibility, and continuous improvement. We aim to maintain clear processes, careful documentation, and strong quality practices across our operations while building long-term trust with our customers and partners.
+            </p>
+          </Reveal>
+
+          <Reveal delay={150} className="qualityCard">
+            <div className="qualityCardIcon">✅</div>
+            <h2>Quality Control</h2>
+            <p>
+              Quality control supports our commitment to reliable pharmaceutical products. We emphasize appropriate checks, documentation, process monitoring, and evaluation at relevant stages to help maintain consistency and product quality.
+            </p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- Supporting Quality Principles ---------- */}
+      <section className="section qualityPrinciplesSection">
+        <div className="qualityPrinciplesHeader">
+          <Reveal><span className="eyebrow">OUR PRINCIPLES</span></Reveal>
+          <Reveal delay={80}><h2>What Guides Our Quality</h2></Reveal>
+        </div>
+
+        <div className="qualityPrinciplesGrid">
+          <Reveal delay={120} className="qualityPrinciple">
+            <div className="principleNumber">01</div>
+            <h3>Consistency</h3>
+            <p>Maintaining reliable and well-defined processes.</p>
+          </Reveal>
+
+          <Reveal delay={220} className="qualityPrinciple">
+            <div className="principleNumber">02</div>
+            <h3>Continuous Improvement</h3>
+            <p>Reviewing and improving processes over time.</p>
+          </Reveal>
+
+          <Reveal delay={320} className="qualityPrinciple">
+            <div className="principleNumber">03</div>
+            <h3>Customer Trust</h3>
+            <p>Building confidence through responsible quality practices.</p>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ---------- CTA ---------- */}
+      <Reveal as="section" className="ctaBanner">
+        <div>
+          <span className="eyebrow" style={{color:"#f5d7da"}}>LEARN MORE</span>
+          <h2>Have a question about our quality approach?</h2>
+        </div>
+        <div className="actions">
+          <button className="primary" onClick={()=>setPage("contact")}>Get in touch</button>
+        </div>
+      </Reveal>
     </main>
   );
 }
@@ -609,7 +683,6 @@ function App() {
 
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
-  // PCD Franchise page REMOVED from router
   let content = page === "home" ? <Home setPage={go} /> :
                 page === "products" ? <Products setPage={go} /> :
                 page === "contact" ? <Contact /> :
