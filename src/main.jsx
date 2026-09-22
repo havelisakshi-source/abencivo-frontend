@@ -5,19 +5,13 @@ import {CERTIFICATIONS, MILESTONES, VALUES, TEAM, TESTIMONIALS, CAPABILITIES, PR
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
 
-/* ---------- Splash Screen (Cinematic Intro) ---------- */
-
+/* ---------- Splash Screen ---------- */
 function SplashScreen({onFinish}) {
   const [hide, setHide] = useState(false);
-
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setHide(true);
-      setTimeout(onFinish, 600); 
-    }, 3000);
+    const timer = setTimeout(() => { setHide(true); setTimeout(onFinish, 600); }, 3000);
     return () => clearTimeout(timer);
   }, [onFinish]);
-
   return (
     <div className={`splashScreen ${hide ? "hide" : ""}`}>
       <div className="splashContainer">
@@ -27,63 +21,35 @@ function SplashScreen({onFinish}) {
   );
 }
 
-/* ---------- Scroll-reveal animation utilities ---------- */
-
+/* ---------- Scroll-reveal ---------- */
 function useReveal(threshold = 0.15) {
-  const ref = useRef(null);
-  const [visible, setVisible] = useState(false);
+  const ref = useRef(null); const [visible, setVisible] = useState(false);
   useEffect(() => {
-    const el = ref.current;
-    if (!el) return;
-    const obs = new IntersectionObserver(
-      ([entry]) => {
-        if (entry.isIntersecting) {
-          setVisible(true);
-          obs.unobserve(el);
-        }
-      },
-      {threshold}
-    );
-    obs.observe(el);
-    return () => obs.disconnect();
+    const el = ref.current; if (!el) return;
+    const obs = new IntersectionObserver(([entry]) => { if (entry.isIntersecting) { setVisible(true); obs.unobserve(el); } }, {threshold});
+    obs.observe(el); return () => obs.disconnect();
   }, []);
   return [ref, visible];
 }
-
 function Reveal({children, delay = 0, className = "", as: Tag = "div", ...rest}) {
   const [ref, visible] = useReveal();
-  return (
-    <Tag
-      ref={ref}
-      className={`reveal ${visible ? "in" : ""} ${className}`}
-      style={{transitionDelay: `${delay}ms`}}
-      {...rest}
-    >
-      {children}
-    </Tag>
-  );
+  return <Tag ref={ref} className={`reveal ${visible ? "in" : ""} ${className}`} style={{transitionDelay: `${delay}ms`}} {...rest}>{children}</Tag>;
 }
 
+/* ---------- API Status ---------- */
 function useApiStatus() {
   const [status, setStatus] = useState("checking");
   useEffect(() => {
     let cancelled = false;
-    fetch(API_BASE + "/health")
-      .then(r => { if (!cancelled) setStatus(r.ok ? "online" : "offline"); })
-      .catch(() => { if (!cancelled) setStatus("offline"); });
+    fetch(API_BASE + "/health").then(r => { if (!cancelled) setStatus(r.ok ? "online" : "offline"); }).catch(() => { if (!cancelled) setStatus("offline"); });
     return () => { cancelled = true; };
   }, []);
   return status;
 }
-
 function ApiStatusBadge() {
   const status = useApiStatus();
   if (status === "checking") return null;
-  return (
-    <span className={`apiStatus ${status}`}>
-      <i></i>{status === "online" ? "Live data connected" : "Demo preview — backend offline"}
-    </span>
-  );
+  return <span className={`apiStatus ${status}`}><i></i>{status === "online" ? "Live data connected" : "Demo preview — backend offline"}</span>;
 }
 
 function BackToTop() {
@@ -93,97 +59,25 @@ function BackToTop() {
     window.addEventListener("scroll", onScroll, {passive: true});
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
-  return (
-    <button
-      className={`toTop ${show ? "show" : ""}`}
-      onClick={() => window.scrollTo({top: 0, behavior: "smooth"})}
-      aria-label="Back to top"
-    >
-      ↑
-    </button>
-  );
+  return <button className={`toTop ${show ? "show" : ""}`} onClick={() => window.scrollTo({top: 0, behavior: "smooth"})} aria-label="Back to top">↑</button>;
 }
 
-/* ---------- Reusable content-section building blocks ---------- */
-
+/* ---------- Reusable Components ---------- */
 function BadgeStrip({items = CERTIFICATIONS}) {
-  return (
-    <Reveal className="badgeStrip">
-      {items.map(b => <span className="badge" key={b}>{b}</span>)}
-    </Reveal>
-  );
+  return <Reveal className="badgeStrip">{items.map(b => <span className="badge" key={b}>{b}</span>)}</Reveal>;
 }
-
 function ProcessSteps({steps = PROCESS_STEPS}) {
-  return (
-    <div className="processGrid">
-      {steps.map((s, i) => (
-        <Reveal delay={i * 100} className="processStep" key={s.t}>
-          <span className="processNum">{String(i + 1).padStart(2, "0")}</span>
-          <h3>{s.t}</h3>
-          <p>{s.d}</p>
-        </Reveal>
-      ))}
-    </div>
-  );
+  return <div className="processGrid">{steps.map((s, i) => (<Reveal delay={i * 100} className="processStep" key={s.t}><span className="processNum">{String(i + 1).padStart(2, "0")}</span><h3>{s.t}</h3><p>{s.d}</p></Reveal>))}</div>;
 }
-
-function Testimonials({items = TESTIMONIALS}) {
-  return (
-    <div className="grid3">
-      {items.map((t, i) => (
-        <Reveal delay={i * 100} className="quoteCard" key={t.name + i}>
-          <p>"{t.quote}"</p>
-          <div className="quoteBy"><b>{t.name}</b><small>{t.role}</small></div>
-        </Reveal>
-      ))}
-    </div>
-  );
-}
-
 function TeamGrid({people = TEAM}) {
-  return (
-    <div className="grid4">
-      {people.map((p, i) => (
-        <Reveal delay={i * 90} className="teamCard" key={p.name + i}>
-          <div className="avatar">{p.name.split(" ").map(w => w[0]).join("")}</div>
-          <h3>{p.name}</h3>
-          <span>{p.role}</span>
-          <p>{p.bio}</p>
-        </Reveal>
-      ))}
-    </div>
-  );
+  return <div className="grid4">{people.map((p, i) => (<Reveal delay={i * 90} className="teamCard" key={p.name + i}><div className="avatar">{p.name.split(" ").map(w => w[0]).join("")}</div><h3>{p.name}</h3><span>{p.role}</span><p>{p.bio}</p></Reveal>))}</div>;
 }
-
 function Timeline({items = MILESTONES}) {
-  return (
-    <div className="timeline">
-      {items.map((m, i) => (
-        <Reveal delay={i * 80} className="timelineItem" key={m.year}>
-          <span className="timelineYear">{m.year}</span>
-          <p>{m.text}</p>
-        </Reveal>
-      ))}
-    </div>
-  );
+  return <div className="timeline">{items.map((m, i) => (<Reveal delay={i * 80} className="timelineItem" key={m.year}><span className="timelineYear">{m.year}</span><p>{m.text}</p></Reveal>))}</div>;
 }
-
 function FAQ({items = FAQS}) {
   const [open, setOpen] = useState(0);
-  return (
-    <div className="faqList">
-      {items.map((f, i) => (
-        <Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}>
-          <button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}>
-            <span>{f.q}</span>
-            <span className="faqIcon">{open === i ? "−" : "+"}</span>
-          </button>
-          {open === i && <p className="faqA">{f.a}</p>}
-        </Reveal>
-      ))}
-    </div>
-  );
+  return <div className="faqList">{items.map((f, i) => (<Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}><button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}><span>{f.q}</span><span className="faqIcon">{open === i ? "−" : "+"}</span></button>{open === i && <p className="faqA">{f.a}</p>}</Reveal>))}</div>;
 }
 
 const demoProducts = [
@@ -192,62 +86,52 @@ const demoProducts = [
  {id:"demo-3",name:"Product Name 03",composition:"Add verified composition",dosage_form:"Syrup",category:"General",image_url:"/products/product-placeholder.svg",description:"Replace this demo information with verified product details."}
 ];
 
-// REMOVED "manufacturing" from this list
-const NAV_PAGES = ["home","about","products","pcd","quality","blog","careers","contact"];
+const FALLBACK_CATEGORIES = [
+  {id:"f1", name:"Tablets", icon:"💊"},
+  {id:"f2", name:"Capsules", icon:"💊"},
+  {id:"f3", name:"Syrups", icon:"🧴"},
+  {id:"f4", name:"Dry Syrup", icon:"🥤"},
+  {id:"f5", name:"Drops", icon:"💧"},
+  {id:"f6", name:"Injections", icon:"💉"},
+  {id:"f7", name:"Topical", icon:"🧴"},
+];
+
+const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
 
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
-  const [menuOpen, setMenuOpen] = useState(false); 
+  const [menuOpen, setMenuOpen] = useState(false);
 
   useEffect(() => {
     let lastY = window.scrollY;
     const onScroll = () => {
       const y = window.scrollY;
       setScrolled(y > 12);
-      if (y > lastY && y > 140) setNavHidden(true);
-      else setNavHidden(false);
+      if (y > lastY && y > 140) setNavHidden(true); else setNavHidden(false);
       lastY = y;
     };
     window.addEventListener("scroll", onScroll, {passive: true});
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  const handleNavClick = (p) => {
-    setPage(p);
-    setMenuOpen(false); 
-  };
+  const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
 
   return (
     <>
       <CursorGlow />
       <header className={`nav ${scrolled ? "scrolled" : ""} ${navHidden ? "navHidden" : ""}`}>
-        
-        {/* Replaced text brand with the full logo image */}
         <div className="brand" onClick={() => handleNavClick("home")}>
           <img src="/images/logo.png" alt="Abencivo Biotech" className="headerLogo" />
         </div>
-        
-        {/* Right side: Hamburger Menu */}
         <div className="menuContainer">
-          <button 
-            className="hamburgerBtn" 
-            onClick={() => setMenuOpen(!menuOpen)}
-            aria-label="Menu"
-          >
-            <span></span>
-            <span></span>
-            <span></span>
+          <button className="hamburgerBtn" onClick={() => setMenuOpen(!menuOpen)} aria-label="Menu">
+            <span></span><span></span><span></span>
           </button>
-          
           {menuOpen && (
             <div className="dropdownMenu">
               {NAV_PAGES.map(p => (
-                <button
-                  key={p}
-                  className={page === p ? "activeLink" : ""}
-                  onClick={() => handleNavClick(p)}
-                >
+                <button key={p} className={page === p ? "activeLink" : ""} onClick={() => handleNavClick(p)}>
                   {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
                 </button>
               ))}
@@ -257,35 +141,28 @@ function Layout({children, setPage, page}) {
       </header>
 
       {children}
-
       <BackToTop />
 
       <footer>
         <div className="footBrand">
-          <h3>{COMPANY.name}</h3>
-          <p>{COMPANY.tagline}</p>
-          <p>{COMPANY.address}</p>
+          <h3>{COMPANY.name}</h3><p>{COMPANY.tagline}</p><p>{COMPANY.address}</p>
           <div className="footSocial">
-            <a href={COMPANY.social.linkedin} target="_blank" aria-label="LinkedIn">in</a>
-            <a href={COMPANY.social.instagram} target="_blank" aria-label="Instagram">ig</a>
-            <a href={COMPANY.social.facebook} target="_blank" aria-label="Facebook">fb</a>
+            <a href={COMPANY.social.linkedin} target="_blank">in</a>
+            <a href={COMPANY.social.instagram} target="_blank">ig</a>
+            <a href={COMPANY.social.facebook} target="_blank">fb</a>
           </div>
         </div>
         <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
         <div>
           <h4>Quick Links</h4>
-          {["products","pcd","quality","careers"].map(p => (
-            <p key={p} className="footLink" onClick={() => setPage(p)}>
-              {p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}
-            </p>
+          {["products","pcd","quality"].map(p => (
+            <p key={p} className="footLink" onClick={() => setPage(p)}>{p === "pcd" ? "PCD Franchise" : p.replace(/^\w/, c => c.toUpperCase())}</p>
           ))}
         </div>
         <div className="footNewsletter">
-          <h4>Stay Updated</h4>
-          <p>Get updates on new products and franchise openings.</p>
+          <h4>Stay Updated</h4><p>Get updates on new products and franchise openings.</p>
           <form className="newsletterForm" onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Your email" required />
-            <button className="primary">Join</button>
+            <input type="email" placeholder="Your email" required /><button className="primary">Join</button>
           </form>
         </div>
       </footer>
@@ -293,7 +170,17 @@ function Layout({children, setPage, page}) {
   );
 }
 
+/* ---------- HOME PAGE ---------- */
 function Home({setPage}) {
+  const [categories, setCategories] = useState(FALLBACK_CATEGORIES);
+
+  useEffect(() => {
+    fetch(API_BASE + "/categories")
+      .then(r => r.ok ? r.json() : [])
+      .then(x => { if (Array.isArray(x) && x.length) setCategories(x); })
+      .catch(() => {});
+  }, []);
+
   return (
     <main>
       <section className="hero">
@@ -317,6 +204,29 @@ function Home({setPage}) {
         </div>
       </section>
 
+      {/* ============ PRODUCT CATEGORIES (Animated Marquee) ============ */}
+      <section className="section categorySection">
+        <span className="eyebrow">BROWSE BY TYPE</span>
+        <h2 className="categoryHeading">Product Categories</h2>
+        
+        <div className="marqueeWrapper">
+          <div className="marqueeTrack">
+            {[...categories, ...categories].map((c, i) => (
+              <button className="categoryCard" onClick={() => setPage("products")} key={`${c.id}-${i}`}>
+                <div className="categoryIcon">
+                  {c.icon_url
+                    ? <img src={c.icon_url} alt={c.name} />
+                    : <span className="categoryEmoji">{c.icon || "💊"}</span>
+                  }
+                </div>
+                <span className="categoryName">{c.name}</span>
+              </button>
+            ))}
+          </div>
+        </div>
+      </section>
+      {/* ============ END PRODUCT CATEGORIES ============ */}
+
       <Reveal as="section" className="stats">
         <div><b>01</b><span>Product catalogue</span></div>
         <div><b>02</b><span>PCD franchise</span></div>
@@ -334,15 +244,8 @@ function Home({setPage}) {
         <ResearchPipeline stages={RESEARCH_STAGES} />
       </section>
 
-      <section className="section">
-        <Reveal><span className="eyebrow">WHY THIS PLATFORM</span></Reveal>
-        <Reveal delay={80}><h2>Website + business dashboard in one project.</h2></Reveal>
-        <div className="grid3">
-          <Reveal delay={120}><Card t="Product CMS" d="Add and update products without editing frontend code."/></Reveal>
-          <Reveal delay={220}><Card t="Lead CRM" d="Track enquiries from new lead to contacted, follow-up and closed."/></Reveal>
-          <Reveal delay={320}><Card t="Simple configuration" d="Phone, WhatsApp, email, logo and address are kept in one config file." /></Reveal>
-        </div>
-      </section>
+      {/* REMOVED: "Website + business dashboard" section */}
+      {/* REMOVED: "Demo testimonials" section */}
 
       <section className="section trustSection">
         <Reveal><span className="eyebrow">COMPLIANCE & CERTIFICATIONS</span></Reveal>
@@ -354,9 +257,7 @@ function Home({setPage}) {
         <Reveal><span className="eyebrow">MANUFACTURING CAPABILITY</span></Reveal>
         <Reveal delay={80}><h2>What we bring to a manufacturing partnership.</h2></Reveal>
         <div className="grid4">
-          {CAPABILITIES.map((c, i) => (
-            <Reveal delay={120 + i * 80} className="card" key={c.t}><h3>{c.t}</h3><p>{c.d}</p></Reveal>
-          ))}
+          {CAPABILITIES.map((c, i) => (<Reveal delay={120 + i * 80} className="card" key={c.t}><h3>{c.t}</h3><p>{c.d}</p></Reveal>))}
         </div>
       </section>
 
@@ -364,27 +265,6 @@ function Home({setPage}) {
         <Reveal><span className="eyebrow">HOW IT WORKS</span></Reveal>
         <Reveal delay={80}><h2>From first enquiry to onboarded partner.</h2></Reveal>
         <ProcessSteps />
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">WHAT PARTNERS SAY</span></Reveal>
-        <Reveal delay={80}><h2>Demo testimonials — replace with verified quotes.</h2></Reveal>
-        <Testimonials />
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">FROM THE KNOWLEDGE CENTRE</span></Reveal>
-        <Reveal delay={80}><h2>Recent articles.</h2></Reveal>
-        <div className="grid3">
-          {BLOG_POSTS.slice(0,3).map((b, i) => (
-            <Reveal delay={120 + i * 90} className="card blogCard" key={b.title}>
-              <span className="eyebrow">{b.category}</span>
-              <h3>{b.title}</h3>
-              <p>{b.excerpt}</p>
-              <button className="linkBtn" onClick={() => setPage("blog")}>Read more →</button>
-            </Reveal>
-          ))}
-        </div>
       </section>
 
       <Reveal as="section" className="ctaBanner">
@@ -402,48 +282,16 @@ function Home({setPage}) {
 }
 function Card({t,d}){return <article className="card"><div className="icon">✦</div><h3>{t}</h3><p>{d}</p></article>}
 
+/* ---------- Other Pages ---------- */
 function About({setPage}) {
   return (
     <main>
-      <section className="pageHero heroFade">
-        <span className="eyebrow">ABOUT US</span>
-        <h1>A modern pharmaceutical presence.</h1>
-        <p>Replace this with the verified company story. Below is a structured layout ready for real mission, milestones and team content.</p>
-      </section>
-
-      <section className="section">
-        <div className="grid2">
-          <Reveal className="wideCard"><h2>Our Mission</h2><p>Replace with your verified mission statement — what drives the company's approach to healthcare and partnerships.</p></Reveal>
-          <Reveal delay={100} className="wideCard"><h2>Our Vision</h2><p>Replace with your verified vision statement — where the company aims to be across franchise, manufacturing and product reach.</p></Reveal>
-        </div>
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">WHAT WE STAND FOR</span></Reveal>
-        <Reveal delay={80}><h2>Our values.</h2></Reveal>
-        <div className="grid4">
-          {VALUES.map((v,i)=>(
-            <Reveal delay={120+i*80} className="card" key={v.t}><h3>{v.t}</h3><p>{v.d}</p></Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">OUR JOURNEY</span></Reveal>
-        <Reveal delay={80}><h2>Milestones.</h2></Reveal>
-        <Timeline />
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">LEADERSHIP</span></Reveal>
-        <Reveal delay={80}><h2>The team behind the platform.</h2></Reveal>
-        <TeamGrid />
-      </section>
-
-      <Reveal as="section" className="ctaBanner">
-        <div><h2>Want to know more before partnering with us?</h2></div>
-        <div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Get in touch</button></div>
-      </Reveal>
+      <section className="pageHero heroFade"><span className="eyebrow">ABOUT US</span><h1>A modern pharmaceutical presence.</h1><p>Replace this with the verified company story. Below is a structured layout ready for real mission, milestones and team content.</p></section>
+      <section className="section"><div className="grid2"><Reveal className="wideCard"><h2>Our Mission</h2><p>Replace with your verified mission statement.</p></Reveal><Reveal delay={100} className="wideCard"><h2>Our Vision</h2><p>Replace with your verified vision statement.</p></Reveal></div></section>
+      <section className="section altBg"><Reveal><span className="eyebrow">WHAT WE STAND FOR</span></Reveal><Reveal delay={80}><h2>Our values.</h2></Reveal><div className="grid4">{VALUES.map((v,i)=>(<Reveal delay={120+i*80} className="card" key={v.t}><h3>{v.t}</h3><p>{v.d}</p></Reveal>))}</div></section>
+      <section className="section"><Reveal><span className="eyebrow">OUR JOURNEY</span></Reveal><Reveal delay={80}><h2>Milestones.</h2></Reveal><Timeline /></section>
+      <section className="section altBg"><Reveal><span className="eyebrow">LEADERSHIP</span></Reveal><Reveal delay={80}><h2>The team behind the platform.</h2></Reveal><TeamGrid /></section>
+      <Reveal as="section" className="ctaBanner"><div><h2>Want to know more before partnering with us?</h2></div><div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Get in touch</button></div></Reveal>
     </main>
   );
 }
@@ -451,92 +299,12 @@ function About({setPage}) {
 function PCDFranchise({setPage}) {
   return (
     <main>
-      <section className="pageHero heroFade">
-        <span className="eyebrow">PCD FRANCHISE</span>
-        <h1>Grow with a trusted pharma partner.</h1>
-        <p>Replace this with your verified franchise territories, benefits, terms and enquiry process.</p>
-        <button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button>
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">WHY PARTNER WITH US</span></Reveal>
-        <Reveal delay={80}><h2>Franchise benefits.</h2></Reveal>
-        <div className="grid4">
-          <Reveal delay={120} className="card"><h3>Monopoly Rights</h3><p>Add your verified territory-based monopoly terms.</p></Reveal>
-          <Reveal delay={200} className="card"><h3>Marketing Support</h3><p>Add details on visual aids, samples and promotional material.</p></Reveal>
-          <Reveal delay={280} className="card"><h3>Wide Product Range</h3><p>Add your verified therapeutic segments and formulation count.</p></Reveal>
-          <Reveal delay={360} className="card"><h3>Timely Delivery</h3><p>Add your verified logistics and dispatch commitments.</p></Reveal>
-        </div>
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">GETTING STARTED</span></Reveal>
-        <Reveal delay={80}><h2>Franchise process.</h2></Reveal>
-        <ProcessSteps />
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">PARTNER VOICES</span></Reveal>
-        <Reveal delay={80}><h2>What franchise partners say.</h2></Reveal>
-        <Testimonials />
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">QUESTIONS</span></Reveal>
-        <Reveal delay={80}><h2>Franchise FAQs.</h2></Reveal>
-        <FAQ />
-      </section>
-
-      <Reveal as="section" className="ctaBanner">
-        <div><h2>Ready to open a franchise in your territory?</h2></div>
-        <div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button></div>
-      </Reveal>
-    </main>
-  );
-}
-
-function Manufacturing({setPage}) {
-  return (
-    <main>
-      <section className="pageHero heroFade">
-        <span className="eyebrow">THIRD-PARTY MANUFACTURING</span>
-        <h1>Manufacturing partnerships.</h1>
-        <p>Replace this with your verified manufacturing capabilities, dosage forms, facilities and certifications.</p>
-        <button className="primary" onClick={()=>setPage("contact")}>Discuss your requirement</button>
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">OUR CAPABILITY</span></Reveal>
-        <Reveal delay={80}><h2>What we bring to production.</h2></Reveal>
-        <div className="grid4">
-          {CAPABILITIES.map((c,i)=>(
-            <Reveal delay={120+i*80} className="card" key={c.t}><h3>{c.t}</h3><p>{c.d}</p></Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">COMPLIANCE</span></Reveal>
-        <Reveal delay={80}><h2>Certifications held by the facility.</h2></Reveal>
-        <BadgeStrip />
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">CLEAN-ROOM WORKFLOW</span></Reveal>
-        <Reveal delay={80}><h2>How a batch moves through GMP production.</h2></Reveal>
-        <ResearchPipeline stages={GMP_STAGES} />
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">ENGAGEMENT PROCESS</span></Reveal>
-        <Reveal delay={80}><h2>From formulation to delivery.</h2></Reveal>
-        <ProcessSteps />
-      </section>
-
-      <Reveal as="section" className="ctaBanner">
-        <div><h2>Have a formulation you want manufactured?</h2></div>
-        <div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Discuss your requirement</button></div>
-      </Reveal>
+      <section className="pageHero heroFade"><span className="eyebrow">PCD FRANCHISE</span><h1>Grow with a trusted pharma partner.</h1><p>Replace this with your verified franchise territories, benefits, terms and enquiry process.</p><button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button></section>
+      <section className="section"><Reveal><span className="eyebrow">WHY PARTNER WITH US</span></Reveal><Reveal delay={80}><h2>Franchise benefits.</h2></Reveal><div className="grid4"><Reveal delay={120} className="card"><h3>Monopoly Rights</h3><p>Add your verified territory-based monopoly terms.</p></Reveal><Reveal delay={200} className="card"><h3>Marketing Support</h3><p>Add details on visual aids, samples and promotional material.</p></Reveal><Reveal delay={280} className="card"><h3>Wide Product Range</h3><p>Add your verified therapeutic segments and formulation count.</p></Reveal><Reveal delay={360} className="card"><h3>Timely Delivery</h3><p>Add your verified logistics and dispatch commitments.</p></Reveal></div></section>
+      <section className="section altBg"><Reveal><span className="eyebrow">GETTING STARTED</span></Reveal><Reveal delay={80}><h2>Franchise process.</h2></Reveal><ProcessSteps /></section>
+      <section className="section"><Reveal><span className="eyebrow">PARTNER VOICES</span></Reveal><Reveal delay={80}><h2>What franchise partners say.</h2></Reveal><Testimonials /></section>
+      <section className="section altBg"><Reveal><span className="eyebrow">QUESTIONS</span></Reveal><Reveal delay={80}><h2>Franchise FAQs.</h2></Reveal><FAQ /></section>
+      <Reveal as="section" className="ctaBanner"><div><h2>Ready to open a franchise in your territory?</h2></div><div className="actions"><button className="primary" onClick={()=>setPage("contact")}>Start an enquiry</button></div></Reveal>
     </main>
   );
 }
@@ -544,108 +312,28 @@ function Manufacturing({setPage}) {
 function Quality({setPage}) {
   return (
     <main>
-      <section className="pageHero heroFade">
-        <span className="eyebrow">QUALITY</span>
-        <h1>Quality at every step.</h1>
-        <p>Replace this with verified quality systems, certifications and process information.</p>
-      </section>
-
-      <section className="section">
-        <div className="grid2">
-          <Reveal className="wideCard"><h2>Quality Policy</h2><p>Replace with your verified quality policy statement covering testing, documentation and continuous improvement.</p></Reveal>
-          <Reveal delay={100} className="wideCard"><h2>Quality Control</h2><p>Replace with your verified in-process and finished-product testing procedures.</p></Reveal>
-        </div>
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">CERTIFICATIONS</span></Reveal>
-        <Reveal delay={80}><h2>Standards we're certified against.</h2></Reveal>
-        <BadgeStrip />
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">QUESTIONS</span></Reveal>
-        <Reveal delay={80}><h2>Quality FAQs.</h2></Reveal>
-        <FAQ />
-      </section>
-    </main>
-  );
-}
-
-function Blog() {
-  return (
-    <main>
-      <section className="pageHero compact heroFade">
-        <span className="eyebrow">INSIGHTS</span>
-        <h1>Pharma knowledge centre.</h1>
-        <p>The backend is ready for a future blog CMS. These are demo articles — add verified posts from the admin panel in a later iteration.</p>
-      </section>
-      <section className="section">
-        <div className="grid2">
-          {BLOG_POSTS.map((b,i)=>(
-            <Reveal delay={i*90} className="card blogCard" key={b.title}>
-              <span className="eyebrow">{b.category} · {b.date}</span>
-              <h3>{b.title}</h3>
-              <p>{b.excerpt}</p>
-            </Reveal>
-          ))}
-        </div>
-      </section>
-    </main>
-  );
-}
-
-function Careers({setPage}) {
-  return (
-    <main>
-      <section className="pageHero heroFade">
-        <span className="eyebrow">CAREERS</span>
-        <h1>Build the future of healthcare.</h1>
-        <p>Replace this with verified openings, job descriptions and application workflow.</p>
-        <button className="primary" onClick={()=>setPage("contact")}>Contact HR</button>
-      </section>
-
-      <section className="section">
-        <Reveal><span className="eyebrow">WHY WORK HERE</span></Reveal>
-        <Reveal delay={80}><h2>What to expect.</h2></Reveal>
-        <div className="grid3">
-          {PERKS.map((p,i)=>(
-            <Reveal delay={120+i*90} className="card" key={p.t}><h3>{p.t}</h3><p>{p.d}</p></Reveal>
-          ))}
-        </div>
-      </section>
-
-      <section className="section altBg">
-        <Reveal><span className="eyebrow">OPEN ROLES</span></Reveal>
-        <Reveal delay={80}><h2>Current openings.</h2></Reveal>
-        <div className="table">
-          {POSITIONS.map((p,i)=>(
-            <Reveal as="div" delay={i*70} className="row" key={p.title}>
-              <span><b>{p.title}</b><small>{p.type} · {p.location}</small></span>
-              <button onClick={()=>setPage("contact")}>Apply</button>
-            </Reveal>
-          ))}
-        </div>
-      </section>
+      <section className="pageHero heroFade"><span className="eyebrow">QUALITY</span><h1>Quality at every step.</h1><p>Replace this with verified quality systems, certifications and process information.</p></section>
+      <section className="section"><div className="grid2"><Reveal className="wideCard"><h2>Quality Policy</h2><p>Replace with your verified quality policy statement.</p></Reveal><Reveal delay={100} className="wideCard"><h2>Quality Control</h2><p>Replace with your verified in-process and finished-product testing procedures.</p></Reveal></div></section>
+      <section className="section altBg"><Reveal><span className="eyebrow">CERTIFICATIONS</span></Reveal><Reveal delay={80}><h2>Standards we're certified against.</h2></Reveal><BadgeStrip /></section>
+      <section className="section"><Reveal><span className="eyebrow">QUESTIONS</span></Reveal><Reveal delay={80}><h2>Quality FAQs.</h2></Reveal><FAQ /></section>
     </main>
   );
 }
 
 function Products({setPage}) {
  const [items,setItems]=useState(demoProducts),[q,setQ]=useState(""),[cat,setCat]=useState("All");
+ const [categories,setCategories]=useState([]);
  useEffect(()=>{fetch(API_BASE+"/products").then(r=>r.ok?r.json():[]).then(x=>{if(Array.isArray(x)&&x.length)setItems(x)}).catch(()=>{})},[]);
- const cats=["All",...new Set(items.map(x=>x.category).filter(Boolean))];
+ useEffect(()=>{fetch(API_BASE+"/categories").then(r=>r.ok?r.json():[]).then(x=>{if(Array.isArray(x))setCategories(x.map(c=>c.name))}).catch(()=>{})},[]);
+
+ const cats=["All",...new Set([...items.map(x=>x.category).filter(Boolean), ...categories])];
  const filtered=items.filter(x=>(cat==="All"||x.category===cat)&&(`${x.name} ${x.composition} ${x.category}`.toLowerCase().includes(q.toLowerCase())));
  return (
    <main>
      <section className="pageHero compact heroFade">
-       <span className="eyebrow">CATALOGUE</span>
-       <h1>Products</h1>
+       <span className="eyebrow">CATALOGUE</span><h1>Products</h1>
        <p>Search, filter and enquire about your products.</p>
-       <div className="heroRow">
-         <ApiStatusBadge />
-         <a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download full catalogue (PDF)</a>
-       </div>
+       <div className="heroRow"><ApiStatusBadge /><a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download full catalogue (PDF)</a></div>
      </section>
      <section className="section">
        <div className="filters">
@@ -658,10 +346,7 @@ function Products({setPage}) {
              <TiltCard className="product">
                <img src={p.image_url||"/products/product-placeholder.svg"}/>
                <div>
-                 <span>{p.category}</span>
-                 <h3>{p.name}</h3>
-                 <p>{p.composition}</p>
-                 <small>{p.dosage_form}</small>
+                 <span>{p.category}</span><h3>{p.name}</h3><p>{p.composition}</p><small>{p.dosage_form}</small>
                  <div className="productActions">
                    <a href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hello, I am interested in "+p.name)}`} target="_blank">WhatsApp</a>
                    <button onClick={()=>setPage("contact")}>Enquire</button>
@@ -680,44 +365,24 @@ function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city
  async function submit(e){e.preventDefault();setMsg("Sending...");try{const r=await fetch(API_BASE+"/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(form)});const d=await r.json();setMsg(r.ok?(d.message||"Enquiry submitted successfully."):"Unable to submit. Check your details.");}catch{setMsg("Backend not running. Start the server, then try again.");}}
  return (
    <main>
-     <section className="pageHero compact heroFade liquidBg">
-       <div className="liquidWave"></div>
-       <span className="eyebrow">GET IN TOUCH</span>
-       <h1>Let's talk.</h1>
-       <p>Use the form below. Submissions are saved in the database and can be emailed when SMTP is configured.</p>
-     </section>
+     <section className="pageHero compact heroFade liquidBg"><div className="liquidWave"></div><span className="eyebrow">GET IN TOUCH</span><h1>Let's talk.</h1><p>Use the form below. Submissions are saved in the database and can be emailed when SMTP is configured.</p></section>
      <section className="section contactGrid">
-       <Reveal>
-         <h2>Contact details</h2>
-         <p>{COMPANY.address}</p>
-         <p>{COMPANY.phone}</p>
-         <p>{COMPANY.email}</p>
-         <a className="whatsappBig" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp →</a>
-       </Reveal>
+       <Reveal><h2>Contact details</h2><p>{COMPANY.address}</p><p>{COMPANY.phone}</p><p>{COMPANY.email}</p><a className="whatsappBig" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp →</a></Reveal>
        <Reveal delay={120} as="form" className="form" onSubmit={submit}>
          {["name","phone","email","city"].map(k=><input required={k!=="email"} key={k} placeholder={k[0].toUpperCase()+k.slice(1)} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/>)}
-         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}>
-           <option>General</option>
-           <option>PCD Franchise</option>
-           <option>Third-Party Manufacturing</option>
-           <option>Product Enquiry</option>
-         </select>
+         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>PCD Franchise</option><option>Third-Party Manufacturing</option><option>Product Enquiry</option></select>
          <textarea required placeholder="Message" rows="6" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/>
-         <button className="primary">Submit Enquiry</button>
-         {msg && <p className="notice">{msg}</p>}
+         <button className="primary">Submit Enquiry</button>{msg && <p className="notice">{msg}</p>}
        </Reveal>
      </section>
-
-     <section className="section altBg">
-       <Reveal><span className="eyebrow">BEFORE YOU WRITE IN</span></Reveal>
-       <Reveal delay={80}><h2>Common questions.</h2></Reveal>
-       <FAQ />
-     </section>
+     <section className="section altBg"><Reveal><span className="eyebrow">BEFORE YOU WRITE IN</span></Reveal><Reveal delay={80}><h2>Common questions.</h2></Reveal><FAQ /></section>
    </main>
  );
 }
 
+/* ---------- ADMIN PANEL ---------- */
 const EMPTY_PRODUCT = {name:"",composition:"",dosage_form:"Tablet",category:"General",image_url:"/products/product-placeholder.svg",description:""};
+const EMPTY_CATEGORY = {name:"",icon:"💊",icon_url:"",sort_order:0};
 const ENQUIRY_STATUSES = ["New","Contacted","Follow-up","Converted","Closed"];
 const STATUS_COLORS = {New:"#c51f2b",Contacted:"#a15b00",Followup:"#8f1620","Follow-up":"#8f1620",Converted:"#1a7a3c",Closed:"#6b6b6b"};
 
@@ -726,56 +391,64 @@ function Admin(){
  const [login,setLogin]=useState({email:"",password:""});
  const [loginError,setLoginError]=useState("");
  const [tab,setTab]=useState("dashboard");
- const [data,setData]=useState({products:[],enquiries:[],logs:[]});
+ const [data,setData]=useState({products:[],enquiries:[],logs:[],categories:[]});
  const [loadError,setLoadError]=useState("");
  const [form,setForm]=useState(EMPTY_PRODUCT);
  const [editingId,setEditingId]=useState(null);
+ const [catForm,setCatForm]=useState(EMPTY_CATEGORY);
+ const [editingCatId,setEditingCatId]=useState(null);
  const [uploading,setUploading]=useState(false);
  const [toast,setToast]=useState("");
  const [productQuery,setProductQuery]=useState("");
  const [enquiryQuery,setEnquiryQuery]=useState("");
  const [confirmDeleteId,setConfirmDeleteId]=useState(null);
+ const [confirmDeleteCatId,setConfirmDeleteCatId]=useState(null);
 
  const headers={"Content-Type":"application/json","Authorization":"Bearer "+token};
-
  function flash(msg){setToast(msg);setTimeout(()=>setToast(""),2600)}
 
  async function load(){
    if(!token)return;
    setLoadError("");
    try{
-     const [p,e,l]=await Promise.all([fetch(API_BASE+"/admin/products",{headers}),fetch(API_BASE+"/admin/enquiries",{headers}),fetch(API_BASE+"/admin/audit-logs",{headers})]);
+     const [p,e,l,c]=await Promise.all([
+       fetch(API_BASE+"/admin/products",{headers}),
+       fetch(API_BASE+"/admin/enquiries",{headers}),
+       fetch(API_BASE+"/admin/audit-logs",{headers}),
+       fetch(API_BASE+"/admin/categories",{headers})
+     ]);
      if(p.status===401){localStorage.removeItem("ab_token");setToken("");return}
-     setData({products:await p.json(),enquiries:await e.json(),logs:await l.json()});
+     setData({
+       products:await p.json(),
+       enquiries:await e.json(),
+       logs:await l.json(),
+       categories:await c.json()
+     });
    }catch(err){
-     setLoadError(`Can't reach the backend at ${API_BASE}. Make sure "npm run server" (or "npm run dev") is running.`);
+     setLoadError(`Can't reach the backend at ${API_BASE}.`);
    }
  }
  useEffect(()=>{load()},[token]);
 
  async function doLogin(e){
-   e.preventDefault();
-   setLoginError("");
+   e.preventDefault();setLoginError("");
    try{
      const r=await fetch("https://abencivo-bio.onrender.com/api/auth/login",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(login)});
      const d=await r.json();
      if(r.ok){localStorage.setItem("ab_token",d.token);setToken(d.token)}
      else setLoginError(d.message||"Login failed");
-   }catch{setLoginError(`Can't reach the backend. Make sure the server is running.`)}
+   }catch{setLoginError(`Can't reach the backend.`)}
  }
 
  async function handleFile(e){
-   const file=e.target.files[0];
-   if(!file)return;
+   const file=e.target.files[0];if(!file)return;
    setUploading(true);
    try{
-     const fd=new FormData();
-     fd.append("file",file);
+     const fd=new FormData();fd.append("file",file);
      const r=await fetch(API_BASE+"/admin/upload",{method:"POST",headers:{"Authorization":"Bearer "+token},body:fd});
      const d=await r.json();
-     if(r.ok)setForm(f=>({...f,image_url:d.url}));
-     else flash(d.message||"Upload failed");
-   }catch{flash("Upload failed — check the server is running.")}
+     if(r.ok)setForm(f=>({...f,image_url:d.url}));else flash(d.message||"Upload failed");
+   }catch{flash("Upload failed.")}
    setUploading(false);
  }
 
@@ -785,28 +458,50 @@ function Admin(){
  async function save(e){
    e.preventDefault();
    if(editingId){
-     await fetch(API_BASE+"/admin/products/"+editingId,{method:"PUT",headers,body:JSON.stringify({...form,active:1})});
-     flash("Product updated");
+     await fetch(API_BASE+"/admin/products/"+editingId,{method:"PUT",headers,body:JSON.stringify({...form,active:1})});flash("Product updated");
    }else{
-     await fetch(API_BASE+"/admin/products",{method:"POST",headers,body:JSON.stringify(form)});
-     flash("Product added");
+     await fetch(API_BASE+"/admin/products",{method:"POST",headers,body:JSON.stringify(form)});flash("Product added");
    }
-   cancelEdit();
-   load();
+   cancelEdit();load();
  }
+
  async function del(id){
    await fetch(API_BASE+"/admin/products/"+id,{method:"DELETE",headers});
-   setConfirmDeleteId(null);
-   flash("Product removed");
-   load();
+   setConfirmDeleteId(null);flash("Product removed");load();
  }
+
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
+
+ // ===== CATEGORY FUNCTIONS =====
+ function startEditCat(c){
+   setEditingCatId(c.id);
+   setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});
+   setTab("categories");
+   window.scrollTo({top:0,behavior:"smooth"});
+ }
+ function cancelEditCat(){setEditingCatId(null);setCatForm(EMPTY_CATEGORY)}
+
+ async function saveCat(e){
+   e.preventDefault();
+   if(editingCatId){
+     await fetch(API_BASE+"/admin/categories/"+editingCatId,{method:"PUT",headers,body:JSON.stringify({...catForm,active:1})});
+     flash("Category updated");
+   }else{
+     await fetch(API_BASE+"/admin/categories",{method:"POST",headers,body:JSON.stringify(catForm)});
+     flash("Category added");
+   }
+   cancelEditCat();load();
+ }
+
+ async function delCat(id){
+   await fetch(API_BASE+"/admin/categories/"+id,{method:"DELETE",headers});
+   setConfirmDeleteCatId(null);flash("Category removed");load();
+ }
 
  if(!token)return(
    <main className="adminLogin">
      <form className="form adminLoginForm" onSubmit={doLogin}>
-       <span className="eyebrow">ABENCIVO CONTROL CENTRE</span>
-       <h1>Admin Login</h1>
+       <span className="eyebrow">ABENCIVO CONTROL CENTRE</span><h1>Admin Login</h1>
        <p>Use the credentials from your server .env file.</p>
        <input placeholder="Email" type="email" value={login.email} onChange={e=>setLogin({...login,email:e.target.value})}/>
        <input placeholder="Password" type="password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})}/>
@@ -819,7 +514,14 @@ function Admin(){
  const filteredProducts=data.products.filter(p=>(p.name+p.category+p.dosage_form).toLowerCase().includes(productQuery.toLowerCase()));
  const filteredEnquiries=data.enquiries.filter(x=>(x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()));
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
- const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["enquiries","Enquiries","✉"],["logs","Activity Log","▤"]];
+
+ const TABS=[
+   ["dashboard","Dashboard","◆"],
+   ["products","Products","💊"],
+   ["categories","Categories","🗂"],
+   ["enquiries","Enquiries","✉"],
+   ["logs","Activity Log","▤"]
+ ];
 
  return(
    <main className="admin">
@@ -836,7 +538,6 @@ function Admin(){
          <div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>
          {toast&&<span className="adminToast">{toast}</span>}
        </div>
-
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
 
        {tab==="dashboard"&&(
@@ -866,10 +567,7 @@ function Admin(){
              <div className="productFormGrid">
                <div className="uploadBox">
                  <img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" />
-                 <label className="uploadLabel">
-                   {uploading?"Uploading...":"Change image"}
-                   <input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/>
-                 </label>
+                 <label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label>
                </div>
                <div className="productFields">
                  <input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/>
@@ -899,6 +597,36 @@ function Admin(){
                </div>
              ))}
              {filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}
+           </div>
+         </>
+       )}
+
+       {tab==="categories"&&(
+         <>
+           <form className="adminForm" onSubmit={saveCat}>
+             {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
+             <div className="fieldRow">
+               <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
+               <input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/>
+             </div>
+             <input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/>
+             <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
+           </form>
+
+           <div className="table">
+             {data.categories.map(c=>(
+               <div className="row" key={c.id}>
+                 <span style={{fontSize:"28px"}}>{c.icon||"💊"}</span>
+                 <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span>
+                 <div className="rowActions">
+                   <button onClick={()=>startEditCat(c)}>Edit</button>
+                   {confirmDeleteCatId===c.id
+                     ? <span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>
+                     : <button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}
+                 </div>
+               </div>
+             ))}
+             {data.categories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}
            </div>
          </>
        )}
@@ -939,6 +667,7 @@ function Admin(){
  );
 }
 
+/* ---------- APP ---------- */
 function App() {
   const [page, setPage] = useState(location.hash.slice(1) || "home");
   const [showSplash, setShowSplash] = useState(true);
@@ -951,20 +680,15 @@ function App() {
 
   const go = p => { location.hash = p; setPage(p); };
 
-  if (showSplash) {
-    return <SplashScreen onFinish={() => setShowSplash(false)} />;
-  }
+  if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
-  let content = page === "home" ? <Home setPage={go} /> : 
-                page === "products" ? <Products setPage={go} /> : 
-                page === "contact" ? <Contact /> : 
-                page === "admin" ? <Admin /> : 
-                page === "about" ? <About setPage={go} /> : 
-                page === "pcd" ? <PCDFranchise setPage={go} /> : 
-                page === "manufacturing" ? <Manufacturing setPage={go} /> : 
-                page === "quality" ? <Quality setPage={go} /> : 
-                page === "blog" ? <Blog /> : 
-                page === "careers" ? <Careers setPage={go} /> : 
+  let content = page === "home" ? <Home setPage={go} /> :
+                page === "products" ? <Products setPage={go} /> :
+                page === "contact" ? <Contact /> :
+                page === "admin" ? <Admin /> :
+                page === "about" ? <About setPage={go} /> :
+                page === "pcd" ? <PCDFranchise setPage={go} /> :
+                page === "quality" ? <Quality setPage={go} /> :
                 <Home setPage={go} />;
 
   return page === "admin" ? content : (

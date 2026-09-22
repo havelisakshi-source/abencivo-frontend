@@ -271,24 +271,45 @@ html{scroll-behavior:smooth}
   }
 }
 
-/* ---------- Updated Header Styles ---------- */
+/* ============================================================
+   HEADER — Big Logo + Hamburger Menu
+   ============================================================ */
 
-/* Ensure the header pushes the brand left and menu right */
 .nav {
   display: flex;
-  justify-content: space-between;
   align-items: center;
-  padding: 0 24px;
-  /* Add any existing positioning (fixed/sticky) if not already in your original CSS */
+  justify-content: space-between;
+  padding: 10px 30px;
+  min-height: 130px;
 }
 
-/* --- Hamburger Menu (3 Lines) on the far right --- */
+.brand {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  height: 100%;
+}
 
+.headerLogo {
+  height: 120px !important;
+  width: auto !important;
+  max-height: none !important;
+  object-fit: contain;
+  display: block;
+  transition: height 0.3s ease;
+}
+
+.nav.scrolled .headerLogo {
+  height: 90px !important;
+}
+
+/* --- Hamburger Menu --- */
 .menuContainer {
   position: relative;
   display: flex;
   align-items: center;
-  margin-left: auto; /* Pushes it to the far right */
+  margin-left: auto;
 }
 
 .hamburgerBtn {
@@ -310,12 +331,10 @@ html{scroll-behavior:smooth}
 .hamburgerBtn span {
   width: 26px;
   height: 3px;
-  background-color: #e21b2d; /* Abencivo Red */
+  background-color: #e21b2d;
   border-radius: 2px;
   transition: transform 0.2s ease;
 }
-
-/* --- Dropdown Menu --- */
 
 .dropdownMenu {
   position: absolute;
@@ -357,19 +376,151 @@ html{scroll-behavior:smooth}
   to { opacity: 1; transform: translateY(0); }
 }
 
-/* ---------- Header Logo Styling (Bulletproof) ---------- */
+/* ============================================================
+   PRODUCT CATEGORIES — Animated Marquee
+   ============================================================ */
 
-.brand {
-  display: flex;
-  align-items: center;
-  cursor: pointer;
-  flex-shrink: 0; /* Prevents it from being squished */
+.categorySection {
+  text-align: center;
+  padding: 80px 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #fff8f8 0%, #ffffff 100%);
 }
 
-.headerLogo {
-  height: 70px !important; /* Forces the height to be 100px */
-  width: auto !important;   /* Keeps the proper aspect ratio */
-  max-height: none !important;
-  object-fit: contain;
-  display: block;
+.categorySection .eyebrow {
+  display: inline-block;
+  margin-bottom: 8px;
+}
+
+.categoryHeading {
+  font-size: 2.6rem;
+  font-weight: 800;
+  color: #4b0d12;
+  margin: 12px auto 60px;
+  text-align: center;
+  letter-spacing: -0.5px;
+}
+
+/* Wrapper for the scrolling track */
+.marqueeWrapper {
+  width: 100%;
+  overflow: hidden;
+  position: relative;
+  mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to right, transparent 0%, #000 8%, #000 92%, transparent 100%);
+}
+
+/* The actual moving row */
+.marqueeTrack {
+  display: flex;
+  gap: 28px;
+  width: max-content;
+  animation: marqueeScroll 40s linear infinite;
+  padding: 10px 0;
+}
+
+.marqueeTrack:hover {
+  animation-play-state: paused;
+}
+
+@keyframes marqueeScroll {
+  from { transform: translateX(0); }
+  to   { transform: translateX(-50%); }
+}
+
+/* Category card (square, premium) */
+.categoryCard {
+  background: #ffffff;
+  border: 2px solid #f0d5d7;
+  border-radius: 18px;
+  padding: 26px 20px;
+  width: 200px;
+  height: 200px;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 16px;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  font-family: inherit;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.04);
+}
+
+.categoryCard:hover {
+  border-color: #e21b2d;
+  transform: translateY(-8px) scale(1.04);
+  box-shadow: 0 16px 32px rgba(226, 27, 45, 0.18);
+}
+
+.categoryIcon {
+  width: 95px;
+  height: 95px;
+  border-radius: 50%;
+  background: #fff8f8;
+  border: 2px solid #e21b2d;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  transition: transform 0.3s ease;
+  flex-shrink: 0;
+}
+
+.categoryCard:hover .categoryIcon {
+  transform: scale(1.12) rotate(6deg);
+}
+
+.categoryIcon img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.categoryEmoji {
+  font-size: 46px;
+  line-height: 1;
+}
+
+.categoryName {
+  font-weight: 700;
+  font-size: 16px;
+  color: #4b0d12;
+  text-align: center;
+  line-height: 1.3;
+  white-space: nowrap;
+}
+
+/* ============================================================
+   RESPONSIVE
+   ============================================================ */
+
+@media (max-width: 900px) {
+  .headerLogo { height: 90px !important; }
+  .nav.scrolled .headerLogo { height: 70px !important; }
+  .nav { min-height: 110px; padding: 8px 20px; }
+  .categoryHeading { font-size: 2rem; margin-bottom: 45px; }
+}
+
+@media (max-width: 600px) {
+  .headerLogo { height: 70px !important; }
+  .nav.scrolled .headerLogo { height: 55px !important; }
+  .nav { min-height: 85px; padding: 6px 14px; }
+
+  .categorySection { padding: 55px 0; }
+  .categoryHeading { font-size: 1.7rem; margin-bottom: 35px; }
+
+  .categoryCard {
+    width: 150px;
+    height: 150px;
+    padding: 18px 12px;
+    gap: 10px;
+    border-radius: 14px;
+  }
+  .categoryIcon { width: 65px; height: 65px; }
+  .categoryEmoji { font-size: 32px; }
+  .categoryName { font-size: 13px; }
+
+  .marqueeTrack { gap: 16px; }
 }
