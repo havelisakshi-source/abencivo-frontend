@@ -81,7 +81,6 @@ function FAQ({items = FAQS}) {
    REAL PRODUCT CATALOGUE — from PRICE LIST ABENCIVO PDF
    ============================================================ */
 const REAL_PRODUCTS = [
-  // TABLETS
   {id:"t1", name:"ETOABN-TH", composition:"Etoricoxib 60mg + Thiocolchicoside 4mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:1850.00},
   {id:"t2", name:"ETOABN-120", composition:"Etoricoxib 120mg", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:1450.00},
   {id:"t3", name:"UROABN-300", composition:"Ursodeoxycholic acid 300mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x10 Alu", mrp:3500.00},
@@ -97,7 +96,6 @@ const REAL_PRODUCTS = [
   {id:"t13", name:"ABNSVIT", composition:"Vitamin-C 500mg + Vitamin D3 1000 IU + Zinc Sulphate", dosage_form:"Tablet", category:"Tablets", packing:"10x10 Alu-Alu", mrp:950.00},
   {id:"t14", name:"ABNFINE-250", composition:"Terbinafine 250mg", dosage_form:"Tablet", category:"Tablets", packing:"10x1x7 Blister", mrp:1650.00},
 
-  // CAPSULES
   {id:"c1", name:"PENCIV-DSR", composition:"Pantoprazole 40mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1200},
   {id:"c2", name:"REBCIV-DSR", composition:"Rabeprazole 20mg + Domperidone 30mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1250},
   {id:"c3", name:"ABNRAB-LSR", composition:"Rabeprazole 20mg + Levosulpride 75mg", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1450},
@@ -121,7 +119,6 @@ const REAL_PRODUCTS = [
   {id:"c21", name:"ABNPLEX-LB", composition:"Vitamin B Complex + Lactobacillus", dosage_form:"Capsule", category:"Capsules", packing:"10x15 Blister", mrp:750},
   {id:"c22", name:"ABNPRO", composition:"Prebiotic & Probiotic", dosage_form:"Capsule", category:"Capsules", packing:"10x10 Alu-Alu", mrp:1100},
 
-  // DRY SYRUP
   {id:"d1", name:"ABNMOX-CV-457", composition:"Amoxycillin 400mg + Clavulanic Acid 57mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:135},
   {id:"d2", name:"ABNMOX", composition:"Amoxycillin 200mg + Clavulanic Acid 28.5mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:60.61},
   {id:"d3", name:"FIXOBEN-DS", composition:"Cefixime 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:70},
@@ -133,24 +130,20 @@ const REAL_PRODUCTS = [
   {id:"d9", name:"FIXOPOD-CV", composition:"Cefpodoxime 50mg + Clavulanic Acid 28.5mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:155},
   {id:"d10", name:"ABNZID", composition:"Linezolid 100mg", dosage_form:"Dry Syrup", category:"Dry Syrup", packing:"30 ML", mrp:145},
 
-  // DROPS
   {id:"dr1", name:"ABNSVIT-L", composition:"Multivitamin & Multimineral Drop", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:55},
   {id:"dr2", name:"ABNZYME", composition:"Digestive Enzyme Drop", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:55},
   {id:"dr3", name:"ABNTONE", composition:"Ondansetron 2mg", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:60},
   {id:"dr4", name:"Vitamin D3", composition:"Vitamin D3 with Multivitamins", dosage_form:"Drops", category:"Drops", packing:"30 ML", mrp:110},
 
-  // OINTMENT
   {id:"o1", name:"ABNDAC-GEL", composition:"Diclofenac Gel", dosage_form:"Ointment", category:"Ointment", packing:"30 GM", mrp:95},
   {id:"o2", name:"ABNCON", composition:"Luliconazole 1% + Benzyl Alcohol 1%", dosage_form:"Ointment", category:"Ointment", packing:"20 GM", mrp:135},
   {id:"o3", name:"ABNCORT-K5", composition:"Clobetasol Propionate 0.05% + Neomycin Sulphate", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
   {id:"o4", name:"KETOABN", composition:"Ketoconazole 2%", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
   {id:"o5", name:"ITRABEN", composition:"Itraconazole 1% + Ofloxacin 0.75% + Ornidazole", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
 
-  // ENERGY DRINK
   {id:"e1", name:"ABNCIVO-ORS", composition:"ORS Drink", dosage_form:"Energy Drink", category:"Energy Drink", packing:"200 ML", mrp:55},
   {id:"e2", name:"ABNCIVO POWDER", composition:"Energy Drink Powder", dosage_form:"Energy Drink", category:"Energy Drink", packing:"105 GM", mrp:70},
 
-  // HERBAL
   {id:"h1", name:"ABNLIV-DS", composition:"Herbal Liver Tonic", dosage_form:"Herbal", category:"Herbal", packing:"225 ML", mrp:145},
   {id:"h2", name:"UROBEN", composition:"Herbal Uterine Tonic", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:135},
   {id:"h3", name:"ABNPURE", composition:"Blood Purifier Tonic", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:130},
@@ -163,7 +156,6 @@ const REAL_PRODUCTS = [
   {id:"h10", name:"ABNLIV-PLUS Caps", composition:"Liver & Enzyme Capsule", dosage_form:"Herbal", category:"Herbal", packing:"1 x 30 Bottle", mrp:390},
   {id:"h11", name:"PLETOABN-GROW", composition:"Carica Papaya Leaf + Neem + Tulsi + Giloy + Goat Milk", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:185},
 
-  // LIQUID
   {id:"l1", name:"ABNSVIT", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"100 ML", mrp:90},
   {id:"l2", name:"ABNSVIT-L", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
   {id:"l3", name:"ABNSVIT-PLUS", composition:"Lycopene 6% + Multivitamin", dosage_form:"Liquid", category:"Liquid", packing:"300 ML", mrp:195},
@@ -199,7 +191,6 @@ const REAL_PRODUCTS = [
   {id:"l33", name:"ABNZITH", composition:"Azithromycin 100mg", dosage_form:"Liquid", category:"Liquid", packing:"15 ML", mrp:40},
   {id:"l34", name:"ABNZITH", composition:"Azithromycin 200mg", dosage_form:"Liquid", category:"Liquid", packing:"15 ML", mrp:50},
 
-  // INJECTION
   {id:"i1", name:"ABNCEFT-250", composition:"Ceftriaxone 250mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:27},
   {id:"i2", name:"ABNCEFT-500", composition:"Ceftriaxone 500mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:49},
   {id:"i3", name:"ABNCEFT-1GM", composition:"Ceftriaxone 1gm", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:69},
@@ -713,7 +704,7 @@ function Quality({setPage}) {
 }
 
 /* ============================================================
-   PRODUCTS PAGE — Beautiful animated catalogue
+   PRODUCTS PAGE
    ============================================================ */
 function Products({setPage}) {
   const [items, setItems] = useState(demoProducts);
@@ -742,7 +733,6 @@ function Products({setPage}) {
 
   return (
     <main className="productsPage">
-      {/* Hero */}
       <section className="productsHero">
         <div className="productsHeroInner">
           <Reveal><span className="eyebrowRed">OUR CATALOGUE</span></Reveal>
@@ -764,7 +754,6 @@ function Products({setPage}) {
         </div>
       </section>
 
-      {/* Filters + Grid */}
       <section className="section productsGridSection">
         <Reveal className="productsFiltersRow">
           <input
@@ -796,12 +785,7 @@ function Products({setPage}) {
         ) : (
           <div className="productsGridNew">
             {filtered.map((p, i) => (
-              <Reveal
-                as="div"
-                key={p.id}
-                delay={(i % 12) * 50}
-                className="productCardNew"
-              >
+              <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
                 <div className="productCardTop">
                   <span className="productCardCat">{p.category}</span>
                   <span className="productCardForm">{p.dosage_form}</span>
@@ -849,23 +833,142 @@ function Products({setPage}) {
   );
 }
 
-function Contact(){const [form,setForm]=useState({name:"",phone:"",email:"",city:"",type:"General",message:""}),[msg,setMsg]=useState("");
- async function submit(e){e.preventDefault();setMsg("Sending...");try{const r=await fetch(API_BASE+"/enquiries",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify(form)});const d=await r.json();setMsg(r.ok?(d.message||"Enquiry submitted successfully."):"Unable to submit. Check your details.");}catch{setMsg("Backend not running. Start the server, then try again.");}}
- return (
-   <main>
-     <section className="pageHero compact heroFade liquidBg"><div className="liquidWave"></div><span className="eyebrow">GET IN TOUCH</span><h1>Let's talk.</h1><p>Use the form below. Submissions are saved in the database and can be emailed when SMTP is configured.</p></section>
-     <section className="section contactGrid">
-       <Reveal><h2>Contact details</h2><p>{COMPANY.address}</p><p>{COMPANY.phone}</p><p>{COMPANY.email}</p><a className="whatsappBig" href={`https://wa.me/${COMPANY.whatsapp}`} target="_blank">Chat on WhatsApp →</a></Reveal>
-       <Reveal delay={120} as="form" className="form" onSubmit={submit}>
-         {["name","phone","email","city"].map(k=><input required={k!=="email"} key={k} placeholder={k[0].toUpperCase()+k.slice(1)} value={form[k]} onChange={e=>setForm({...form,[k]:e.target.value})}/>)}
-         <select value={form.type} onChange={e=>setForm({...form,type:e.target.value})}><option>General</option><option>PCD Franchise</option><option>Product Enquiry</option><option>Other</option></select>
-         <textarea required placeholder="Message" rows="6" value={form.message} onChange={e=>setForm({...form,message:e.target.value})}/>
-         <button className="primary">Submit Enquiry</button>{msg && <p className="notice">{msg}</p>}
-       </Reveal>
-     </section>
-     <section className="section altBg"><Reveal><span className="eyebrow">BEFORE YOU WRITE IN</span></Reveal><Reveal delay={80}><h2>Common questions.</h2></Reveal><FAQ /></section>
-   </main>
- );
+/* ============================================================
+   CONTACT PAGE — Modern two-column layout with animations
+   ============================================================ */
+function Contact() {
+  const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
+  const [msg, setMsg] = useState("");
+  const [sending, setSending] = useState(false);
+
+  const handleChange = (e) => setForm((f) => ({ ...f, [e.target.name]: e.target.value }));
+
+  async function submit(e) {
+    e.preventDefault();
+    setSending(true);
+    setMsg("Sending...");
+    try {
+      const r = await fetch(API_BASE + "/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ ...form, type: "General", city: "" }),
+      });
+      const d = await r.json();
+      setMsg(r.ok ? (d.message || "Enquiry submitted successfully.") : "Unable to submit. Please check your details.");
+      if (r.ok) setForm({ name: "", phone: "", email: "", message: "" });
+    } catch {
+      setMsg("Backend not reachable. Please try again.");
+    }
+    setSending(false);
+  }
+
+  return (
+    <section className="contactModern">
+      {/* Ambient animated gradient orbs */}
+      <div className="contactOrb contactOrbA"></div>
+      <div className="contactOrb contactOrbB"></div>
+
+      <div className="contactModernGrid">
+        {/* LEFT — Text + Form */}
+        <Reveal className="contactLeft">
+          <span className="contactAccent">GET IN TOUCH</span>
+          <h2 className="contactTitle">
+            Let&apos;s talk<span className="contactDot">.</span>
+          </h2>
+          <p className="contactLead">
+            Use the form below. Submissions are saved in the database and can be emailed when SMTP
+            is configured. Our team is ready to assist you with your biotechnology inquiries.
+          </p>
+
+          <form onSubmit={submit} className="contactForm">
+            <div className="contactFormRow">
+              <input
+                name="name"
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Name"
+                required
+              />
+              <input
+                name="phone"
+                value={form.phone}
+                onChange={handleChange}
+                placeholder="Phone"
+                required
+              />
+            </div>
+            <input
+              name="email"
+              type="email"
+              value={form.email}
+              onChange={handleChange}
+              placeholder="Email"
+            />
+            <textarea
+              name="message"
+              value={form.message}
+              onChange={handleChange}
+              placeholder="Message"
+              rows={5}
+              required
+            />
+            <button type="submit" disabled={sending} className="primary contactSubmit">
+              {sending ? "Sending..." : "Submit Enquiry →"}
+            </button>
+            {msg && <p className="contactMsg">{msg}</p>}
+          </form>
+        </Reveal>
+
+        {/* RIGHT — Floating widget */}
+        <Reveal delay={200} className="contactRight">
+          <div className="contactWidget">
+            <div className="contactWidgetBadge">✦</div>
+
+            <h3 className="contactWidgetTitle">Reach us directly</h3>
+            <p className="contactWidgetLead">
+              Our team typically responds within one business day.
+            </p>
+
+            <div className="contactInfoList">
+              <div className="contactInfoRow">
+                <span className="contactInfoIcon">✉</span>
+                <div>
+                  <div className="contactInfoLabel">Email</div>
+                  <div className="contactInfoValue">{COMPANY?.email || "info@abencivo.com"}</div>
+                </div>
+              </div>
+              <div className="contactInfoRow">
+                <span className="contactInfoIcon">☎</span>
+                <div>
+                  <div className="contactInfoLabel">Phone</div>
+                  <div className="contactInfoValue">{COMPANY?.phone || "+91 XXXXXXXXXX"}</div>
+                </div>
+              </div>
+              <div className="contactInfoRow">
+                <span className="contactInfoIcon">📍</span>
+                <div>
+                  <div className="contactInfoLabel">Address</div>
+                  <div className="contactInfoValue">{COMPANY?.address || "Bilaspur, Haryana, India"}</div>
+                </div>
+              </div>
+              <div className="contactInfoRow">
+                <span className="contactInfoIcon">⏱</span>
+                <div>
+                  <div className="contactInfoLabel">Hours</div>
+                  <div className="contactInfoValue">Mon – Sat · 9:00 – 18:00 IST</div>
+                </div>
+              </div>
+            </div>
+
+            <div className="contactLiveRow">
+              <span className="contactLivePulse"></span>
+              <span className="contactLiveText">AVAILABLE TO HELP</span>
+            </div>
+          </div>
+        </Reveal>
+      </div>
+    </section>
+  );
 }
 
 /* ---------- ADMIN PANEL ---------- */
