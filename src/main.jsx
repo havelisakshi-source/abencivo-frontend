@@ -216,14 +216,15 @@ function Layout({children, setPage, page}) {
 
       <footer>
         <div className="footBrand">
-          <h3>{COMPANY.name}</h3><p>{COMPANY.tagline}</p><p>{COMPANY.address}</p>
-          <div className="footSocial">
-            <a href={COMPANY.social.linkedin} target="_blank">in</a>
-            <a href={COMPANY.social.instagram} target="_blank">ig</a>
-            <a href={COMPANY.social.facebook} target="_blank">fb</a>
-          </div>
+          <h3>{COMPANY.name}</h3>
+          <p>{COMPANY.tagline}</p>
+          <p>{COMPANY.address}</p>
         </div>
-        <div><h4>Contact</h4><p>{COMPANY.phone}</p><p>{COMPANY.email}</p></div>
+        <div>
+          <h4>Contact</h4>
+          <p>{COMPANY.phone}</p>
+          <p>{COMPANY.email}</p>
+        </div>
         <div>
           <h4>Quick Links</h4>
           {["products","pcd","quality"].map(p => (
@@ -231,9 +232,11 @@ function Layout({children, setPage, page}) {
           ))}
         </div>
         <div className="footNewsletter">
-          <h4>Stay Updated</h4><p>Get updates on new products and franchise openings.</p>
+          <h4>Stay Updated</h4>
+          <p>Get updates on new products and franchise openings.</p>
           <form className="newsletterForm" onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Your email" required /><button className="primary">Join</button>
+            <input type="email" placeholder="Your email" required />
+            <button className="primary">Join</button>
           </form>
         </div>
       </footer>
@@ -282,7 +285,11 @@ function Home({setPage}) {
         <div className="marqueeWrapper">
           <div className="marqueeTrack">
             {[...categories, ...categories].map((c, i) => (
-              <button className="categoryCard" onClick={() => setPage("products")} key={`${c.id}-${i}`}>
+              <button
+                className="categoryCard"
+                onClick={() => setPage("products", c.name)}
+                key={`${c.id}-${i}`}
+              >
                 <div className="categoryIcon">
                   <img
                     src={c.image_url || c.image || getCategoryImage(c.name)}
@@ -652,11 +659,15 @@ function Quality({setPage}) {
 }
 
 /* ---------- PRODUCTS PAGE ---------- */
-function Products({setPage}) {
+function Products({setPage, initialCategory = ""}) {
   const [items, setItems] = useState(demoProducts);
   const [categories, setCategories] = useState([]);
   const [q, setQ] = useState("");
-  const [cat, setCat] = useState("All");
+  const [cat, setCat] = useState(initialCategory || "All");
+
+  useEffect(() => {
+    setCat(initialCategory || "All");
+  }, [initialCategory]);
 
   useEffect(() => {
     fetch(API_BASE + "/products")
@@ -937,17 +948,14 @@ function Admin(){
  const headers={"Content-Type":"application/json","Authorization":"Bearer "+token};
  function flash(msg){setToast(msg);setTimeout(()=>setToast(""),2600)}
 
- // ---- RESILIENT LOAD: never fails if one endpoint is missing ----
  async function load(){
    if(!token)return;
    setLoadError("");
 
-   // Safe fetch that always resolves to either JSON data or an empty array
    async function safeFetch(url){
      try {
        const r = await fetch(url, {headers});
        if(r.status === 401){
-         // Auth failed — force logout
          localStorage.removeItem("ab_token");
          setToken("");
          return { unauthorized: true, data: [] };
@@ -969,10 +977,8 @@ function Admin(){
      safeFetch(API_BASE + "/admin/categories"),
    ]);
 
-   // If any returned 401, the setToken("") call inside safeFetch already ran
    if(p.unauthorized || e.unauthorized || l.unauthorized || c.unauthorized) return;
 
-   // Only show the "cannot reach" error if everything failed (real network issue)
    const allFailed =
      p.data.length === 0 && e.data.length === 0 && l.data.length === 0 && c.data.length === 0 &&
      (p.networkError || e.networkError || l.networkError || c.networkError);
@@ -1091,27 +1097,47 @@ function Admin(){
 
 /* ---------- APP ---------- */
 function App() {
-  const [page, setPage] = useState(location.hash.slice(1) || "home");
+  const [page, setPage] = useState("home");
+  const [categoryFilter, setCategoryFilter] = useState("");
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
-    const f = () => setPage(location.hash.slice(1) || "home");
-    addEventListener("hashchange", f);
-    return () => removeEventListener("hashchange", f);
+    const parseHash = () => {
+      const hash = location.hash.slice(1) || "home";
+      const [p, ...rest] = hash.split("/");
+      setPage(p);
+      if (p === "products" && rest.length) {
+        setCategoryFilter(decodeURIComponent(rest.join("/")));
+      } else {
+        setCategoryFilter("");
+      }
+    };
+    parseHash();
+    addEventListener("hashchange", parseHash);
+    return () => removeEventListener("hashchange", parseHash);
   }, []);
 
-  const go = p => { location.hash = p; setPage(p); };
+  const go = (p, category = "") => {
+    if (p === "products" && category) {
+      location.hash = `products/${encodeURIComponent(category)}`;
+    } else {
+      location.hash = p;
+    }
+    setPage(p);
+    setCategoryFilter(category);
+  };
 
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
 
-  let content = page === "home" ? <Home setPage={go} /> :
-                page === "products" ? <Products setPage={go} /> :
-                page === "contact" ? <Contact /> :
-                page === "admin" ? <Admin /> :
-                page === "about" ? <About setPage={go} /> :
-                page === "pcd" ? <PCDFranchise setPage={go} /> :
-                page === "quality" ? <Quality setPage={go} /> :
-                <Home setPage={go} />;
+  let content =
+    page === "home" ? <Home setPage={go} /> :
+    page === "products" ? <Products setPage={go} initialCategory={categoryFilter} /> :
+    page === "contact" ? <Contact /> :
+    page === "admin" ? <Admin /> :
+    page === "about" ? <About setPage={go} /> :
+    page === "pcd" ? <PCDFranchise setPage={go} /> :
+    page === "quality" ? <Quality setPage={go} /> :
+    <Home setPage={go} />;
 
   return page === "admin" ? content : (
     <Layout setPage={go} page={page}>
