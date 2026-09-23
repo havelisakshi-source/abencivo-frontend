@@ -94,7 +94,6 @@ function getCategoryImage(name = "") {
 }
 function getProductImage(category) { return getCategoryImage(category); }
 
-// NEW: Check if a category name matches our hardcoded images
 function isKnownCategory(name = "") {
   const key = name.toLowerCase();
   return ["tablet", "capsule", "dry syrup", "syrup", "liquid", "drop", "inject", "ointment", "topical", "herbal", "energy"].some(k => key.includes(k));
@@ -1216,7 +1215,6 @@ function Admin(){
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
          <div className="productFormGrid">
            <div className="uploadBox">
-             {/* FIXED: Admin Form Preview logic */}
              {catForm.icon_url ? (
                <img 
                  src={catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url} 
@@ -1237,14 +1235,13 @@ function Admin(){
            </div>
            <div className="productFields">
              <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
-             <input placeholder="Emoji Icon (e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/>
+             {/* REMOVED: Emoji Icon input field */}
              <input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/>
            </div>
          </div>
          <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
        </form>
        
-       {/* FIXED: Admin List logic - prioritizes custom image > hardcoded image > emoji */}
        <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
          <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
            {c.icon_url ? (
