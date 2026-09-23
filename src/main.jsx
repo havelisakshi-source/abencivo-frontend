@@ -158,7 +158,7 @@ function Layout({children, setPage, page}) {
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   
-  // NEW: Newsletter state
+  // Newsletter state
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterMsg, setNewsletterMsg] = useState("");
   const [newsletterLoading, setNewsletterLoading] = useState(false);
@@ -185,7 +185,7 @@ function Layout({children, setPage, page}) {
 
   const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
 
-  // NEW: Newsletter submit handler
+  // UPDATED: Newsletter submit handler with dummy phone and General type
   async function handleNewsletterSubmit(e) {
     e.preventDefault();
     if (!newsletterEmail) return;
@@ -200,20 +200,24 @@ function Layout({children, setPage, page}) {
         body: JSON.stringify({ 
           name: "Newsletter Subscriber", 
           email: newsletterEmail, 
+          phone: "0000000000", 
           message: "Subscribed via footer", 
-          type: "Newsletter",
-          phone: "",
+          type: "General", 
           city: ""
         }),
       });
+      
+      const data = await r.json(); 
       
       if (r.ok) {
         setNewsletterMsg("Thank you for subscribing!");
         setNewsletterEmail("");
       } else {
-        setNewsletterMsg("Something went wrong. Please try again.");
+        console.error("Backend error details:", data); 
+        setNewsletterMsg(`Error: ${data.message || "Something went wrong."}`);
       }
-    } catch {
+    } catch (err) {
+      console.error("Network error:", err);
       setNewsletterMsg("Network error. Please try again later.");
     }
     setNewsletterLoading(false);
@@ -288,7 +292,6 @@ function Layout({children, setPage, page}) {
           <h4>Stay Updated</h4>
           <p>Get updates on new products and franchise openings.</p>
           
-          {/* UPDATED FORM */}
           <form className="newsletterForm" onSubmit={handleNewsletterSubmit}>
             <input 
               type="email" 
@@ -561,12 +564,12 @@ function PCDFranchise({setPage}) {
         <div className="franchiseTickerTrack">
           {[
             "5+ YEARS OF EXPERIENCE",
-            "100+ PRODUCTS", // CHANGED HERE
+            "100+ PRODUCTS", 
             "MARKETING SUPPORT",
             "PAN-INDIA SUPPLY",
             "FRANCHISE OPPORTUNITIES",
             "5+ YEARS OF EXPERIENCE",
-            "100+ PRODUCTS", // CHANGED HERE
+            "100+ PRODUCTS", 
             "MARKETING SUPPORT",
             "PAN-INDIA SUPPLY",
             "FRANCHISE OPPORTUNITIES"
