@@ -94,7 +94,6 @@ function getCategoryImage(name = "") {
 }
 function getProductImage(category) { return getCategoryImage(category); }
 
-// Maps the display label shown on the category card → actual product "category" value in the DB
 function getFilterValue(displayName = "") {
   const key = displayName.toLowerCase();
   if (key.includes("tablet")) return "Tablets";
@@ -130,7 +129,7 @@ const REAL_PRODUCTS = [
   {id:"o1", name:"ABNDAC-GEL", composition:"Diclofenac Gel", dosage_form:"Ointment", category:"Ointment", packing:"30 GM", mrp:95},
   {id:"o4", name:"KETOABN", composition:"Ketoconazole 2%", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
   {id:"h1", name:"ABNLIV-DS", composition:"Herbal Liver Tonic", dosage_form:"Herbal", category:"Herbal", packing:"225 ML", mrp:145},
-  {id:"h7", name:"MINDSET", composition:"Compose Mind Health Solution", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:195},
+  {id:"h7", name:"MINDSET", composition:"Complete Mind Health Solution", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:195},
   {id:"l2", name:"ABNSVIT-L", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
   {id:"l17", name:"COFRIBS-AM", composition:"Terbutaline 1.25mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:65},
   {id:"i1", name:"ABNCEFT-250", composition:"Ceftriaxone 250mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:27},
@@ -139,7 +138,6 @@ const REAL_PRODUCTS = [
 ];
 const demoProducts = REAL_PRODUCTS;
 
-/* Display name is what the user sees; filterValue is what we pass to the products page */
 const FALLBACK_CATEGORIES = [
   {id:"f1", name:"Tablets",     filterValue:"Tablets",      image:"/images/categories/cat-tablets.png"},
   {id:"f2", name:"Capsules",    filterValue:"Capsules",     image:"/images/categories/cat-capsules.png"},
@@ -301,8 +299,6 @@ function Home({setPage}) {
         <div className="marqueeWrapper">
           <div className="marqueeTrack">
             {[...categories, ...categories].map((c, i) => {
-              // If the category came from the admin API, use its name as-is.
-              // If it's a fallback, use its filterValue (matching product category names).
               const targetFilter = c.filterValue || getFilterValue(c.name);
               return (
                 <button
@@ -312,7 +308,7 @@ function Home({setPage}) {
                 >
                   <div className="categoryIcon">
                     <img
-                      src={c.image_url || c.image || getCategoryImage(c.name)}
+                      src={c.icon_url || c.image_url || c.image || getCategoryImage(c.name)}
                       alt={c.name}
                       loading="lazy"
                       onError={(e) => { e.target.src = getCategoryImage(c.name); }}
@@ -514,12 +510,12 @@ function PCDFranchise({setPage}) {
         <div className="franchiseTickerTrack">
           {[
             "5+ YEARS OF EXPERIENCE",
-            "200+ PRODUCTS",
+            "100+ PRODUCTS", // CHANGED HERE
             "MARKETING SUPPORT",
             "PAN-INDIA SUPPLY",
             "FRANCHISE OPPORTUNITIES",
             "5+ YEARS OF EXPERIENCE",
-            "200+ PRODUCTS",
+            "100+ PRODUCTS", // CHANGED HERE
             "MARKETING SUPPORT",
             "PAN-INDIA SUPPLY",
             "FRANCHISE OPPORTUNITIES"
@@ -747,7 +743,7 @@ function Products({setPage, initialCategory = ""}) {
           </Reveal>
           <Reveal delay={160}>
             <p className="productsHeroLead">
-              Over 200+ products across tablets, capsules, syrups, injectables, ointments, herbal tonics, and more. Search or filter to find what you need.
+              Over 100+ products across tablets, capsules, syrups, injectables, ointments, herbal tonics, and more. Search or filter to find what you need.
             </p>
           </Reveal>
           <Reveal delay={220} className="productsHeroStats">
@@ -1108,7 +1104,16 @@ function Admin(){
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
        {tab==="dashboard"&&(<><div className="grid3"><div className="counterCard"><b>{data.products.length}</b><span>Active products</span></div><div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div><div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div></div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
        {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
-       {tab==="categories"&&(<><form className="adminForm" onSubmit={saveCat}>{editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}<div className="fieldRow"><input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/><input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/></div><input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/><button className="primary">{editingCatId?"Save changes":"Add Category"}</button></form><div className="table">{data.categories.map(c=>(<div className="row" key={c.id}><span style={{fontSize:"28px"}}>{c.icon||"💊"}</span><span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{data.categories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
+
+       {tab==="categories"&&(<><form className="adminForm" onSubmit={saveCat}>{editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}<div className="fieldRow"><input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/><input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/></div><input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/><button className="primary">{editingCatId?"Save changes":"Add Category"}</button></form><div className="table">{data.categories.map(c=>(<div className="row" key={c.id}>
+         <img
+           src={c.icon_url || getCategoryImage(c.name)}
+           alt={c.name}
+           style={{width:"44px", height:"44px", borderRadius:"50%", objectFit:"cover", border:"2px solid #f6d9dc", flexShrink:0, background:"#fff8f8"}}
+           onError={(e) => { e.target.src = getCategoryImage(c.name); }}
+         />
+         <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{data.categories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
+
        {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo">Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
        {tab==="logs"&&(<div className="table">{data.logs.map(x=>(<div className="row" key={x.id}><span>{x.action} · {x.entity} · #{x.entity_id}</span><small>{x.created_at}</small></div>))}</div>)}
      </section>
