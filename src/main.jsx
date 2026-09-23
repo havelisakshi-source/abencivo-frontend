@@ -366,8 +366,13 @@ function Home({setPage}) {
                   key={`${c.id}-${i}`}
                 >
                   <div className="categoryIcon">
+                    {/* FIXED: Correct URL logic for uploaded images from backend */}
                     <img
-                      src={c.icon_url || c.image_url || c.image || getCategoryImage(c.name)}
+                      src={
+                        c.icon_url
+                          ? (c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url)
+                          : c.image_url || c.image || getCategoryImage(c.name)
+                      }
                       alt={c.name}
                       loading="lazy"
                       onError={(e) => { e.target.src = getCategoryImage(c.name); }}
