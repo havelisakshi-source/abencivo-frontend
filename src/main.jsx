@@ -77,7 +77,7 @@ function FAQ({items = FAQS}) {
   return <div className="faqList">{items.map((f, i) => (<Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}><button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}><span>{f.q}</span><span className="faqIcon">{open === i ? "−" : "+"}</span></button>{open === i && <p className="faqA">{f.a}</p>}</Reveal>))}</div>;
 }
 
-/* ---------- Category Image helper ---------- */
+/* ---------- Category Image + Filter Value helpers ---------- */
 function getCategoryImage(name = "") {
   const key = name.toLowerCase();
   if (key.includes("tablet")) return "/images/categories/cat-tablets.png";
@@ -93,6 +93,21 @@ function getCategoryImage(name = "") {
   return "/images/categories/cat-tablets.png";
 }
 function getProductImage(category) { return getCategoryImage(category); }
+
+// Maps the display label shown on the category card → actual product "category" value in the DB
+function getFilterValue(displayName = "") {
+  const key = displayName.toLowerCase();
+  if (key.includes("tablet")) return "Tablets";
+  if (key.includes("capsule")) return "Capsules";
+  if (key.includes("dry syrup")) return "Dry Syrup";
+  if (key.includes("syrup") || key.includes("liquid")) return "Liquid";
+  if (key.includes("drop")) return "Drops";
+  if (key.includes("inject")) return "Injection";
+  if (key.includes("ointment") || key.includes("topical")) return "Ointment";
+  if (key.includes("herbal")) return "Herbal";
+  if (key.includes("energy")) return "Energy Drink";
+  return displayName;
+}
 
 /* ============================================================
    REAL PRODUCT CATALOGUE — fallback
@@ -115,7 +130,7 @@ const REAL_PRODUCTS = [
   {id:"o1", name:"ABNDAC-GEL", composition:"Diclofenac Gel", dosage_form:"Ointment", category:"Ointment", packing:"30 GM", mrp:95},
   {id:"o4", name:"KETOABN", composition:"Ketoconazole 2%", dosage_form:"Ointment", category:"Ointment", packing:"15 GM", mrp:125},
   {id:"h1", name:"ABNLIV-DS", composition:"Herbal Liver Tonic", dosage_form:"Herbal", category:"Herbal", packing:"225 ML", mrp:145},
-  {id:"h7", name:"MINDSET", composition:"Complete Mind Health Solution", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:195},
+  {id:"h7", name:"MINDSET", composition:"Compose Mind Health Solution", dosage_form:"Herbal", category:"Herbal", packing:"200 ML", mrp:195},
   {id:"l2", name:"ABNSVIT-L", composition:"Lycopene 6% + Multivitamin & Multimineral", dosage_form:"Liquid", category:"Liquid", packing:"200 ML", mrp:145},
   {id:"l17", name:"COFRIBS-AM", composition:"Terbutaline 1.25mg + Ambroxol 15mg + Guaiphenesin", dosage_form:"Liquid", category:"Liquid", packing:"60 ML", mrp:65},
   {id:"i1", name:"ABNCEFT-250", composition:"Ceftriaxone 250mg", dosage_form:"Injection", category:"Injection", packing:"1x1 Vial", mrp:27},
@@ -124,14 +139,15 @@ const REAL_PRODUCTS = [
 ];
 const demoProducts = REAL_PRODUCTS;
 
+/* Display name is what the user sees; filterValue is what we pass to the products page */
 const FALLBACK_CATEGORIES = [
-  {id:"f1", name:"Tablets",     image:"/images/categories/cat-tablets.png"},
-  {id:"f2", name:"Capsules",    image:"/images/categories/cat-capsules.png"},
-  {id:"f3", name:"Syrups",      image:"/images/categories/cat-syrups.png"},
-  {id:"f4", name:"Dry Syrup",   image:"/images/categories/cat-dry-syrup.png"},
-  {id:"f5", name:"Drops",       image:"/images/categories/cat-drops.png"},
-  {id:"f6", name:"Injections",  image:"/images/categories/cat-injections.png"},
-  {id:"f7", name:"Topical",     image:"/images/categories/cat-topical.png"},
+  {id:"f1", name:"Tablets",     filterValue:"Tablets",      image:"/images/categories/cat-tablets.png"},
+  {id:"f2", name:"Capsules",    filterValue:"Capsules",     image:"/images/categories/cat-capsules.png"},
+  {id:"f3", name:"Syrups",      filterValue:"Liquid",       image:"/images/categories/cat-syrups.png"},
+  {id:"f4", name:"Dry Syrup",   filterValue:"Dry Syrup",    image:"/images/categories/cat-dry-syrup.png"},
+  {id:"f5", name:"Drops",       filterValue:"Drops",        image:"/images/categories/cat-drops.png"},
+  {id:"f6", name:"Injections",  filterValue:"Injection",    image:"/images/categories/cat-injections.png"},
+  {id:"f7", name:"Topical",     filterValue:"Ointment",     image:"/images/categories/cat-topical.png"},
 ];
 
 const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
@@ -284,23 +300,28 @@ function Home({setPage}) {
         <h2 className="categoryHeading">Product Categories</h2>
         <div className="marqueeWrapper">
           <div className="marqueeTrack">
-            {[...categories, ...categories].map((c, i) => (
-              <button
-                className="categoryCard"
-                onClick={() => setPage("products", c.name)}
-                key={`${c.id}-${i}`}
-              >
-                <div className="categoryIcon">
-                  <img
-                    src={c.image_url || c.image || getCategoryImage(c.name)}
-                    alt={c.name}
-                    loading="lazy"
-                    onError={(e) => { e.target.src = getCategoryImage(c.name); }}
-                  />
-                </div>
-                <span className="categoryName">{c.name}</span>
-              </button>
-            ))}
+            {[...categories, ...categories].map((c, i) => {
+              // If the category came from the admin API, use its name as-is.
+              // If it's a fallback, use its filterValue (matching product category names).
+              const targetFilter = c.filterValue || getFilterValue(c.name);
+              return (
+                <button
+                  className="categoryCard"
+                  onClick={() => setPage("products", targetFilter)}
+                  key={`${c.id}-${i}`}
+                >
+                  <div className="categoryIcon">
+                    <img
+                      src={c.image_url || c.image || getCategoryImage(c.name)}
+                      alt={c.name}
+                      loading="lazy"
+                      onError={(e) => { e.target.src = getCategoryImage(c.name); }}
+                    />
+                  </div>
+                  <span className="categoryName">{c.name}</span>
+                </button>
+              );
+            })}
           </div>
         </div>
       </section>
