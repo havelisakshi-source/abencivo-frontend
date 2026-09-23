@@ -157,6 +157,11 @@ function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
+  
+  // NEW: Newsletter state
+  const [newsletterEmail, setNewsletterEmail] = useState("");
+  const [newsletterMsg, setNewsletterMsg] = useState("");
+  const [newsletterLoading, setNewsletterLoading] = useState(false);
 
   useEffect(() => {
     let lastY = window.scrollY;
@@ -179,6 +184,40 @@ function Layout({children, setPage, page}) {
   }, [menuOpen]);
 
   const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
+
+  // NEW: Newsletter submit handler
+  async function handleNewsletterSubmit(e) {
+    e.preventDefault();
+    if (!newsletterEmail) return;
+    
+    setNewsletterLoading(true);
+    setNewsletterMsg("");
+    
+    try {
+      const r = await fetch(API_BASE + "/enquiries", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ 
+          name: "Newsletter Subscriber", 
+          email: newsletterEmail, 
+          message: "Subscribed via footer", 
+          type: "Newsletter",
+          phone: "",
+          city: ""
+        }),
+      });
+      
+      if (r.ok) {
+        setNewsletterMsg("Thank you for subscribing!");
+        setNewsletterEmail("");
+      } else {
+        setNewsletterMsg("Something went wrong. Please try again.");
+      }
+    } catch {
+      setNewsletterMsg("Network error. Please try again later.");
+    }
+    setNewsletterLoading(false);
+  }
 
   return (
     <>
@@ -248,10 +287,22 @@ function Layout({children, setPage, page}) {
         <div className="footNewsletter">
           <h4>Stay Updated</h4>
           <p>Get updates on new products and franchise openings.</p>
-          <form className="newsletterForm" onSubmit={e => e.preventDefault()}>
-            <input type="email" placeholder="Your email" required />
-            <button className="primary">Join</button>
+          
+          {/* UPDATED FORM */}
+          <form className="newsletterForm" onSubmit={handleNewsletterSubmit}>
+            <input 
+              type="email" 
+              placeholder="Your email" 
+              required 
+              value={newsletterEmail}
+              onChange={(e) => setNewsletterEmail(e.target.value)}
+              disabled={newsletterLoading}
+            />
+            <button className="primary" disabled={newsletterLoading}>
+              {newsletterLoading ? "..." : "Join"}
+            </button>
           </form>
+          {newsletterMsg && <p className="newsletterMsg" style={{fontSize: "12px", marginTop: "8px", color: "#f5d7da"}}>{newsletterMsg}</p>}
         </div>
       </footer>
     </>
