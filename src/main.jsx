@@ -1179,12 +1179,12 @@ function Admin(){
    </main>
  );
 
- // FIXED: Filter out inactive products (active === 0 or active === false)
+ // Filter out inactive products
  const filteredProducts = data.products
    .filter(p => p.active !== 0 && p.active !== false)
    .filter(p => (p.name+p.category+p.dosage_form).toLowerCase().includes(productQuery.toLowerCase()));
 
- // FIXED: Filter out inactive categories (active === 0 or active === false)
+ // Filter out inactive categories
  const filteredCategories = data.categories.filter(c => c.active !== 0 && c.active !== false);
 
  const filteredEnquiries=data.enquiries.filter(x=>(x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()));
@@ -1229,13 +1229,20 @@ function Admin(){
          <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
        </form>
        
+       {/* UPDATED: Show emoji fallback if icon_url is missing */}
        <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
-         <img
-           src={c.icon_url || getCategoryImage(c.name)}
-           alt={c.name}
-           style={{width:"44px", height:"44px", borderRadius:"50%", objectFit:"cover", border:"2px solid #f6d9dc", flexShrink:0, background:"#fff8f8"}}
-           onError={(e) => { e.target.src = getCategoryImage(c.name); }}
-         />
+         <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
+           {c.icon_url ? (
+             <img
+               src={c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url}
+               alt={c.name}
+               style={{width:"100%", height:"100%", objectFit:"cover"}}
+               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
+             />
+           ) : (
+             <span>{c.icon || "💊"}</span>
+           )}
+         </div>
          <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
        {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo">Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
