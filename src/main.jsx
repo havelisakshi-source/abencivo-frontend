@@ -1010,7 +1010,7 @@ function Admin(){
  const [catForm,setCatForm]=useState(EMPTY_CATEGORY);
  const [editingCatId,setEditingCatId]=useState(null);
  const [uploading,setUploading]=useState(false);
- const [uploadingCat,setUploadingCat]=useState(false); // NEW: Category upload state
+ const [uploadingCat,setUploadingCat]=useState(false); 
  const [toast,setToast]=useState("");
  const [productQuery,setProductQuery]=useState("");
  const [enquiryQuery,setEnquiryQuery]=useState("");
@@ -1090,7 +1090,6 @@ function Admin(){
    setUploading(false);
  }
 
- // NEW: Category image upload handler
  async function handleCatFile(e){
    const file=e.target.files[0];if(!file)return;
    setUploadingCat(true);
@@ -1116,9 +1115,23 @@ function Admin(){
    cancelEdit();load();
  }
 
+ // FIXED: Added error handling and logging for Product Delete
  async function del(id){
-   await fetch(API_BASE+"/admin/products/"+id,{method:"DELETE",headers});
-   setConfirmDeleteId(null);flash("Product removed");load();
+   try {
+     const r = await fetch(API_BASE+"/admin/products/"+id,{method:"DELETE",headers});
+     if(r.ok) {
+       setConfirmDeleteId(null);
+       flash("Product removed");
+       load();
+     } else {
+       const data = await r.json().catch(()=>({}));
+       console.error("Delete product failed:", r.status, data);
+       flash(`Error: ${data.message || r.statusText || "Could not delete"}`);
+     }
+   } catch (err) {
+     console.error("Network error during delete:", err);
+     flash("Network error. Please try again.");
+   }
  }
 
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
@@ -1136,9 +1149,23 @@ function Admin(){
    cancelEditCat();load();
  }
 
+ // FIXED: Added error handling and logging for Category Delete
  async function delCat(id){
-   await fetch(API_BASE+"/admin/categories/"+id,{method:"DELETE",headers});
-   setConfirmDeleteCatId(null);flash("Category removed");load();
+   try {
+     const r = await fetch(API_BASE+"/admin/categories/"+id,{method:"DELETE",headers});
+     if(r.ok) {
+       setConfirmDeleteCatId(null);
+       flash("Category removed");
+       load();
+     } else {
+       const data = await r.json().catch(()=>({}));
+       console.error("Delete category failed:", r.status, data);
+       flash(`Error: ${data.message || r.statusText || "Could not delete category"}`);
+     }
+   } catch (err) {
+     console.error("Network error during category delete:", err);
+     flash("Network error. Please try again.");
+   }
  }
 
  if(!token)return(
@@ -1174,7 +1201,6 @@ function Admin(){
        
        {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
 
-       {/* UPDATED: Categories Tab with Image Upload */}
        {tab==="categories"&&(<><form className="adminForm productForm" onSubmit={saveCat}>
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
          <div className="productFormGrid">
