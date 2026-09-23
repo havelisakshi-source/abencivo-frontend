@@ -185,7 +185,7 @@ function Layout({children, setPage, page}) {
 
   const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
 
-  // UPDATED: Newsletter submit handler with dummy phone and General type
+  // Newsletter submit handler
   async function handleNewsletterSubmit(e) {
     e.preventDefault();
     if (!newsletterEmail) return;
@@ -1010,6 +1010,7 @@ function Admin(){
  const [catForm,setCatForm]=useState(EMPTY_CATEGORY);
  const [editingCatId,setEditingCatId]=useState(null);
  const [uploading,setUploading]=useState(false);
+ const [uploadingCat,setUploadingCat]=useState(false); // NEW: Category upload state
  const [toast,setToast]=useState("");
  const [productQuery,setProductQuery]=useState("");
  const [enquiryQuery,setEnquiryQuery]=useState("");
@@ -1089,6 +1090,19 @@ function Admin(){
    setUploading(false);
  }
 
+ // NEW: Category image upload handler
+ async function handleCatFile(e){
+   const file=e.target.files[0];if(!file)return;
+   setUploadingCat(true);
+   try{
+     const fd=new FormData();fd.append("file",file);
+     const r=await fetch(API_BASE+"/admin/upload",{method:"POST",headers:{"Authorization":"Bearer "+token},body:fd});
+     const d=await r.json();
+     if(r.ok)setCatForm(f=>({...f,icon_url:d.url}));else flash(d.message||"Upload failed");
+   }catch{flash("Upload failed.")}
+   setUploadingCat(false);
+ }
+
  function startEdit(p){setEditingId(p.id);setForm({name:p.name,composition:p.composition||"",dosage_form:p.dosage_form||"Tablet",category:p.category||"General",image_url:p.image_url||"/products/product-placeholder.svg",description:p.description||""});setTab("products");window.scrollTo({top:0,behavior:"smooth"})}
  function cancelEdit(){setEditingId(null);setForm(EMPTY_PRODUCT)}
 
@@ -1157,9 +1171,34 @@ function Admin(){
        <div className="adminTop"><div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>{toast&&<span className="adminToast">{toast}</span>}</div>
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
        {tab==="dashboard"&&(<><div className="grid3"><div className="counterCard"><b>{data.products.length}</b><span>Active products</span></div><div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div><div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div></div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
+       
        {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
 
-       {tab==="categories"&&(<><form className="adminForm" onSubmit={saveCat}>{editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}<div className="fieldRow"><input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/><input placeholder="Icon (emoji, e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/></div><input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/><button className="primary">{editingCatId?"Save changes":"Add Category"}</button></form><div className="table">{data.categories.map(c=>(<div className="row" key={c.id}>
+       {/* UPDATED: Categories Tab with Image Upload */}
+       {tab==="categories"&&(<><form className="adminForm productForm" onSubmit={saveCat}>
+         {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
+         <div className="productFormGrid">
+           <div className="uploadBox">
+             <img 
+               src={catForm.icon_url ? (catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url) : "/images/categories/cat-tablets.png"} 
+               alt="Category Icon" 
+               onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} 
+             />
+             <label className="uploadLabel">
+               {uploadingCat ? "Uploading..." : "Change Image"}
+               <input type="file" accept="image/*" hidden onChange={handleCatFile} disabled={uploadingCat}/>
+             </label>
+           </div>
+           <div className="productFields">
+             <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
+             <input placeholder="Emoji Icon (e.g. 💊)" value={catForm.icon} onChange={e=>setCatForm({...catForm,icon:e.target.value})}/>
+             <input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/>
+           </div>
+         </div>
+         <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
+       </form>
+       
+       <div className="table">{data.categories.map(c=>(<div className="row" key={c.id}>
          <img
            src={c.icon_url || getCategoryImage(c.name)}
            alt={c.name}
