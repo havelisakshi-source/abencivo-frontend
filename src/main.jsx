@@ -741,7 +741,7 @@ function Quality({setPage}) {
 /* ---------- PRODUCTS PAGE ---------- */
 function Products({setPage, initialCategory = ""}) {
   const [items, setItems] = useState(demoProducts);
-  const [categories, setCategories] = useState([]); // Stores full category objects now
+  const [categories, setCategories] = useState([]); 
   const [q, setQ] = useState("");
   const [cat, setCat] = useState(initialCategory || "All");
 
@@ -758,7 +758,7 @@ function Products({setPage, initialCategory = ""}) {
   useEffect(() => {
     fetch(API_BASE + "/categories")
       .then(r => r.ok ? r.json() : [])
-      .then(x => { if (Array.isArray(x)) setCategories(x); }) // Keep full objects!
+      .then(x => { if (Array.isArray(x)) setCategories(x); }) 
       .catch(() => {});
   }, []);
 
@@ -871,13 +871,17 @@ function Products({setPage, initialCategory = ""}) {
           <div className="productsGridNew">
             {filtered.map((p, i) => (
               <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
-                {/* ADDED: Product Image Container */}
+                {/* FIXED: Product Image Container - no category fallback */}
                 <div className="productCardImageWrap" style={{ height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '12px', background: '#fff8f8', borderRadius: '8px', overflow: 'hidden' }}>
                   <img
-                    src={p.image_url ? (p.image_url.startsWith("/uploads") ? API_BASE.replace("/api","") + p.image_url : p.image_url) : getProductImage(p.category)}
+                    src={
+                      p.image_url 
+                        ? (p.image_url.startsWith("/uploads") ? API_BASE.replace("/api","") + p.image_url : p.image_url) 
+                        : "/products/product-placeholder.svg"
+                    }
                     alt={p.name}
                     style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
-                    onError={(e) => { e.target.src = getProductImage(p.category); }}
+                    onError={(e) => { e.target.src = "/products/product-placeholder.svg"; }}
                   />
                 </div>
 
