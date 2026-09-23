@@ -87,7 +87,7 @@ function getCategoryImage(name = "") {
   if (key.includes("liquid")) return "/images/categories/cat-syrups.png";
   if (key.includes("drop")) return "/images/categories/cat-drops.png";
   if (key.includes("inject")) return "/images/categories/cat-injections.png";
-  if (key.includes("ointment") || key.includes("topical")) return "/images/categories/cat-topical.png";
+  if (key.includes("ointment") || key.includes("topical") || key.includes("cream")) return "/images/categories/cat-topical.png";
   if (key.includes("herbal")) return "/images/categories/cat-syrups.png";
   if (key.includes("energy")) return "/images/categories/cat-syrups.png";
   return "/images/categories/cat-tablets.png";
@@ -96,7 +96,7 @@ function getProductImage(category) { return getCategoryImage(category); }
 
 function isKnownCategory(name = "") {
   const key = name.toLowerCase();
-  return ["tablet", "capsule", "dry syrup", "syrup", "liquid", "drop", "inject", "ointment", "topical", "herbal", "energy"].some(k => key.includes(k));
+  return ["tablet", "capsule", "dry syrup", "syrup", "liquid", "drop", "inject", "ointment", "topical", "herbal", "energy", "cream"].some(k => key.includes(k));
 }
 
 function getFilterValue(displayName = "") {
@@ -107,7 +107,7 @@ function getFilterValue(displayName = "") {
   if (key.includes("syrup") || key.includes("liquid")) return "Liquid";
   if (key.includes("drop")) return "Drops";
   if (key.includes("inject")) return "Injection";
-  if (key.includes("ointment") || key.includes("topical")) return "Ointment";
+  if (key.includes("ointment") || key.includes("topical") || key.includes("cream")) return "Ointment";
   if (key.includes("herbal")) return "Herbal";
   if (key.includes("energy")) return "Energy Drink";
   return displayName;
@@ -1235,7 +1235,6 @@ function Admin(){
            </div>
            <div className="productFields">
              <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
-             {/* REMOVED: Emoji Icon input field */}
              <input placeholder="Sort order (0 = first)" type="number" value={catForm.sort_order} onChange={e=>setCatForm({...catForm,sort_order:Number(e.target.value)})}/>
            </div>
          </div>
