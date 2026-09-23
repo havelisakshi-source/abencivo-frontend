@@ -366,7 +366,6 @@ function Home({setPage}) {
                   key={`${c.id}-${i}`}
                 >
                   <div className="categoryIcon">
-                    {/* FIXED: Correct URL logic for uploaded images from backend */}
                     <img
                       src={
                         c.icon_url
@@ -742,7 +741,7 @@ function Quality({setPage}) {
 /* ---------- PRODUCTS PAGE ---------- */
 function Products({setPage, initialCategory = ""}) {
   const [items, setItems] = useState(demoProducts);
-  const [categories, setCategories] = useState([]);
+  const [categories, setCategories] = useState([]); // Stores full category objects now
   const [q, setQ] = useState("");
   const [cat, setCat] = useState(initialCategory || "All");
 
@@ -759,11 +758,17 @@ function Products({setPage, initialCategory = ""}) {
   useEffect(() => {
     fetch(API_BASE + "/categories")
       .then(r => r.ok ? r.json() : [])
-      .then(x => { if (Array.isArray(x)) setCategories(x.map(c => c.name)); })
+      .then(x => { if (Array.isArray(x)) setCategories(x); }) // Keep full objects!
       .catch(() => {});
   }, []);
 
-  const cats = ["All", ...new Set([...items.map(x => x.category).filter(Boolean), ...categories])];
+  // Create a map of category names to their icon URLs
+  const catMap = {};
+  categories.forEach(c => { catMap[c.name] = c.icon_url; });
+
+  // Build unique list of category names
+  const catNames = ["All", ...new Set([...items.map(x => x.category).filter(Boolean), ...categories.map(c => c.name)])];
+
   const filtered = items.filter(x =>
     (cat === "All" || x.category === cat) &&
     (`${x.name} ${x.composition} ${x.category} ${x.dosage_form || ""}`.toLowerCase().includes(q.toLowerCase()))
@@ -812,7 +817,7 @@ function Products({setPage, initialCategory = ""}) {
           </Reveal>
           <Reveal delay={220} className="productsHeroStats">
             <span><b>{items.length}+</b> Products</span>
-            <span><b>{cats.length - 1}</b> Categories</span>
+            <span><b>{catNames.length - 1}</b> Categories</span>
             <span><b>Pan-India</b> Supply</span>
           </Reveal>
         </div>
@@ -829,15 +834,31 @@ function Products({setPage, initialCategory = ""}) {
         </Reveal>
 
         <Reveal delay={100} className="productsCategoryRow">
-          {cats.map(c => (
-            <button
-              key={c}
-              className={`productsCatBtn ${cat === c ? "active" : ""}`}
-              onClick={() => setCat(c)}
-            >
-              {c}
-            </button>
-          ))}
+          {catNames.map(c => {
+            const iconUrl = catMap[c];
+            const imgSrc = iconUrl
+              ? (iconUrl.startsWith("/uploads") ? API_BASE.replace("/api","") + iconUrl : iconUrl)
+              : (c === "All" ? null : getCategoryImage(c));
+
+            return (
+              <button
+                key={c}
+                className={`productsCatBtn ${cat === c ? "active" : ""}`}
+                onClick={() => setCat(c)}
+                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
+              >
+                {imgSrc && (
+                  <img 
+                    src={imgSrc} 
+                    alt={c} 
+                    style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} 
+                    onError={(e) => { e.target.style.display='none'; }}
+                  />
+                )}
+                {c}
+              </button>
+            );
+          })}
         </Reveal>
 
         {filtered.length === 0 ? (
@@ -850,6 +871,16 @@ function Products({setPage, initialCategory = ""}) {
           <div className="productsGridNew">
             {filtered.map((p, i) => (
               <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
+                {/* ADDED: Product Image Container */}
+                <div className="productCardImageWrap" style={{ height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '12px', background: '#fff8f8', borderRadius: '8px', overflow: 'hidden' }}>
+                  <img
+                    src={p.image_url ? (p.image_url.startsWith("/uploads") ? API_BASE.replace("/api","") + p.image_url : p.image_url) : getProductImage(p.category)}
+                    alt={p.name}
+                    style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
+                    onError={(e) => { e.target.src = getProductImage(p.category); }}
+                  />
+                </div>
+
                 <div className="productCardTop">
                   <span className="productCardCat">{p.category}</span>
                   <span className="productCardForm">{p.dosage_form}</span>
