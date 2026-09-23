@@ -94,6 +94,12 @@ function getCategoryImage(name = "") {
 }
 function getProductImage(category) { return getCategoryImage(category); }
 
+// NEW: Check if a category name matches our hardcoded images
+function isKnownCategory(name = "") {
+  const key = name.toLowerCase();
+  return ["tablet", "capsule", "dry syrup", "syrup", "liquid", "drop", "inject", "ointment", "topical", "herbal", "energy"].some(k => key.includes(k));
+}
+
 function getFilterValue(displayName = "") {
   const key = displayName.toLowerCase();
   if (key.includes("tablet")) return "Tablets";
@@ -1210,11 +1216,20 @@ function Admin(){
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
          <div className="productFormGrid">
            <div className="uploadBox">
-             <img 
-               src={catForm.icon_url ? (catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url) : "/images/categories/cat-tablets.png"} 
-               alt="Category Icon" 
-               onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} 
-             />
+             {/* FIXED: Admin Form Preview logic */}
+             {catForm.icon_url ? (
+               <img 
+                 src={catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url} 
+                 alt="Category Icon" 
+                 onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} 
+               />
+             ) : isKnownCategory(catForm.name) ? (
+               <img src={getCategoryImage(catForm.name)} alt="Category Icon" />
+             ) : (
+               <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%", height:"100%", fontSize:"40px", background:"#fff8f8"}}>
+                 {catForm.icon || "💊"}
+               </div>
+             )}
              <label className="uploadLabel">
                {uploadingCat ? "Uploading..." : "Change Image"}
                <input type="file" accept="image/*" hidden onChange={handleCatFile} disabled={uploadingCat}/>
@@ -1229,7 +1244,7 @@ function Admin(){
          <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
        </form>
        
-       {/* UPDATED: Show emoji fallback if icon_url is missing */}
+       {/* FIXED: Admin List logic - prioritizes custom image > hardcoded image > emoji */}
        <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
          <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
            {c.icon_url ? (
@@ -1237,7 +1252,14 @@ function Admin(){
                src={c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url}
                alt={c.name}
                style={{width:"100%", height:"100%", objectFit:"cover"}}
-               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='block'; }}
+               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
+             />
+           ) : isKnownCategory(c.name) ? (
+             <img
+               src={getCategoryImage(c.name)}
+               alt={c.name}
+               style={{width:"100%", height:"100%", objectFit:"cover"}}
+               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
              />
            ) : (
              <span>{c.icon || "💊"}</span>
