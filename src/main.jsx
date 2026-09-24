@@ -1352,9 +1352,86 @@ function Admin(){
          </div>
          <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
-       {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo"><b>Date: {formatDateTime(x.created_at)}</b> | Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
+       {/* UPDATED: Enquiries Tab with Table Layout */}
+       {tab==="enquiries"&&(
+         <>
+           <input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/>
+           <div className="tableContainer" style={{overflowX: 'auto', marginTop: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
+             <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
+               <thead>
+                 <tr style={{background: '#fcfcfc', borderBottom: '2px solid #eee'}}>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Date & Time</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Customer</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Contact Info</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Message</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Status</th>
+                 </tr>
+               </thead>
+               <tbody>
+                 {filteredEnquiries.map(x => (
+                   <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0'}}>
+                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
+                       {formatDateTime(x.created_at)}
+                     </td>
+                     <td style={{padding: '16px'}}>
+                       <div style={{fontWeight: '600', color: '#333'}}>{x.name}</div>
+                       <span className="typeBadge" style={{marginTop: '4px', display: 'inline-block'}}>{x.type}</span>
+                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>
+                       <div>{x.phone}</div>
+                       <div style={{fontSize: '12px', color: '#888'}}>{x.email}</div>
+                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555', maxWidth: '250px'}}>
+                       {x.message}
+                       <div style={{fontSize: '11px', color: '#999', marginTop: '4px'}}>Assigned: {x.assigned_to || "Unassigned"}</div>
+                     </td>
+                     <td style={{padding: '16px'}}>
+                       <select 
+                         className="statusSelect" 
+                         style={{color: STATUS_COLORS[x.status]||"#4b0d12", padding: '6px', borderRadius: '6px', border: '1px solid #ddd', width: '100%', maxWidth: '130px'}} 
+                         value={x.status} 
+                         onChange={e=>status(x.id,e.target.value)}
+                       >
+                         {ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}
+                       </select>
+                     </td>
+                   </tr>
+                 ))}
+               </tbody>
+             </table>
+             {filteredEnquiries.length === 0 && <div style={{padding: '24px', textAlign: 'center', color: '#888'}}>No enquiries match your search.</div>}
+           </div>
+         </>
+       )}
        
-       {tab==="logs"&&(<div className="table">{sortedLogs.map(x=>(<div className="row" key={x.id}><span>{x.action} · {x.entity} · #{x.entity_id}</span><small><b>{formatDateTime(x.created_at)}</b></small></div>))}{sortedLogs.length===0&&<div className="row emptyRow">No activity logs found.</div>}</div>)}
+       {/* UPDATED: Activity Log Tab with Table Layout */}
+       {tab==="logs"&&(
+         <div className="tableContainer" style={{overflowX: 'auto', marginTop: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
+           <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
+             <thead>
+               <tr style={{background: '#fcfcfc', borderBottom: '2px solid #eee'}}>
+                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Date & Time</th>
+                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Action</th>
+                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity</th>
+                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity ID</th>
+               </tr>
+             </thead>
+             <tbody>
+               {sortedLogs.map(x => (
+                 <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0'}}>
+                   <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
+                     {formatDateTime(x.created_at)}
+                   </td>
+                   <td style={{padding: '16px', fontSize: '14px', color: '#333'}}>{x.action}</td>
+                   <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>{x.entity}</td>
+                   <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>#{x.entity_id}</td>
+                 </tr>
+               ))}
+             </tbody>
+           </table>
+           {sortedLogs.length === 0 && <div style={{padding: '24px', textAlign: 'center', color: '#888'}}>No activity logs found.</div>}
+         </div>
+       )}
      </section>
    </main>
  );
