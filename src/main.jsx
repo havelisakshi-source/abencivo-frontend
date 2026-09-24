@@ -155,6 +155,20 @@ const FALLBACK_CATEGORIES = [
 
 const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
 
+/* ---------- Helper to format Date and Time ---------- */
+function formatDateTime(dateString) {
+  if (!dateString) return "N/A";
+  try {
+    const date = new Date(dateString);
+    return date.toLocaleString('en-IN', {
+      day: '2-digit', month: 'short', year: 'numeric',
+      hour: '2-digit', minute: '2-digit', hour12: true
+    });
+  } catch (e) {
+    return dateString;
+  }
+}
+
 /* ============================================================
    LAYOUT — Responsive header
    ============================================================ */
@@ -1252,13 +1266,22 @@ function Admin(){
    </main>
  );
 
+ // Filter and Sort Products
  const filteredProducts = data.products
    .filter(p => p.active !== 0 && p.active !== false)
    .filter(p => (p.name+p.category+p.dosage_form).toLowerCase().includes(productQuery.toLowerCase()));
 
+ // Filter and Sort Categories
  const filteredCategories = data.categories.filter(c => c.active !== 0 && c.active !== false);
 
- const filteredEnquiries=data.enquiries.filter(x=>(x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()));
+ // Filter and Sort Enquiries (Latest First)
+ const filteredEnquiries = data.enquiries
+   .filter(x => (x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()))
+   .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
+ // Sort Activity Logs (Latest First)
+ const sortedLogs = [...data.logs].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
+
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
 
  const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["logs","Activity Log","▤"]];
@@ -1329,8 +1352,9 @@ function Admin(){
          </div>
          <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
-       {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo">Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
-       {tab==="logs"&&(<div className="table">{data.logs.map(x=>(<div className="row" key={x.id}><span>{x.action} · {x.entity} · #{x.entity_id}</span><small>{x.created_at}</small></div>))}</div>)}
+       {tab==="enquiries"&&(<><input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/><div className="table">{filteredEnquiries.map(x=>(<div className="row" key={x.id}><span><b>{x.name} <em className="typeBadge">{x.type}</em></b><small>{x.phone} · {x.email} · {x.message}</small><small className="assignedTo"><b>Date: {formatDateTime(x.created_at)}</b> | Assigned to: {x.assigned_to||"Unassigned"} {x.emailed?"· emailed":"· not emailed"}</small></span><select className="statusSelect" style={{color:STATUS_COLORS[x.status]||"#4b0d12"}} value={x.status} onChange={e=>status(x.id,e.target.value)}>{ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}</select></div>))}{filteredEnquiries.length===0&&<div className="row emptyRow">No enquiries match your search.</div>}</div></>)}
+       
+       {tab==="logs"&&(<div className="table">{sortedLogs.map(x=>(<div className="row" key={x.id}><span>{x.action} · {x.entity} · #{x.entity_id}</span><small><b>{formatDateTime(x.created_at)}</b></small></div>))}{sortedLogs.length===0&&<div className="row emptyRow">No activity logs found.</div>}</div>)}
      </section>
    </main>
  );
