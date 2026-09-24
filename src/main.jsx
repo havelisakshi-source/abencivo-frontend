@@ -1257,7 +1257,6 @@ function Admin(){
    <main className="adminLogin">
      <form className="form adminLoginForm" onSubmit={doLogin}>
        <span className="eyebrow">ABENCIVO CONTROL CENTRE</span><h1>Admin Login</h1>
-       <p>Use the credentials from your server .env file.</p>
        <input placeholder="Email" type="email" value={login.email} onChange={e=>setLogin({...login,email:e.target.value})}/>
        <input placeholder="Password" type="password" value={login.password} onChange={e=>setLogin({...login,password:e.target.value})}/>
        {loginError&&<p className="notice adminLoginError">{loginError}</p>}
