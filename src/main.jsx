@@ -330,10 +330,28 @@ function Home({setPage}) {
 
   return (
     <main>
-      <section className="hero">
+      {/* HERO SECTION WITH STATIC BACKGROUND IMAGE AND PRESERVED LAYOUT */}
+      <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
+        
+        {/* BACKGROUND IMAGE LAYER */}
+        <div style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url('/images/home-hero-bg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          backgroundAttachment: "fixed", 
+          opacity: 0.4, 
+          zIndex: 0,
+          pointerEvents: "none"
+        }} />
+
+        {/* FOREGROUND CONTENT - TEXT AND DNA CARD REMAIN DIRECT CHILDREN FOR CSS LAYOUT */}
         <ParticleField count={16} />
         <FloatingCapsules count={5} />
-        <div className="heroText">
+        
+        <div className="heroText" style={{ position: "relative", zIndex: 1 }}>
           <span className="eyebrow">PHARMACEUTICAL PARTNER</span>
           <h1>Building trusted healthcare partnerships.</h1>
           <p>Premium pharmaceutical solutions, franchise opportunities and manufacturing partnerships—presented in a clean, modern platform.</p>
@@ -344,7 +362,7 @@ function Home({setPage}) {
           <a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download company brochure (PDF)</a>
         </div>
 
-        <div className="heroCard">
+        <div className="heroCard" style={{ position: "relative", zIndex: 1 }}>
           <DnaHelix size={230} />
           <span>QUALITY</span>
           <strong>Trusted. Tested. Verified.</strong>
@@ -441,8 +459,21 @@ function Card({t,d}){return <article className="card"><div className="icon">✦<
 function About({setPage}) {
   return (
     <main className="aboutPage">
-      <section className="aboutHeroRefined">
-        <div className="aboutHeroInner">
+      {/* BACKGROUND IMAGE SCOPED TO THE HERO SECTION */}
+      <section className="aboutHeroRefined" style={{ position: "relative", overflow: "hidden" }}>
+        <div style={{
+          position: "absolute",
+          top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url('/images/about-bg.jpg')",
+          backgroundSize: "cover",
+          backgroundPosition: "center",
+          backgroundRepeat: "no-repeat",
+          opacity: 0.35, 
+          zIndex: 0,
+          pointerEvents: "none"
+        }} />
+        
+        <div className="aboutHeroInner" style={{ position: "relative", zIndex: 1 }}>
           <Reveal><span className="eyebrowRed">WHO WE ARE</span></Reveal>
           <Reveal delay={80}>
             <h1 className="aboutHeroTitle">
@@ -762,11 +793,9 @@ function Products({setPage, initialCategory = ""}) {
       .catch(() => {});
   }, []);
 
-  // Create a map of category names to their icon URLs
   const catMap = {};
   categories.forEach(c => { catMap[c.name] = c.icon_url; });
 
-  // Build unique list of category names
   const catNames = ["All", ...new Set([...items.map(x => x.category).filter(Boolean), ...categories.map(c => c.name)])];
 
   const filtered = items.filter(x =>
@@ -871,7 +900,6 @@ function Products({setPage, initialCategory = ""}) {
           <div className="productsGridNew">
             {filtered.map((p, i) => (
               <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
-                {/* FIXED: Product Image Container - no category fallback */}
                 <div className="productCardImageWrap" style={{ height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '12px', background: '#fff8f8', borderRadius: '8px', overflow: 'hidden' }}>
                   <img
                     src={
@@ -1224,12 +1252,10 @@ function Admin(){
    </main>
  );
 
- // Filter out inactive products
  const filteredProducts = data.products
    .filter(p => p.active !== 0 && p.active !== false)
    .filter(p => (p.name+p.category+p.dosage_form).toLowerCase().includes(productQuery.toLowerCase()));
 
- // Filter out inactive categories
  const filteredCategories = data.categories.filter(c => c.active !== 0 && c.active !== false);
 
  const filteredEnquiries=data.enquiries.filter(x=>(x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()));
