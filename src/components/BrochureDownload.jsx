@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { API_BASE } from '../config'; // <-- Import the working API_BASE
+import { createPortal } from 'react-dom'; // <-- Added this
+import { API_BASE } from '../config';
 
 export default function BrochureDownload() {
   const [isOpen, setIsOpen] = useState(false);
@@ -10,7 +11,6 @@ export default function BrochureDownload() {
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  // Use API_BASE from config.js and trim any accidental spaces
   const BACKEND_URL = (API_BASE || 'https://abencivo-bio.onrender.com').trim();
 
   const handleRequestOtp = async (e) => {
@@ -64,62 +64,65 @@ export default function BrochureDownload() {
     }, 300);
   };
 
+  // The modal is now rendered via createPortal to avoid z-index overlap issues
+  const modalContent = isOpen ? (
+    <div style={styles.overlay}>
+      <div style={styles.modal}>
+        <button onClick={closeModal} style={styles.closeBtn}>✕</button>
+        
+        {step === 1 && (
+          <form onSubmit={handleRequestOtp} style={styles.form}>
+            <h2 style={styles.title}>Get Our Brochure</h2>
+            <p style={styles.subtitle}>Please enter your details to receive the download link.</p>
+            <input style={styles.input} placeholder="Full Name" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
+            <input style={styles.input} placeholder="Phone Number" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
+            <input style={styles.input} type="email" placeholder="Email Address" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
+            {error && <p style={styles.error}>{error}</p>}
+            <button type="submit" disabled={loading} style={styles.submitBtn}>
+              {loading ? 'Sending Code...' : 'Send Verification Code'}
+            </button>
+          </form>
+        )}
+
+        {step === 2 && (
+          <form onSubmit={handleVerifyOtp} style={styles.form}>
+            <h2 style={styles.title}>Verify Your Email</h2>
+            <p style={styles.subtitle}>We sent a 6-digit code to <b>{formData.email}</b></p>
+            <input 
+              style={{...styles.input, textAlign: 'center', letterSpacing: '8px', fontSize: '24px'}} 
+              placeholder="000000" 
+              maxLength="6" 
+              required 
+              value={otp} 
+              onChange={e => setOtp(e.target.value)} 
+            />
+            {error && <p style={styles.error}>{error}</p>}
+            <button type="submit" disabled={loading} style={styles.submitBtn}>
+              {loading ? 'Verifying...' : 'Verify & Download'}
+            </button>
+          </form>
+        )}
+
+        {step === 3 && (
+          <div style={{...styles.form, textAlign: 'center'}}>
+            <h2 style={styles.title}>✅ Verified!</h2>
+            <p style={styles.subtitle}>Your download is ready.</p>
+            <a href={brochureUrl} target="_blank" rel="noopener noreferrer" style={{...styles.submitBtn, display: 'block', textDecoration: 'none', marginTop: '20px', textAlign: 'center'}}>
+              📥 Click Here to View Brochure
+            </a>
+          </div>
+        )}
+      </div>
+    </div>
+  ) : null;
+
   return (
     <>
       <button onClick={() => setIsOpen(true)} style={styles.downloadBtn}>
         📄 Download Brochure
       </button>
-
-      {isOpen && (
-        <div style={styles.overlay}>
-          <div style={styles.modal}>
-            <button onClick={closeModal} style={styles.closeBtn}>✕</button>
-            
-            {step === 1 && (
-              <form onSubmit={handleRequestOtp} style={styles.form}>
-                <h2 style={styles.title}>Get Our Brochure</h2>
-                <p style={styles.subtitle}>Please enter your details to receive the download link.</p>
-                <input style={styles.input} placeholder="Full Name" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
-                <input style={styles.input} placeholder="Phone Number" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
-                <input style={styles.input} type="email" placeholder="Email Address" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
-                {error && <p style={styles.error}>{error}</p>}
-                <button type="submit" disabled={loading} style={styles.submitBtn}>
-                  {loading ? 'Sending Code...' : 'Send Verification Code'}
-                </button>
-              </form>
-            )}
-
-            {step === 2 && (
-              <form onSubmit={handleVerifyOtp} style={styles.form}>
-                <h2 style={styles.title}>Verify Your Email</h2>
-                <p style={styles.subtitle}>We sent a 6-digit code to <b>{formData.email}</b></p>
-                <input 
-                  style={{...styles.input, textAlign: 'center', letterSpacing: '8px', fontSize: '24px'}} 
-                  placeholder="000000" 
-                  maxLength="6" 
-                  required 
-                  value={otp} 
-                  onChange={e => setOtp(e.target.value)} 
-                />
-                {error && <p style={styles.error}>{error}</p>}
-                <button type="submit" disabled={loading} style={styles.submitBtn}>
-                  {loading ? 'Verifying...' : 'Verify & Download'}
-                </button>
-              </form>
-            )}
-
-            {step === 3 && (
-              <div style={{...styles.form, textAlign: 'center'}}>
-                <h2 style={styles.title}>✅ Verified!</h2>
-                <p style={styles.subtitle}>Your download is ready.</p>
-                <a href={brochureUrl} target="_blank" rel="noopener noreferrer" style={{...styles.submitBtn, display: 'block', textDecoration: 'none', marginTop: '20px', textAlign: 'center'}}>
-                  📥 Click Here to View Brochure
-                </a>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+      {/* Render the modal at the root level of the DOM */}
+      {createPortal(modalContent, document.body)}
     </>
   );
 }
@@ -137,8 +140,8 @@ const styles = {
   },
   overlay: { 
     position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
-    backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', 
-    alignItems: 'center', zIndex: 99999, backdropFilter: 'blur(4px)'
+    backgroundColor: 'rgba(0,0,0,0.75)', display: 'flex', justifyContent: 'center', 
+    alignItems: 'center', zIndex: 999999, backdropFilter: 'blur(6px)'
   },
   modal: { 
     backgroundColor: '#fff', padding: '40px', borderRadius: '12px', width: '90%', 
