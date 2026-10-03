@@ -1,15 +1,17 @@
 import React, { useState } from 'react';
+import { API_BASE } from '../config'; // <-- Import the working API_BASE
 
 export default function BrochureDownload() {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState(1); // 1: Form, 2: OTP, 3: Download
+  const [step, setStep] = useState(1); 
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
   const [otp, setOtp] = useState('');
   const [brochureUrl, setBrochureUrl] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://abencivo-bio.onrender.com';
+  // Use API_BASE from config.js and trim any accidental spaces
+  const BACKEND_URL = (API_BASE || 'https://abencivo-bio.onrender.com').trim();
 
   const handleRequestOtp = async (e) => {
     e.preventDefault();
@@ -24,7 +26,7 @@ export default function BrochureDownload() {
       if (!res.ok) throw new Error(data.message);
       setStep(2);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -46,7 +48,7 @@ export default function BrochureDownload() {
       setBrochureUrl(fullUrl);
       setStep(3);
     } catch (err) {
-      setError(err.message);
+      setError(err.message || "Verification failed. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -64,11 +66,7 @@ export default function BrochureDownload() {
 
   return (
     <>
-      {/* Explicitly styled button to ensure it is always visible */}
-      <button 
-        onClick={() => setIsOpen(true)} 
-        style={styles.downloadBtn}
-      >
+      <button onClick={() => setIsOpen(true)} style={styles.downloadBtn}>
         📄 Download Brochure
       </button>
 
@@ -126,7 +124,6 @@ export default function BrochureDownload() {
   );
 }
 
-// Fully inline styles to prevent any global CSS conflicts
 const styles = {
   downloadBtn: { 
     padding: '12px 24px', backgroundColor: '#dc2626', color: '#ffffff', border: 'none', 
