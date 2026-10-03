@@ -6,7 +6,7 @@ export default function AdminBrochureLeads() {
   const [error, setError] = useState('');
   
   const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://abencivo-bio.onrender.com';
-  const token = localStorage.getItem('adminToken'); // Your existing JWT token
+  const token = localStorage.getItem('ab_token'); // Your existing JWT token
 
   const fetchLeads = async () => {
     setLoading(true);
