@@ -5,7 +5,7 @@ import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
 import AdminBrochureLeads from "./components/AdminBrochureLeads"; 
-import BrochureDownload from "./components/BrochureDownload"; // <-- CRITICAL FIX: ADDED IMPORT
+import BrochureDownload from "./components/BrochureDownload"; 
 
 /* ---------- Splash Screen ---------- */
 function SplashScreen({onFinish}) {
@@ -376,8 +376,8 @@ function Home({setPage}) {
             <Magnetic className="secondary" onClick={() => setPage("contact")}>Send Enquiry</Magnetic>
           </div>
           
-          {/* NEW: REPLACED OLD LINK WITH BROCHURE DOWNLOAD COMPONENT */}
-          <div style={{ marginTop: '20px' }}>
+          {/* FIX: Wrapped in a div with opacity:1 and animation:none to override the .heroText > * rule */}
+          <div style={{ opacity: 1, animation: 'none', marginTop: '20px', position: 'relative', zIndex: 10 }}>
             <BrochureDownload />
           </div>
         </div>
@@ -615,7 +615,9 @@ function PCDFranchise({setPage}) {
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
             <button className="primary" onClick={() => setPage("contact")}>Apply for Franchise</button>
-            <BrochureDownload />
+            <div style={{ opacity: 1, animation: 'none', position: 'relative', zIndex: 10 }}>
+              <BrochureDownload />
+            </div>
           </Reveal>
         </div>
       </section>
