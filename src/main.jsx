@@ -346,24 +346,14 @@ function Home({setPage}) {
 
   return (
     <main>
-      {/* HERO SECTION WITH STATIC BACKGROUND IMAGE AND PRESERVED LAYOUT */}
       <section className="hero" style={{ position: "relative", overflow: "hidden" }}>
-        
-        {/* BACKGROUND IMAGE LAYER */}
         <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: "url('/images/home-hero-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          backgroundAttachment: "fixed", 
-          opacity: 0.4, 
-          zIndex: 0,
-          pointerEvents: "none"
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url('/images/home-hero-bg.jpg')", backgroundSize: "cover",
+          backgroundPosition: "center", backgroundRepeat: "no-repeat", backgroundAttachment: "fixed", 
+          opacity: 0.4, zIndex: 0, pointerEvents: "none"
         }} />
 
-        {/* FOREGROUND CONTENT - TEXT AND DNA CARD REMAIN DIRECT CHILDREN FOR CSS LAYOUT */}
         <ParticleField count={16} />
         <FloatingCapsules count={5} />
         
@@ -374,10 +364,6 @@ function Home({setPage}) {
           <div className="actions">
             <Magnetic className="primary" onClick={() => setPage("products")}>Explore Products</Magnetic>
             <Magnetic className="secondary" onClick={() => setPage("contact")}>Send Enquiry</Magnetic>
-          </div>
-          
-          {/* FIX: Wrapped in a div with opacity:1 and animation:none to override the .heroText > * rule */}
-          <div style={{ opacity: 1, animation: 'none', marginTop: '20px', position: 'relative', zIndex: 10 }}>
             <BrochureDownload />
           </div>
         </div>
@@ -479,18 +465,12 @@ function Card({t,d}){return <article className="card"><div className="icon">✦<
 function About({setPage}) {
   return (
     <main className="aboutPage">
-      {/* BACKGROUND IMAGE SCOPED TO THE HERO SECTION */}
       <section className="aboutHeroRefined" style={{ position: "relative", overflow: "hidden" }}>
         <div style={{
-          position: "absolute",
-          top: 0, left: 0, right: 0, bottom: 0,
-          backgroundImage: "url('/images/about-bg.jpg')",
-          backgroundSize: "cover",
-          backgroundPosition: "center",
-          backgroundRepeat: "no-repeat",
-          opacity: 0.35, 
-          zIndex: 0,
-          pointerEvents: "none"
+          position: "absolute", top: 0, left: 0, right: 0, bottom: 0,
+          backgroundImage: "url('/images/about-bg.jpg')", backgroundSize: "cover",
+          backgroundPosition: "center", backgroundRepeat: "no-repeat", opacity: 0.35, 
+          zIndex: 0, pointerEvents: "none"
         }} />
         
         <div className="aboutHeroInner" style={{ position: "relative", zIndex: 1 }}>
@@ -615,9 +595,7 @@ function PCDFranchise({setPage}) {
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
             <button className="primary" onClick={() => setPage("contact")}>Apply for Franchise</button>
-            <div style={{ opacity: 1, animation: 'none', position: 'relative', zIndex: 10 }}>
-              <BrochureDownload />
-            </div>
+            <BrochureDownload />
           </Reveal>
         </div>
       </section>
@@ -1111,7 +1089,6 @@ function Admin(){
  const [enquiryQuery,setEnquiryQuery]=useState("");
  const [confirmDeleteId,setConfirmDeleteId]=useState(null);
  const [confirmDeleteCatId,setConfirmDeleteCatId]=useState(null);
- // NEW DELETE STATE
  const [confirmDeleteEnquiryId, setConfirmDeleteEnquiryId] = useState(null);
  const [confirmDeleteLogId, setConfirmDeleteLogId] = useState(null);
 
@@ -1221,19 +1198,15 @@ function Admin(){
        flash("Product removed");
        load();
      } else {
-       const data = await r.json().catch(()=>({}));
-       console.error("Delete product failed:", r.status, data);
-       flash(`Error: ${data.message || r.statusText || "Could not delete"}`);
+       flash("Could not delete product");
      }
    } catch (err) {
-     console.error("Network error during delete:", err);
      flash("Network error. Please try again.");
    }
  }
 
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
 
- // NEW DELETE FUNCTIONS
  async function delEnquiry(id) {
    try {
      const r = await fetch(API_BASE + "/admin/enquiries/" + id, { method: "DELETE", headers });
@@ -1285,12 +1258,9 @@ function Admin(){
        flash("Category removed");
        load();
      } else {
-       const data = await r.json().catch(()=>({}));
-       console.error("Delete category failed:", r.status, data);
-       flash(`Error: ${data.message || r.statusText || "Could not delete category"}`);
+       flash("Could not delete category");
      }
    } catch (err) {
-     console.error("Network error during category delete:", err);
      flash("Network error. Please try again.");
    }
  }
@@ -1307,25 +1277,20 @@ function Admin(){
    </main>
  );
 
- // Filter and Sort Products
  const filteredProducts = data.products
    .filter(p => p.active !== 0 && p.active !== false)
    .filter(p => (p.name+p.category+p.dosage_form).toLowerCase().includes(productQuery.toLowerCase()));
 
- // Filter and Sort Categories
  const filteredCategories = data.categories.filter(c => c.active !== 0 && c.active !== false);
 
- // Filter and Sort Enquiries (Latest First)
  const filteredEnquiries = data.enquiries
    .filter(x => (x.name+x.type+x.city+x.assigned_to).toLowerCase().includes(enquiryQuery.toLowerCase()))
    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
- // Sort Activity Logs (Latest First)
  const sortedLogs = [...data.logs].sort((a, b) => new Date(b.created_at) - new Date(a.created_at));
 
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
 
- // TABS ARRAY WITH BROCHURE LEADS
  const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["brochure","Brochure Leads","📄"],["logs","Activity Log","▤"]];
 
  return(
@@ -1347,11 +1312,7 @@ function Admin(){
          <div className="productFormGrid">
            <div className="uploadBox">
              {catForm.icon_url ? (
-               <img 
-                 src={catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url} 
-                 alt="Category Icon" 
-                 onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} 
-               />
+               <img src={catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url} alt="Category Icon" onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} />
              ) : isKnownCategory(catForm.name) ? (
                <img src={getCategoryImage(catForm.name)} alt="Category Icon" />
              ) : (
@@ -1375,26 +1336,15 @@ function Admin(){
        <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
          <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
            {c.icon_url ? (
-             <img
-               src={c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url}
-               alt={c.name}
-               style={{width:"100%", height:"100%", objectFit:"cover"}}
-               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-             />
+             <img src={c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
            ) : isKnownCategory(c.name) ? (
-             <img
-               src={getCategoryImage(c.name)}
-               alt={c.name}
-               style={{width:"100%", height:"100%", objectFit:"cover"}}
-               onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }}
-             />
+             <img src={getCategoryImage(c.name)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
            ) : (
              <span>{c.icon || "💊"}</span>
            )}
          </div>
          <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
-       {/* UPDATED: Enquiries Tab with Table Layout and Delete Option */}
        {tab==="enquiries"&&(
          <>
            <input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/>
@@ -1457,12 +1407,10 @@ function Admin(){
          </>
        )}
 
-       {/* NEW: Brochure Leads Tab */}
        {tab==="brochure"&&(
          <AdminBrochureLeads />
        )}
        
-       {/* UPDATED: Activity Log Tab with Table Layout and Delete Option */}
        {tab==="logs"&&(
          <div className="tableContainer" style={{overflowX: 'auto', marginTop: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
            <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>

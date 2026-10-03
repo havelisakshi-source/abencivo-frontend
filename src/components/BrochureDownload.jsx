@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { createPortal } from 'react-dom'; // <-- Added this
+import { createPortal } from 'react-dom';
 import { API_BASE } from '../config';
 
 export default function BrochureDownload() {
@@ -64,7 +64,6 @@ export default function BrochureDownload() {
     }, 300);
   };
 
-  // The modal is now rendered via createPortal to avoid z-index overlap issues
   const modalContent = isOpen ? (
     <div style={styles.overlay}>
       <div style={styles.modal}>
@@ -118,22 +117,16 @@ export default function BrochureDownload() {
 
   return (
     <>
-      <button onClick={() => setIsOpen(true)} style={styles.downloadBtn}>
+      {/* FIX: Use className="primary" instead of custom inline styles */}
+      <button onClick={() => setIsOpen(true)} className="primary">
         📄 Download Brochure
       </button>
-      {/* Render the modal at the root level of the DOM */}
       {createPortal(modalContent, document.body)}
     </>
   );
 }
 
 const styles = {
-  downloadBtn: { 
-    padding: '12px 24px', backgroundColor: '#dc2626', color: '#ffffff', border: 'none', 
-    borderRadius: '50px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold',
-    boxShadow: '0 4px 10px rgba(220, 38, 38, 0.4)', display: 'inline-flex',
-    alignItems: 'center', gap: '8px', marginTop: '15px'
-  },
   submitBtn: { 
     padding: '12px', backgroundColor: '#dc2626', color: '#ffffff', border: 'none', 
     borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold', width: '100%' 
