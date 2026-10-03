@@ -1111,6 +1111,9 @@ function Admin(){
  const [enquiryQuery,setEnquiryQuery]=useState("");
  const [confirmDeleteId,setConfirmDeleteId]=useState(null);
  const [confirmDeleteCatId,setConfirmDeleteCatId]=useState(null);
+ // NEW DELETE STATE
+ const [confirmDeleteEnquiryId, setConfirmDeleteEnquiryId] = useState(null);
+ const [confirmDeleteLogId, setConfirmDeleteLogId] = useState(null);
 
  const headers={"Content-Type":"application/json","Authorization":"Bearer "+token};
  function flash(msg){setToast(msg);setTimeout(()=>setToast(""),2600)}
@@ -1229,6 +1232,37 @@ function Admin(){
  }
 
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
+
+ // NEW DELETE FUNCTIONS
+ async function delEnquiry(id) {
+   try {
+     const r = await fetch(API_BASE + "/admin/enquiries/" + id, { method: "DELETE", headers });
+     if (r.ok) {
+       setConfirmDeleteEnquiryId(null);
+       flash("Enquiry deleted");
+       load();
+     } else {
+       flash("Could not delete enquiry");
+     }
+   } catch (err) {
+     flash("Network error. Please try again.");
+   }
+ }
+
+ async function delLog(id) {
+   try {
+     const r = await fetch(API_BASE + "/admin/audit-logs/" + id, { method: "DELETE", headers });
+     if (r.ok) {
+       setConfirmDeleteLogId(null);
+       flash("Log deleted");
+       load();
+     } else {
+       flash("Could not delete log");
+     }
+   } catch (err) {
+     flash("Network error. Please try again.");
+   }
+ }
 
  function startEditCat(c){setEditingCatId(c.id);setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});setTab("categories");window.scrollTo({top:0,behavior:"smooth"})}
  function cancelEditCat(){setEditingCatId(null);setCatForm(EMPTY_CATEGORY)}
@@ -1360,7 +1394,7 @@ function Admin(){
          </div>
          <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
-       {/* UPDATED: Enquiries Tab with Table Layout */}
+       {/* UPDATED: Enquiries Tab with Table Layout and Delete Option */}
        {tab==="enquiries"&&(
          <>
            <input className="adminSearch" placeholder="Search enquiries..." value={enquiryQuery} onChange={e=>setEnquiryQuery(e.target.value)}/>
@@ -1373,6 +1407,7 @@ function Admin(){
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Contact Info</th>
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Message</th>
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Status</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Actions</th>
                  </tr>
                </thead>
                <tbody>
@@ -1403,6 +1438,16 @@ function Admin(){
                          {ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}
                        </select>
                      </td>
+                     <td style={{padding: '16px'}}>
+                       {confirmDeleteEnquiryId === x.id ? (
+                         <span className="confirmInline">
+                           Delete? <button className="dangerBtn" onClick={() => delEnquiry(x.id)}>Yes</button>
+                           <button onClick={() => setConfirmDeleteEnquiryId(null)}>No</button>
+                         </span>
+                       ) : (
+                         <button onClick={() => setConfirmDeleteEnquiryId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
+                       )}
+                     </td>
                    </tr>
                  ))}
                </tbody>
@@ -1417,7 +1462,7 @@ function Admin(){
          <AdminBrochureLeads />
        )}
        
-       {/* UPDATED: Activity Log Tab with Table Layout */}
+       {/* UPDATED: Activity Log Tab with Table Layout and Delete Option */}
        {tab==="logs"&&(
          <div className="tableContainer" style={{overflowX: 'auto', marginTop: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
            <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
@@ -1427,6 +1472,7 @@ function Admin(){
                  <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Action</th>
                  <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity</th>
                  <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity ID</th>
+                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Actions</th>
                </tr>
              </thead>
              <tbody>
@@ -1438,6 +1484,16 @@ function Admin(){
                    <td style={{padding: '16px', fontSize: '14px', color: '#333'}}>{x.action}</td>
                    <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>{x.entity}</td>
                    <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>#{x.entity_id}</td>
+                   <td style={{padding: '16px'}}>
+                     {confirmDeleteLogId === x.id ? (
+                       <span className="confirmInline">
+                         Delete? <button className="dangerBtn" onClick={() => delLog(x.id)}>Yes</button>
+                         <button onClick={() => setConfirmDeleteLogId(null)}>No</button>
+                       </span>
+                     ) : (
+                       <button onClick={() => setConfirmDeleteLogId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
+                     )}
+                   </td>
                  </tr>
                ))}
              </tbody>
