@@ -4,6 +4,7 @@ import {COMPANY, API_BASE} from "./config";
 import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, FRANCHISE_FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
+import AdminBrochureLeads from "./components/AdminBrochureLeads"; // <-- NEW IMPORT ADDED
 
 /* ---------- Splash Screen ---------- */
 function SplashScreen({onFinish}) {
@@ -1283,7 +1284,8 @@ function Admin(){
 
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
 
- const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["logs","Activity Log","▤"]];
+ // <-- UPDATED TABS ARRAY WITH "Brochure Leads"
+ const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["brochure","Brochure Leads","📄"],["logs","Activity Log","▤"]];
 
  return(
    <main className="admin">
@@ -1401,6 +1403,11 @@ function Admin(){
              {filteredEnquiries.length === 0 && <div style={{padding: '24px', textAlign: 'center', color: '#888'}}>No enquiries match your search.</div>}
            </div>
          </>
+       )}
+
+       {/* NEW: Brochure Leads Tab */}
+       {tab==="brochure"&&(
+         <AdminBrochureLeads />
        )}
        
        {/* UPDATED: Activity Log Tab with Table Layout */}
