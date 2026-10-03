@@ -42,7 +42,6 @@ export default function BrochureDownload() {
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
       
-      // Ensure the URL is absolute
       const fullUrl = data.brochureUrl.startsWith('http') ? data.brochureUrl : `${BACKEND_URL}${data.brochureUrl}`;
       setBrochureUrl(fullUrl);
       setStep(3);
@@ -55,7 +54,6 @@ export default function BrochureDownload() {
 
   const closeModal = () => {
     setIsOpen(false);
-    // Reset state after closing
     setTimeout(() => { 
       setStep(1); 
       setFormData({ name: '', phone: '', email: '' }); 
@@ -125,16 +123,37 @@ export default function BrochureDownload() {
   );
 }
 
-// Basic inline styles (you can replace these with your own CSS classes)
+// Robust inline styles to override global CSS
 const styles = {
-  downloadBtn: { padding: '12px 24px', backgroundColor: '#dc2626', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold' },
-  overlay: { position: 'fixed', top: 0, left: 0, right: 0, bottom: 0, backgroundColor: 'rgba(0,0,0,0.6)', display: 'flex', justifyContent: 'center', alignItems: 'center', zIndex: 1000 },
-  modal: { backgroundColor: '#fff', padding: '40px', borderRadius: '12px', width: '100%', maxWidth: '400px', position: 'relative', boxShadow: '0 10px 25px rgba(0,0,0,0.2)' },
-  closeBtn: { position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', fontSize: '20px', cursor: 'pointer', color: '#666' },
+  downloadBtn: { 
+    padding: '12px 24px', backgroundColor: '#dc2626', color: '#fff', border: 'none', 
+    borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold',
+    boxShadow: '0 4px 6px rgba(220, 38, 38, 0.3)'
+  },
+  overlay: { 
+    position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
+    backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', 
+    alignItems: 'center', zIndex: 99999, backdropFilter: 'blur(4px)'
+  },
+  modal: { 
+    backgroundColor: '#fff', padding: '40px', borderRadius: '12px', width: '90%', 
+    maxWidth: '400px', position: 'relative', boxShadow: '0 10px 25px rgba(0,0,0,0.3)',
+    boxSizing: 'border-box'
+  },
+  closeBtn: { 
+    position: 'absolute', top: '15px', right: '15px', background: 'none', border: 'none', 
+    fontSize: '20px', cursor: 'pointer', color: '#666', fontWeight: 'bold'
+  },
   form: { display: 'flex', flexDirection: 'column', gap: '15px' },
-  title: { margin: 0, color: '#dc2626', fontSize: '24px' },
-  subtitle: { margin: '0 0 10px 0', color: '#666', fontSize: '14px' },
-  input: { padding: '12px 15px', borderRadius: '8px', border: '1px solid #ccc', fontSize: '16px' },
-  button: { padding: '12px', backgroundColor: '#dc2626', color: '#fff', border: 'none', borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold' },
-  error: { color: '#dc2626', fontSize: '14px', margin: 0 }
+  title: { margin: 0, color: '#dc2626', fontSize: '24px', textAlign: 'center' },
+  subtitle: { margin: '0 0 10px 0', color: '#666', fontSize: '14px', textAlign: 'center' },
+  input: { 
+    padding: '12px 15px', borderRadius: '8px', border: '1px solid #ccc', 
+    fontSize: '16px', width: '100%', boxSizing: 'border-box', backgroundColor: '#fff9c4' 
+  },
+  button: { 
+    padding: '12px', backgroundColor: '#dc2626', color: '#fff', border: 'none', 
+    borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold', width: '100%' 
+  },
+  error: { color: '#dc2626', fontSize: '14px', margin: 0, textAlign: 'center' }
 };
