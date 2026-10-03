@@ -4,7 +4,8 @@ import {COMPANY, API_BASE} from "./config";
 import {CERTIFICATIONS, MILESTONES, VALUES, TESTIMONIALS, CAPABILITIES, PROCESS_STEPS, FAQS, FRANCHISE_FAQS, RESEARCH_STAGES, GMP_STAGES, NUMBER_STATS} from "./content";
 import {DnaHelix, FloatingCapsules, CursorGlow, ParticleField, TiltCard, Magnetic, Counter, ResearchPipeline} from "./effects";
 import "./styles.css";
-import AdminBrochureLeads from "./components/AdminBrochureLeads"; // <-- NEW IMPORT ADDED
+import AdminBrochureLeads from "./components/AdminBrochureLeads"; 
+import BrochureDownload from "./components/BrochureDownload"; // <-- CRITICAL FIX: ADDED IMPORT
 
 /* ---------- Splash Screen ---------- */
 function SplashScreen({onFinish}) {
@@ -374,6 +375,8 @@ function Home({setPage}) {
             <Magnetic className="primary" onClick={() => setPage("products")}>Explore Products</Magnetic>
             <Magnetic className="secondary" onClick={() => setPage("contact")}>Send Enquiry</Magnetic>
           </div>
+          
+          {/* NEW: REPLACED OLD LINK WITH BROCHURE DOWNLOAD COMPONENT */}
           <div style={{ marginTop: '20px' }}>
             <BrochureDownload />
           </div>
@@ -612,7 +615,7 @@ function PCDFranchise({setPage}) {
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
             <button className="primary" onClick={() => setPage("contact")}>Apply for Franchise</button>
-            <a className="secondary" href={COMPANY.brochure} target="_blank">Download Brochure</a>
+            <BrochureDownload />
           </Reveal>
         </div>
       </section>
@@ -1286,7 +1289,7 @@ function Admin(){
 
  const statusCounts=ENQUIRY_STATUSES.map(s=>({s,n:data.enquiries.filter(x=>x.status===s).length}));
 
- // <-- UPDATED TABS ARRAY WITH "Brochure Leads"
+ // TABS ARRAY WITH BROCHURE LEADS
  const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["brochure","Brochure Leads","📄"],["logs","Activity Log","▤"]];
 
  return(
