@@ -64,8 +64,11 @@ export default function BrochureDownload() {
 
   return (
     <>
-      {/* The button now uses the global 'primary' class to match your website's design */}
-      <button className="primary" onClick={() => setIsOpen(true)}>
+      {/* Explicitly styled button to ensure it is always visible */}
+      <button 
+        onClick={() => setIsOpen(true)} 
+        style={styles.downloadBtn}
+      >
         📄 Download Brochure
       </button>
 
@@ -82,7 +85,7 @@ export default function BrochureDownload() {
                 <input style={styles.input} placeholder="Phone Number" required value={formData.phone} onChange={e => setFormData({...formData, phone: e.target.value})} />
                 <input style={styles.input} type="email" placeholder="Email Address" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
                 {error && <p style={styles.error}>{error}</p>}
-                <button type="submit" className="primary" disabled={loading}>
+                <button type="submit" disabled={loading} style={styles.submitBtn}>
                   {loading ? 'Sending Code...' : 'Send Verification Code'}
                 </button>
               </form>
@@ -101,7 +104,7 @@ export default function BrochureDownload() {
                   onChange={e => setOtp(e.target.value)} 
                 />
                 {error && <p style={styles.error}>{error}</p>}
-                <button type="submit" className="primary" disabled={loading}>
+                <button type="submit" disabled={loading} style={styles.submitBtn}>
                   {loading ? 'Verifying...' : 'Verify & Download'}
                 </button>
               </form>
@@ -111,7 +114,7 @@ export default function BrochureDownload() {
               <div style={{...styles.form, textAlign: 'center'}}>
                 <h2 style={styles.title}>✅ Verified!</h2>
                 <p style={styles.subtitle}>Your download is ready.</p>
-                <a href={brochureUrl} target="_blank" rel="noopener noreferrer" className="primary" style={{display: 'block', textDecoration: 'none', marginTop: '20px', textAlign: 'center'}}>
+                <a href={brochureUrl} target="_blank" rel="noopener noreferrer" style={{...styles.submitBtn, display: 'block', textDecoration: 'none', marginTop: '20px', textAlign: 'center'}}>
                   📥 Click Here to View Brochure
                 </a>
               </div>
@@ -123,8 +126,18 @@ export default function BrochureDownload() {
   );
 }
 
-// Only keeping the overlay and modal inline styles to ensure the popup sits on top of everything
+// Fully inline styles to prevent any global CSS conflicts
 const styles = {
+  downloadBtn: { 
+    padding: '12px 24px', backgroundColor: '#dc2626', color: '#ffffff', border: 'none', 
+    borderRadius: '50px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold',
+    boxShadow: '0 4px 10px rgba(220, 38, 38, 0.4)', display: 'inline-flex',
+    alignItems: 'center', gap: '8px', marginTop: '15px'
+  },
+  submitBtn: { 
+    padding: '12px', backgroundColor: '#dc2626', color: '#ffffff', border: 'none', 
+    borderRadius: '8px', fontSize: '16px', cursor: 'pointer', fontWeight: 'bold', width: '100%' 
+  },
   overlay: { 
     position: 'fixed', top: 0, left: 0, width: '100vw', height: '100vh', 
     backgroundColor: 'rgba(0,0,0,0.7)', display: 'flex', justifyContent: 'center', 
