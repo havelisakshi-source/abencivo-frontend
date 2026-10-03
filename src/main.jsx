@@ -222,8 +222,8 @@ function Layout({children, setPage, page}) {
           name: "Newsletter Subscriber", 
           email: newsletterEmail, 
           phone: "0000000000", 
-          message: "Subscribed via footer", 
-          type: "General", 
+          message: "Joined as new member", // <--- UPDATED
+          type: "Newsletter", // <--- UPDATED
           city: ""
         }),
       });
@@ -594,7 +594,8 @@ function PCDFranchise({setPage}) {
             </p>
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
-            <button className="primary" onClick={() => setPage("contact")}>Apply for Franchise</button>
+            {/* UPDATED: Passing "Franchise" preset to the contact page */}
+            <button className="primary" onClick={() => setPage("contact", "", "Franchise")}>Apply for Franchise</button>
             <BrochureDownload />
           </Reveal>
         </div>
@@ -684,7 +685,8 @@ function PCDFranchise({setPage}) {
           <h2>Ready to open a franchise in your territory?</h2>
         </div>
         <div className="actions">
-          <button className="primary" onClick={()=>setPage("contact")}>Apply for Franchise</button>
+          {/* UPDATED: Passing "Franchise" preset to the contact page */}
+          <button className="primary" onClick={()=>setPage("contact", "", "Franchise")}>Apply for Franchise</button>
         </div>
       </Reveal>
     </main>
@@ -961,7 +963,7 @@ function Products({setPage, initialCategory = ""}) {
 }
 
 /* ---------- CONTACT PAGE ---------- */
-function Contact() {
+function Contact({ presetType = "" }) { // <-- UPDATED
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
@@ -973,10 +975,17 @@ function Contact() {
     setSending(true);
     setMsg("Sending...");
     try {
+      // UPDATED: Add prefix to message based on preset type
+      const finalMessage = presetType === "Franchise" 
+        ? `Applied for franchise: ${form.message}` 
+        : `Sent an enquiry: ${form.message}`;
+        
+      const finalType = presetType === "Franchise" ? "Franchise" : "General";
+
       const r = await fetch(API_BASE + "/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ ...form, type: "General", city: "" }),
+        body: JSON.stringify({ ...form, message: finalMessage, type: finalType, city: "" }),
       });
       const d = await r.json();
       setMsg(r.ok ? (d.message || "Enquiry submitted successfully.") : "Unable to submit. Please check your details.");
@@ -998,9 +1007,11 @@ function Contact() {
           <h2 className="contactTitle">
             Let&apos;s talk<span className="contactDot">.</span>
           </h2>
+          {/* UPDATED: Dynamic lead text based on preset */}
           <p className="contactLead">
-            Use the form below. Submissions are saved in the database and can be emailed when SMTP
-            is configured. Our team is ready to assist you with your biotechnology inquiries.
+            {presetType === "Franchise" 
+              ? "Fill out this form to apply for a franchise. Our team will get back to you shortly."
+              : "Use the form below. Submissions are saved in the database and can be emailed when SMTP is configured. Our team is ready to assist you with your biotechnology inquiries."}
           </p>
 
           <form onSubmit={submit} className="contactForm">
@@ -1458,6 +1469,7 @@ function Admin(){
 function App() {
   const [page, setPage] = useState("home");
   const [categoryFilter, setCategoryFilter] = useState("");
+  const [contactPreset, setContactPreset] = useState(""); // <-- NEW STATE
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -1470,13 +1482,14 @@ function App() {
       } else {
         setCategoryFilter("");
       }
+      setContactPreset(""); // Reset preset on direct URL navigation
     };
     parseHash();
     addEventListener("hashchange", parseHash);
     return () => removeEventListener("hashchange", parseHash);
   }, []);
 
-  const go = (p, category = "") => {
+  const go = (p, category = "", preset = "") => {
     if (p === "products" && category) {
       location.hash = `products/${encodeURIComponent(category)}`;
     } else {
@@ -1484,6 +1497,7 @@ function App() {
     }
     setPage(p);
     setCategoryFilter(category);
+    setContactPreset(p === "contact" ? preset : ""); // Store preset
   };
 
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
@@ -1491,7 +1505,7 @@ function App() {
   let content =
     page === "home" ? <Home setPage={go} /> :
     page === "products" ? <Products setPage={go} initialCategory={categoryFilter} /> :
-    page === "contact" ? <Contact /> :
+    page === "contact" ? <Contact presetType={contactPreset} /> : // <-- PASS PROP
     page === "admin" ? <Admin /> :
     page === "about" ? <About setPage={go} /> :
     page === "pcd" ? <PCDFranchise setPage={go} /> :
