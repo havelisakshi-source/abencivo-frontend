@@ -374,7 +374,9 @@ function Home({setPage}) {
             <Magnetic className="primary" onClick={() => setPage("products")}>Explore Products</Magnetic>
             <Magnetic className="secondary" onClick={() => setPage("contact")}>Send Enquiry</Magnetic>
           </div>
-          <a className="brochureLink" href={COMPANY.brochure} target="_blank">↓ Download company brochure (PDF)</a>
+          <div style={{ marginTop: '20px' }}>
+            <BrochureDownload />
+          </div>
         </div>
 
         <div className="heroCard" style={{ position: "relative", zIndex: 1 }}>

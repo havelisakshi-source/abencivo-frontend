@@ -10,7 +10,7 @@ export const COMPANY = {
   address: "Opp. Ganpati Covent School, Chhachhrauli Road, Bilaspur, Distt.-Yamunanagar, Haryana (H.R)-135102",
   website: "https://example.com",
   logo: "/images/logo.svg",
-  brochure: "/downloads/company-brochure.pdf",
+  brochure: "/brochure.pdf",
   social: {
     instagram: "#",
     linkedin: "#",
