@@ -117,10 +117,14 @@ export default function BrochureDownload() {
 
   return (
     <>
-      {/* FIX: Use className="primary" instead of custom inline styles */}
-      <button onClick={() => setIsOpen(true)} className="primary">
-        📄 Download Brochure
-      </button>
+      {/* Beautiful, clickable text link (uses your existing brochureLink CSS class) */}
+      <a 
+        className="brochureLink" 
+        onClick={(e) => { e.preventDefault(); setIsOpen(true); }}
+        style={{ cursor: 'pointer' }}
+      >
+        ↓ Download Company Brochure (PDF)
+      </a>
       {createPortal(modalContent, document.body)}
     </>
   );

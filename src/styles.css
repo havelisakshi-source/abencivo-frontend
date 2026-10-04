@@ -2761,3 +2761,117 @@ footer h3,footer h4{color:#fff}
     padding: 3px;
   }
 }
+
+/* ============================================================
+   PREMIUM MOBILE APP BUTTON UI
+   ============================================================ */
+@media (max-width: 768px) {
+  .heroText .actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: 16px;
+    margin-top: 30px;
+    align-items: center;
+    padding: 0 20px;
+    box-sizing: border-box;
+  }
+
+  .heroText .actions button,
+  .heroText .actions a {
+    width: 100%;
+    max-width: 320px; /* Keeps them looking elegant on all phones */
+    padding: 16px 24px;
+    font-size: 16px;
+    font-weight: 700;
+    border-radius: 50px; /* Modern pill shape */
+    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    letter-spacing: 0.3px;
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    text-decoration: none;
+    border: none;
+  }
+
+  /* Primary Buttons (Explore Products & Download Brochure) */
+  .heroText .actions .primary {
+    background: linear-gradient(135deg, #ef4444 0%, #b91c1c 100%);
+    color: #ffffff;
+    box-shadow: 0 10px 25px -5px rgba(220, 38, 38, 0.4), 0 8px 10px -6px rgba(220, 38, 38, 0.1);
+  }
+
+  /* Secondary Button (Send Enquiry) */
+  .heroText .actions .secondary {
+    background: rgba(255, 255, 255, 0.9);
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+    color: #dc2626;
+    border: 1.5px solid rgba(220, 38, 38, 0.2);
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+  }
+
+  /* Add a tiny icon/arrow feel to the primary buttons */
+  .heroText .actions .primary::after {
+    content: '→';
+    margin-left: 8px;
+    font-size: 18px;
+    transition: transform 0.3s ease;
+  }
+
+  /* Specific styling for the Brochure button inside its own row */
+  .heroText .actions > *:last-child {
+    margin-top: 4px;
+  }
+
+  /* Tap effect for mobile */
+  .heroText .actions button:active,
+  .heroText .actions a:active {
+    transform: scale(0.96) translateY(2px);
+    box-shadow: 0 4px 10px rgba(220, 38, 38, 0.3);
+  }
+  
+  .heroText .actions .primary:active::after {
+    transform: translateX(4px);
+  }
+}
+
+/* ============================================================
+   CLEAN BUTTON & TEXT LINK LAYOUT
+   ============================================================ */
+.heroButtonsGroup, .franchiseButtonsGroup {
+  display: flex;
+  gap: 15px;
+  flex-wrap: wrap;
+  margin-top: 25px;
+}
+
+.heroBrochureGroup, .franchiseBrochureGroup {
+  margin-top: 10px;
+  display: flex;
+  align-items: center;
+}
+
+/* Make sure the brochure text link looks great on mobile */
+@media (max-width: 768px) {
+  .heroButtonsGroup, .franchiseButtonsGroup {
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+  }
+
+  .heroButtonsGroup button, 
+  .heroButtonsGroup a,
+  .franchiseButtonsGroup button {
+    width: 100%;
+    max-width: 300px;
+    justify-content: center;
+  }
+
+  .heroBrochureGroup, .franchiseBrochureGroup {
+    justify-content: center;
+    margin-top: 15px;
+  }
+}

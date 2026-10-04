@@ -222,8 +222,8 @@ function Layout({children, setPage, page}) {
           name: "Newsletter Subscriber", 
           email: newsletterEmail, 
           phone: "0000000000", 
-          message: "Joined as new member", // <--- UPDATED
-          type: "Newsletter", // <--- UPDATED
+          message: "Joined as new member",
+          type: "Newsletter",
           city: ""
         }),
       });
@@ -364,8 +364,8 @@ function Home({setPage}) {
           <div className="actions">
             <Magnetic className="primary" onClick={() => setPage("products")}>Explore Products</Magnetic>
             <Magnetic className="secondary" onClick={() => setPage("contact")}>Send Enquiry</Magnetic>
-            <BrochureDownload />
           </div>
+          <BrochureDownload />
         </div>
 
         <div className="heroCard" style={{ position: "relative", zIndex: 1 }}>
@@ -594,7 +594,6 @@ function PCDFranchise({setPage}) {
             </p>
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
-            {/* UPDATED: Passing "Franchise" preset to the contact page */}
             <button className="primary" onClick={() => setPage("contact", "", "Franchise")}>Apply for Franchise</button>
             <BrochureDownload />
           </Reveal>
@@ -685,7 +684,6 @@ function PCDFranchise({setPage}) {
           <h2>Ready to open a franchise in your territory?</h2>
         </div>
         <div className="actions">
-          {/* UPDATED: Passing "Franchise" preset to the contact page */}
           <button className="primary" onClick={()=>setPage("contact", "", "Franchise")}>Apply for Franchise</button>
         </div>
       </Reveal>
@@ -963,7 +961,7 @@ function Products({setPage, initialCategory = ""}) {
 }
 
 /* ---------- CONTACT PAGE ---------- */
-function Contact({ presetType = "" }) { // <-- UPDATED
+function Contact({ presetType = "" }) { 
   const [form, setForm] = useState({ name: "", phone: "", email: "", message: "" });
   const [msg, setMsg] = useState("");
   const [sending, setSending] = useState(false);
@@ -975,7 +973,6 @@ function Contact({ presetType = "" }) { // <-- UPDATED
     setSending(true);
     setMsg("Sending...");
     try {
-      // UPDATED: Add prefix to message based on preset type
       const finalMessage = presetType === "Franchise" 
         ? `Applied for franchise: ${form.message}` 
         : `Sent an enquiry: ${form.message}`;
@@ -1007,7 +1004,6 @@ function Contact({ presetType = "" }) { // <-- UPDATED
           <h2 className="contactTitle">
             Let&apos;s talk<span className="contactDot">.</span>
           </h2>
-          {/* UPDATED: Dynamic lead text based on preset */}
           <p className="contactLead">
             {presetType === "Franchise" 
               ? "Fill out this form to apply for a franchise. Our team will get back to you shortly."
@@ -1469,7 +1465,7 @@ function Admin(){
 function App() {
   const [page, setPage] = useState("home");
   const [categoryFilter, setCategoryFilter] = useState("");
-  const [contactPreset, setContactPreset] = useState(""); // <-- NEW STATE
+  const [contactPreset, setContactPreset] = useState(""); 
   const [showSplash, setShowSplash] = useState(true);
 
   useEffect(() => {
@@ -1482,7 +1478,7 @@ function App() {
       } else {
         setCategoryFilter("");
       }
-      setContactPreset(""); // Reset preset on direct URL navigation
+      setContactPreset(""); 
     };
     parseHash();
     addEventListener("hashchange", parseHash);
@@ -1497,7 +1493,7 @@ function App() {
     }
     setPage(p);
     setCategoryFilter(category);
-    setContactPreset(p === "contact" ? preset : ""); // Store preset
+    setContactPreset(p === "contact" ? preset : ""); 
   };
 
   if (showSplash) return <SplashScreen onFinish={() => setShowSplash(false)} />;
@@ -1505,7 +1501,7 @@ function App() {
   let content =
     page === "home" ? <Home setPage={go} /> :
     page === "products" ? <Products setPage={go} initialCategory={categoryFilter} /> :
-    page === "contact" ? <Contact presetType={contactPreset} /> : // <-- PASS PROP
+    page === "contact" ? <Contact presetType={contactPreset} /> : 
     page === "admin" ? <Admin /> :
     page === "about" ? <About setPage={go} /> :
     page === "pcd" ? <PCDFranchise setPage={go} /> :
