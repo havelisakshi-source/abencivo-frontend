@@ -2875,3 +2875,16 @@ footer h3,footer h4{color:#fff}
     margin-top: 15px;
   }
 }
+
+/* ============================================================
+   CENTER BROCHURE LINK ON MOBILE
+   ============================================================ */
+@media (max-width: 768px) {
+  .brochureLink {
+    display: block;          /* Makes it a block so it takes full width */
+    text-align: center;      /* Centers the text */
+    margin: 25px auto 0;     /* Adds nice spacing and centers the block */
+    width: 100%;             /* Ensures it spans the full container width */
+    font-size: 15px;         /* Slightly adjust size if needed */
+  }
+}
