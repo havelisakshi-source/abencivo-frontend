@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { API_BASE } from '../config';
 
-export default function BrochureDownload() {
+export default function BrochureDownload({ isButton = false }) { // <-- Added isButton prop
   const [isOpen, setIsOpen] = useState(false);
   const [step, setStep] = useState(1); 
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
@@ -117,14 +117,20 @@ export default function BrochureDownload() {
 
   return (
     <>
-      {/* Beautiful, clickable text link (uses your existing brochureLink CSS class) */}
-      <a 
-        className="brochureLink" 
-        onClick={(e) => { e.preventDefault(); setIsOpen(true); }}
-        style={{ cursor: 'pointer' }}
-      >
-        ↓ Download Company Brochure (PDF)
-      </a>
+      {/* Conditional rendering: Button if isButton is true, otherwise a text link */}
+      {isButton ? (
+        <button onClick={() => setIsOpen(true)} className="primary" style={{ padding: '12px 24px', borderRadius: '50px' }}>
+          📄 Download Brochure
+        </button>
+      ) : (
+        <a 
+          className="brochureLink" 
+          onClick={(e) => { e.preventDefault(); setIsOpen(true); }}
+          style={{ cursor: 'pointer' }}
+        >
+          ↓ Download Company Brochure (PDF)
+        </a>
+      )}
       {createPortal(modalContent, document.body)}
     </>
   );

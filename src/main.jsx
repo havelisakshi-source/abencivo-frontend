@@ -595,7 +595,7 @@ function PCDFranchise({setPage}) {
           </Reveal>
           <Reveal delay={240} className="franchiseHeroActions">
             <button className="primary" onClick={() => setPage("contact", "", "Franchise")}>Apply for Franchise</button>
-            <BrochureDownload />
+            <BrochureDownload isButton={true} /> {/* <-- Added isButton={true} */}
           </Reveal>
         </div>
       </section>
