@@ -20,12 +20,19 @@ export default function BrochureDownload({ isButton = false }) {
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
       
+      // Safely check if the response is OK before parsing JSON
+      if (!res.ok) {
+        const errorText = await res.text();
+        console.error("Server error response:", errorText);
+        throw new Error("Server error. Please try again later.");
+      }
+      
+      const data = await res.json();
       const fullUrl = data.brochureUrl.startsWith('http') ? data.brochureUrl : `${BACKEND_URL}${data.brochureUrl}`;
       setBrochureUrl(fullUrl);
     } catch (err) {
+      console.error("Submission error:", err);
       setError(err.message || "Network error. Please try again.");
     } finally {
       setLoading(false);
