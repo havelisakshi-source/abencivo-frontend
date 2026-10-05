@@ -5,7 +5,7 @@ export default function AdminBrochureLeads() {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState('');
   
-  const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://abencivo-bio.onrender.com';
+  const BACKEND_URL = (import.meta.env.VITE_API_URL || 'https://abencivo-bio.onrender.com').trim();
   const token = localStorage.getItem('ab_token'); 
 
   const fetchLeads = async () => {
