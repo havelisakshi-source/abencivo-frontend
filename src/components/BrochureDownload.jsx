@@ -2,53 +2,31 @@ import React, { useState } from 'react';
 import { createPortal } from 'react-dom';
 import { API_BASE } from '../config';
 
-export default function BrochureDownload({ isButton = false }) { // <-- Added isButton prop
+export default function BrochureDownload({ isButton = false }) {
   const [isOpen, setIsOpen] = useState(false);
-  const [step, setStep] = useState(1); 
   const [formData, setFormData] = useState({ name: '', phone: '', email: '' });
-  const [otp, setOtp] = useState('');
   const [brochureUrl, setBrochureUrl] = useState('');
   const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
   const BACKEND_URL = (API_BASE || 'https://abencivo-bio.onrender.com').trim();
 
-  const handleRequestOtp = async (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault();
     setLoading(true); setError('');
     try {
-      const res = await fetch(`${BACKEND_URL}/api/brochure/request-otp`, {
+      const res = await fetch(`${BACKEND_URL}/api/brochure/submit`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify(formData)
       });
       const data = await res.json();
       if (!res.ok) throw new Error(data.message);
-      setStep(2);
-    } catch (err) {
-      setError(err.message || "Network error. Please try again.");
-    } finally {
-      setLoading(false);
-    }
-  };
-
-  const handleVerifyOtp = async (e) => {
-    e.preventDefault();
-    setLoading(true); setError('');
-    try {
-      const res = await fetch(`${BACKEND_URL}/api/brochure/verify-otp`, {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ email: formData.email, otp })
-      });
-      const data = await res.json();
-      if (!res.ok) throw new Error(data.message);
       
       const fullUrl = data.brochureUrl.startsWith('http') ? data.brochureUrl : `${BACKEND_URL}${data.brochureUrl}`;
       setBrochureUrl(fullUrl);
-      setStep(3);
     } catch (err) {
-      setError(err.message || "Verification failed. Please try again.");
+      setError(err.message || "Network error. Please try again.");
     } finally {
       setLoading(false);
     }
@@ -57,9 +35,8 @@ export default function BrochureDownload({ isButton = false }) { // <-- Added is
   const closeModal = () => {
     setIsOpen(false);
     setTimeout(() => { 
-      setStep(1); 
       setFormData({ name: '', phone: '', email: '' }); 
-      setOtp(''); 
+      setBrochureUrl(''); 
       setError(''); 
     }, 300);
   };
@@ -69,8 +46,8 @@ export default function BrochureDownload({ isButton = false }) { // <-- Added is
       <div style={styles.modal}>
         <button onClick={closeModal} style={styles.closeBtn}>✕</button>
         
-        {step === 1 && (
-          <form onSubmit={handleRequestOtp} style={styles.form}>
+        {!brochureUrl ? (
+          <form onSubmit={handleSubmit} style={styles.form}>
             <h2 style={styles.title}>Get Our Brochure</h2>
             <p style={styles.subtitle}>Please enter your details to receive the download link.</p>
             <input style={styles.input} placeholder="Full Name" required value={formData.name} onChange={e => setFormData({...formData, name: e.target.value})} />
@@ -78,33 +55,12 @@ export default function BrochureDownload({ isButton = false }) { // <-- Added is
             <input style={styles.input} type="email" placeholder="Email Address" required value={formData.email} onChange={e => setFormData({...formData, email: e.target.value})} />
             {error && <p style={styles.error}>{error}</p>}
             <button type="submit" disabled={loading} style={styles.submitBtn}>
-              {loading ? 'Sending Code...' : 'Send Verification Code'}
+              {loading ? 'Submitting...' : 'Submit & Download Brochure'}
             </button>
           </form>
-        )}
-
-        {step === 2 && (
-          <form onSubmit={handleVerifyOtp} style={styles.form}>
-            <h2 style={styles.title}>Verify Your Email</h2>
-            <p style={styles.subtitle}>We sent a 6-digit code to <b>{formData.email}</b></p>
-            <input 
-              style={{...styles.input, textAlign: 'center', letterSpacing: '8px', fontSize: '24px'}} 
-              placeholder="000000" 
-              maxLength="6" 
-              required 
-              value={otp} 
-              onChange={e => setOtp(e.target.value)} 
-            />
-            {error && <p style={styles.error}>{error}</p>}
-            <button type="submit" disabled={loading} style={styles.submitBtn}>
-              {loading ? 'Verifying...' : 'Verify & Download'}
-            </button>
-          </form>
-        )}
-
-        {step === 3 && (
+        ) : (
           <div style={{...styles.form, textAlign: 'center'}}>
-            <h2 style={styles.title}>✅ Verified!</h2>
+            <h2 style={styles.title}>✅ Thank You!</h2>
             <p style={styles.subtitle}>Your download is ready.</p>
             <a href={brochureUrl} target="_blank" rel="noopener noreferrer" style={{...styles.submitBtn, display: 'block', textDecoration: 'none', marginTop: '20px', textAlign: 'center'}}>
               📥 Click Here to View Brochure
@@ -117,7 +73,6 @@ export default function BrochureDownload({ isButton = false }) { // <-- Added is
 
   return (
     <>
-      {/* Conditional rendering: Button if isButton is true, otherwise a text link */}
       {isButton ? (
         <button onClick={() => setIsOpen(true)} className="primary" style={{ padding: '12px 24px', borderRadius: '50px' }}>
           📄 Download Brochure

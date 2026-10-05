@@ -6,7 +6,7 @@ export default function AdminBrochureLeads() {
   const [error, setError] = useState('');
   
   const BACKEND_URL = import.meta.env.VITE_API_URL || 'https://abencivo-bio.onrender.com';
-  const token = localStorage.getItem('ab_token'); // Your existing JWT token
+  const token = localStorage.getItem('ab_token'); 
 
   const fetchLeads = async () => {
     setLoading(true);
@@ -64,10 +64,10 @@ export default function AdminBrochureLeads() {
                     padding: '4px 8px', 
                     borderRadius: '12px', 
                     fontSize: '12px', 
-                    backgroundColor: lead.verified ? '#dcfce7' : '#fee2e2', 
-                    color: lead.verified ? '#16a34a' : '#dc2626' 
+                    backgroundColor: '#dcfce7', 
+                    color: '#16a34a' 
                   }}>
-                    {lead.verified ? '✅ Verified' : '❌ Not Verified'}
+                    ✅ Downloaded
                   </span>
                 </td>
               </tr>
@@ -75,7 +75,7 @@ export default function AdminBrochureLeads() {
             {leads.length === 0 && (
               <tr>
                 <td colSpan="5" style={{ padding: '20px', textAlign: 'center', color: '#666' }}>
-                  No brochure leads yet.
+                  No brochure downloads yet.
                 </td>
               </tr>
             )}
