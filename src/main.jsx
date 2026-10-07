@@ -115,7 +115,6 @@ function getFilterValue(displayName = "") {
   return displayName;
 }
 
-/* ---------- Helper: Get the correct image URL (handles Cloudinary, uploads, and local paths) ---------- */
 function getImageSrc(url) {
   if (!url) return "/products/product-placeholder.svg";
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
@@ -165,7 +164,6 @@ const FALLBACK_CATEGORIES = [
 
 const NAV_PAGES = ["home","about","products","pcd","quality","contact"];
 
-/* ---------- Helper to format Date and Time ---------- */
 function formatDateTime(dateString) {
   if (!dateString) return "N/A";
   try {
@@ -1076,8 +1074,8 @@ const EMPTY_PRODUCT = {
   category:"General",
   image_url:"/products/product-placeholder.svg",
   description:"",
-  packing:"",  // <-- ADDED
-  mrp:""       // <-- ADDED
+  packing:"",
+  mrp:""
 };
 const EMPTY_CATEGORY = {name:"",icon:"💊",icon_url:"",sort_order:0};
 const ENQUIRY_STATUSES = ["New","Contacted","Follow-up","Converted","Closed"];
@@ -1103,6 +1101,9 @@ function Admin(){
  const [confirmDeleteCatId,setConfirmDeleteCatId]=useState(null);
  const [confirmDeleteEnquiryId, setConfirmDeleteEnquiryId] = useState(null);
  const [confirmDeleteLogId, setConfirmDeleteLogId] = useState(null);
+ // BULK DELETE STATE
+ const [selectedLogs, setSelectedLogs] = useState([]);
+ const [confirmBulkDelete, setConfirmBulkDelete] = useState(false);
 
  const headers={"Content-Type":"application/json","Authorization":"Bearer "+token};
  function flash(msg){setToast(msg);setTimeout(()=>setToast(""),2600)}
@@ -1198,8 +1199,8 @@ function Admin(){
      category:p.category||"General",
      image_url:p.image_url||"/products/product-placeholder.svg",
      description:p.description||"",
-     packing:p.packing||"",   // <-- ADDED
-     mrp:p.mrp||""            // <-- ADDED
+     packing:p.packing||"",
+     mrp:p.mrp||""
    });
    setTab("products");
    window.scrollTo({top:0,behavior:"smooth"});
@@ -1263,6 +1264,43 @@ function Admin(){
    }
  }
 
+ // === BULK DELETE LOGS ===
+ function toggleLog(id) {
+   setSelectedLogs(prev => 
+     prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
+   );
+ }
+
+ function toggleAllLogs() {
+   if (selectedLogs.length === sortedLogs.length && sortedLogs.length > 0) {
+     setSelectedLogs([]);
+   } else {
+     setSelectedLogs(sortedLogs.map(l => l.id));
+   }
+ }
+
+ async function bulkDeleteLogs() {
+   if (selectedLogs.length === 0) return;
+   try {
+     const r = await fetch(API_BASE + "/admin/audit-logs/bulk-delete", {
+       method: "POST",
+       headers,
+       body: JSON.stringify({ ids: selectedLogs })
+     });
+     if (r.ok) {
+       const result = await r.json();
+       flash(`Deleted ${result.deletedCount || selectedLogs.length} logs`);
+       setSelectedLogs([]);
+       setConfirmBulkDelete(false);
+       load();
+     } else {
+       flash("Could not delete logs");
+     }
+   } catch (err) {
+     flash("Network error. Please try again.");
+   }
+ }
+
  function startEditCat(c){setEditingCatId(c.id);setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});setTab("categories");window.scrollTo({top:0,behavior:"smooth"})}
  function cancelEditCat(){setEditingCatId(null);setCatForm(EMPTY_CATEGORY)}
 
@@ -1319,6 +1357,8 @@ function Admin(){
 
  const TABS=[["dashboard","Dashboard","◆"],["products","Products","💊"],["categories","Categories","🗂"],["enquiries","Enquiries","✉"],["brochure","Brochure Leads","📄"],["logs","Activity Log","▤"]];
 
+ const allLogsSelected = sortedLogs.length > 0 && selectedLogs.length === sortedLogs.length;
+
  return(
    <main className="admin">
      <aside>
@@ -1337,7 +1377,6 @@ function Admin(){
        
        {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={getImageSrc(form.image_url)} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div>
          
-         {/* ADDED: Packing and MRP inputs */}
          <div className="fieldRow">
            <input placeholder="Packing (e.g., 10x10 Alu-Alu)" value={form.packing} onChange={e=>setForm({...form,packing:e.target.value})}/>
            <input placeholder="MRP (e.g., 150)" type="number" step="0.01" value={form.mrp} onChange={e=>setForm({...form,mrp:e.target.value})}/>
@@ -1450,42 +1489,97 @@ function Admin(){
        )}
        
        {tab==="logs"&&(
-         <div className="tableContainer" style={{overflowX: 'auto', marginTop: '20px', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
-           <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
-             <thead>
-               <tr style={{background: '#fcfcfc', borderBottom: '2px solid #eee'}}>
-                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Date & Time</th>
-                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Action</th>
-                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity</th>
-                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity ID</th>
-                 <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Actions</th>
-               </tr>
-             </thead>
-             <tbody>
-               {sortedLogs.map(x => (
-                 <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0'}}>
-                   <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
-                     {formatDateTime(x.created_at)}
-                   </td>
-                   <td style={{padding: '16px', fontSize: '14px', color: '#333'}}>{x.action}</td>
-                   <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>{x.entity}</td>
-                   <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>#{x.entity_id}</td>
-                   <td style={{padding: '16px'}}>
-                     {confirmDeleteLogId === x.id ? (
-                       <span className="confirmInline">
-                         Delete? <button className="dangerBtn" onClick={() => delLog(x.id)}>Yes</button>
-                         <button onClick={() => setConfirmDeleteLogId(null)}>No</button>
-                       </span>
-                     ) : (
-                       <button onClick={() => setConfirmDeleteLogId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
-                     )}
-                   </td>
+         <>
+           {/* Bulk Action Bar */}
+           <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', marginBottom: '10px', padding: '12px 16px', background: '#fff', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flexWrap: 'wrap', gap: '10px'}}>
+             <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
+               <label style={{display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '600', color: '#333'}}>
+                 <input 
+                   type="checkbox" 
+                   checked={allLogsSelected} 
+                   onChange={toggleAllLogs}
+                   style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
+                 />
+                 Select All
+               </label>
+               {selectedLogs.length > 0 && (
+                 <span style={{color: '#dc2626', fontWeight: '600', fontSize: '14px'}}>
+                   {selectedLogs.length} selected
+                 </span>
+               )}
+             </div>
+             
+             {selectedLogs.length > 0 && (
+               confirmBulkDelete ? (
+                 <span className="confirmInline" style={{fontSize: '14px'}}>
+                   Delete {selectedLogs.length} logs? 
+                   <button className="dangerBtn" onClick={bulkDeleteLogs}>Yes</button>
+                   <button onClick={() => setConfirmBulkDelete(false)}>No</button>
+                 </span>
+               ) : (
+                 <button 
+                   onClick={() => setConfirmBulkDelete(true)}
+                   style={{padding: '8px 16px', cursor: 'pointer', color: '#fff', background: '#dc2626', border: 'none', borderRadius: '6px', fontWeight: '600'}}
+                 >
+                   🗑 Delete Selected ({selectedLogs.length})
+                 </button>
+               )
+             )}
+           </div>
+
+           <div className="tableContainer" style={{overflowX: 'auto', background: '#fff', borderRadius: '12px', boxShadow: '0 4px 12px rgba(0,0,0,0.05)'}}>
+             <table style={{width: '100%', borderCollapse: 'collapse', textAlign: 'left'}}>
+               <thead>
+                 <tr style={{background: '#fcfcfc', borderBottom: '2px solid #eee'}}>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600', width: '40px'}}>
+                     <input 
+                       type="checkbox" 
+                       checked={allLogsSelected} 
+                       onChange={toggleAllLogs}
+                       style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
+                     />
+                   </th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Date & Time</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Action</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Entity ID</th>
+                   <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Actions</th>
                  </tr>
-               ))}
-             </tbody>
-           </table>
-           {sortedLogs.length === 0 && <div style={{padding: '24px', textAlign: 'center', color: '#888'}}>No activity logs found.</div>}
-         </div>
+               </thead>
+               <tbody>
+                 {sortedLogs.map(x => (
+                   <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0', background: selectedLogs.includes(x.id) ? '#fff5f5' : 'transparent'}}>
+                     <td style={{padding: '16px'}}>
+                       <input 
+                         type="checkbox" 
+                         checked={selectedLogs.includes(x.id)} 
+                         onChange={() => toggleLog(x.id)}
+                         style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
+                       />
+                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
+                       {formatDateTime(x.created_at)}
+                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#333'}}>{x.action}</td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>{x.entity}</td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>#{x.entity_id}</td>
+                     <td style={{padding: '16px'}}>
+                       {confirmDeleteLogId === x.id ? (
+                         <span className="confirmInline">
+                           Delete? <button className="dangerBtn" onClick={() => delLog(x.id)}>Yes</button>
+                           <button onClick={() => setConfirmDeleteLogId(null)}>No</button>
+                         </span>
+                       ) : (
+                         <button onClick={() => setConfirmDeleteLogId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
+                       )}
+                     </td>
+                   </tr>
+                 ))}
+               </tbody>
+             </table>
+             {sortedLogs.length === 0 && <div style={{padding: '24px', textAlign: 'center', color: '#888'}}>No activity logs found.</div>}
+           </div>
+         </>
        )}
      </section>
    </main>
