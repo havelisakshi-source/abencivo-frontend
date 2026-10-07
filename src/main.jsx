@@ -79,7 +79,7 @@ function FAQ({items = FAQS}) {
   return <div className="faqList">{items.map((f, i) => (<Reveal delay={i * 60} className={`faqItem ${open === i ? "openFaq" : ""}`} key={f.q}><button className="faqQ" onClick={() => setOpen(open === i ? -1 : i)}><span>{f.q}</span><span className="faqIcon">{open === i ? "−" : "+"}</span></button>{open === i && <p className="faqA">{f.a}</p>}</Reveal>))}</div>;
 }
 
-/* ---------- Category Image + Filter Value helpers ---------- */
+/* ---------- Category helpers ---------- */
 function getCategoryImage(name = "") {
   const key = name.toLowerCase();
   if (key.includes("tablet")) return "/images/categories/cat-tablets.png";
@@ -178,7 +178,7 @@ function formatDateTime(dateString) {
 }
 
 /* ============================================================
-   LAYOUT — Responsive header
+   LAYOUT
    ============================================================ */
 function Layout({children, setPage, page}) {
   const [scrolled, setScrolled] = useState(false);
@@ -602,18 +602,7 @@ function PCDFranchise({setPage}) {
 
       <div className="franchiseTicker">
         <div className="franchiseTickerTrack">
-          {[
-            "5+ YEARS OF EXPERIENCE",
-            "100+ PRODUCTS", 
-            "MARKETING SUPPORT",
-            "PAN-INDIA SUPPLY",
-            "FRANCHISE OPPORTUNITIES",
-            "5+ YEARS OF EXPERIENCE",
-            "100+ PRODUCTS", 
-            "MARKETING SUPPORT",
-            "PAN-INDIA SUPPLY",
-            "FRANCHISE OPPORTUNITIES"
-          ].map((item, i) => (
+          {["5+ YEARS OF EXPERIENCE","100+ PRODUCTS","MARKETING SUPPORT","PAN-INDIA SUPPLY","FRANCHISE OPPORTUNITIES","5+ YEARS OF EXPERIENCE","100+ PRODUCTS","MARKETING SUPPORT","PAN-INDIA SUPPLY","FRANCHISE OPPORTUNITIES"].map((item, i) => (
             <span key={i} className="franchiseTickerItem">
               <i className="franchiseTickerDot"></i>
               {item}
@@ -634,26 +623,10 @@ function PCDFranchise({setPage}) {
         </div>
 
         <div className="franchiseBenefitsGrid">
-          <Reveal delay={120} className="franchiseBenefitCard">
-            <div className="franchiseBenefitIcon">📍</div>
-            <h3>Territory Rights</h3>
-            <p>Structured territory-based distribution to help partners operate with clarity in their assigned region.</p>
-          </Reveal>
-          <Reveal delay={200} className="franchiseBenefitCard">
-            <div className="franchiseBenefitIcon">📣</div>
-            <h3>Marketing Support</h3>
-            <p>Access to promotional material, product information, and marketing assistance to support your sales efforts.</p>
-          </Reveal>
-          <Reveal delay={280} className="franchiseBenefitCard">
-            <div className="franchiseBenefitIcon">💊</div>
-            <h3>Wide Product Range</h3>
-            <p>A growing portfolio across multiple therapeutic segments and dosage forms to serve diverse customer needs.</p>
-          </Reveal>
-          <Reveal delay={360} className="franchiseBenefitCard">
-            <div className="franchiseBenefitIcon">🚚</div>
-            <h3>Timely Delivery</h3>
-            <p>Focused logistics and dispatch coordination to help maintain reliable supply to franchise partners.</p>
-          </Reveal>
+          <Reveal delay={120} className="franchiseBenefitCard"><div className="franchiseBenefitIcon">📍</div><h3>Territory Rights</h3><p>Structured territory-based distribution to help partners operate with clarity in their assigned region.</p></Reveal>
+          <Reveal delay={200} className="franchiseBenefitCard"><div className="franchiseBenefitIcon">📣</div><h3>Marketing Support</h3><p>Access to promotional material, product information, and marketing assistance to support your sales efforts.</p></Reveal>
+          <Reveal delay={280} className="franchiseBenefitCard"><div className="franchiseBenefitIcon">💊</div><h3>Wide Product Range</h3><p>A growing portfolio across multiple therapeutic segments and dosage forms to serve diverse customer needs.</p></Reveal>
+          <Reveal delay={360} className="franchiseBenefitCard"><div className="franchiseBenefitIcon">🚚</div><h3>Timely Delivery</h3><p>Focused logistics and dispatch coordination to help maintain reliable supply to franchise partners.</p></Reveal>
         </div>
       </section>
 
@@ -661,11 +634,7 @@ function PCDFranchise({setPage}) {
         <div className="franchiseSectionHeader">
           <Reveal><span className="eyebrowRed">GETTING STARTED</span></Reveal>
           <Reveal delay={80}><h2>Franchise process.</h2></Reveal>
-          <Reveal delay={150}>
-            <p className="franchiseSectionIntro">
-              A straightforward onboarding path — from initial enquiry to becoming an active franchise partner.
-            </p>
-          </Reveal>
+          <Reveal delay={150}><p className="franchiseSectionIntro">A straightforward onboarding path — from initial enquiry to becoming an active franchise partner.</p></Reveal>
         </div>
         <ProcessSteps />
       </section>
@@ -701,31 +670,14 @@ function Quality({setPage}) {
         <div className="qualityHeroInner">
           <Reveal><span className="eyebrow">QUALITY</span></Reveal>
           <Reveal delay={80}><h1>Quality at Every Step</h1></Reveal>
-          <Reveal delay={160}>
-            <p>
-              At Abencivo Biotech, quality is built into every stage of our pharmaceutical journey. We focus on consistency, reliability, responsible processes, and continuous improvement to deliver products that meet defined quality expectations.
-            </p>
-          </Reveal>
+          <Reveal delay={160}><p>At Abencivo Biotech, quality is built into every stage of our pharmaceutical journey. We focus on consistency, reliability, responsible processes, and continuous improvement to deliver products that meet defined quality expectations.</p></Reveal>
         </div>
       </section>
 
       <section className="section qualityCardsSection">
         <div className="qualityCardsGrid">
-          <Reveal className="qualityCard">
-            <div className="qualityCardIcon">🛡️</div>
-            <h2>Quality Policy</h2>
-            <p>
-              Our quality approach is centered on consistency, responsibility, and continuous improvement. We aim to maintain clear processes, careful documentation, and strong quality practices across our operations while building long-term trust with our customers and partners.
-            </p>
-          </Reveal>
-
-          <Reveal delay={150} className="qualityCard">
-            <div className="qualityCardIcon">✅</div>
-            <h2>Quality Control</h2>
-            <p>
-              Quality control supports our commitment to reliable pharmaceutical products. We emphasize appropriate checks, documentation, process monitoring, and evaluation at relevant stages to help maintain consistency and product quality.
-            </p>
-          </Reveal>
+          <Reveal className="qualityCard"><div className="qualityCardIcon">🛡️</div><h2>Quality Policy</h2><p>Our quality approach is centered on consistency, responsibility, and continuous improvement. We aim to maintain clear processes, careful documentation, and strong quality practices across our operations while building long-term trust with our customers and partners.</p></Reveal>
+          <Reveal delay={150} className="qualityCard"><div className="qualityCardIcon">✅</div><h2>Quality Control</h2><p>Quality control supports our commitment to reliable pharmaceutical products. We emphasize appropriate checks, documentation, process monitoring, and evaluation at relevant stages to help maintain consistency and product quality.</p></Reveal>
         </div>
       </section>
 
@@ -734,25 +686,10 @@ function Quality({setPage}) {
           <Reveal><span className="eyebrow">OUR PRINCIPLES</span></Reveal>
           <Reveal delay={80}><h2>What Guides Our Quality</h2></Reveal>
         </div>
-
         <div className="qualityPrinciplesGrid">
-          <Reveal delay={120} className="qualityPrinciple">
-            <div className="principleNumber">01</div>
-            <h3>Consistency</h3>
-            <p>Maintaining reliable and well-defined processes.</p>
-          </Reveal>
-
-          <Reveal delay={220} className="qualityPrinciple">
-            <div className="principleNumber">02</div>
-            <h3>Continuous Improvement</h3>
-            <p>Reviewing and improving processes over time.</p>
-          </Reveal>
-
-          <Reveal delay={320} className="qualityPrinciple">
-            <div className="principleNumber">03</div>
-            <h3>Customer Trust</h3>
-            <p>Building confidence through responsible quality practices.</p>
-          </Reveal>
+          <Reveal delay={120} className="qualityPrinciple"><div className="principleNumber">01</div><h3>Consistency</h3><p>Maintaining reliable and well-defined processes.</p></Reveal>
+          <Reveal delay={220} className="qualityPrinciple"><div className="principleNumber">02</div><h3>Continuous Improvement</h3><p>Reviewing and improving processes over time.</p></Reveal>
+          <Reveal delay={320} className="qualityPrinciple"><div className="principleNumber">03</div><h3>Customer Trust</h3><p>Building confidence through responsible quality practices.</p></Reveal>
         </div>
       </section>
 
@@ -776,21 +713,13 @@ function Products({setPage, initialCategory = ""}) {
   const [q, setQ] = useState("");
   const [cat, setCat] = useState(initialCategory || "All");
 
-  useEffect(() => {
-    setCat(initialCategory || "All");
-  }, [initialCategory]);
+  useEffect(() => { setCat(initialCategory || "All"); }, [initialCategory]);
 
   useEffect(() => {
-    fetch(API_BASE + "/products")
-      .then(r => r.ok ? r.json() : [])
-      .then(x => { if (Array.isArray(x) && x.length) setItems(x); })
-      .catch(() => {});
+    fetch(API_BASE + "/products").then(r => r.ok ? r.json() : []).then(x => { if (Array.isArray(x) && x.length) setItems(x); }).catch(() => {});
   }, []);
   useEffect(() => {
-    fetch(API_BASE + "/categories")
-      .then(r => r.ok ? r.json() : [])
-      .then(x => { if (Array.isArray(x)) setCategories(x); }) 
-      .catch(() => {});
+    fetch(API_BASE + "/categories").then(r => r.ok ? r.json() : []).then(x => { if (Array.isArray(x)) setCategories(x); }).catch(() => {});
   }, []);
 
   const catMap = {};
@@ -810,22 +739,10 @@ function Products({setPage, initialCategory = ""}) {
         <div className="productsBlob productsBlob2"></div>
         <div className="productsBlob productsBlob3"></div>
 
-        <div className="catalogueFloat catalogueFloat1">
-          <img src="/images/categories/cat-tablets.png" alt="Tablets" />
-          <span className="catalogueFloatTag">Tablets</span>
-        </div>
-        <div className="catalogueFloat catalogueFloat2">
-          <img src="/images/categories/cat-syrups.png" alt="Syrups" />
-          <span className="catalogueFloatTag">Syrups</span>
-        </div>
-        <div className="catalogueFloat catalogueFloat3">
-          <img src="/images/categories/cat-injections.png" alt="Injections" />
-          <span className="catalogueFloatTag">Injections</span>
-        </div>
-        <div className="catalogueFloat catalogueFloat4">
-          <img src="/images/categories/cat-capsules.png" alt="Capsules" />
-          <span className="catalogueFloatTag">Capsules</span>
-        </div>
+        <div className="catalogueFloat catalogueFloat1"><img src="/images/categories/cat-tablets.png" alt="Tablets" /><span className="catalogueFloatTag">Tablets</span></div>
+        <div className="catalogueFloat catalogueFloat2"><img src="/images/categories/cat-syrups.png" alt="Syrups" /><span className="catalogueFloatTag">Syrups</span></div>
+        <div className="catalogueFloat catalogueFloat3"><img src="/images/categories/cat-injections.png" alt="Injections" /><span className="catalogueFloatTag">Injections</span></div>
+        <div className="catalogueFloat catalogueFloat4"><img src="/images/categories/cat-capsules.png" alt="Capsules" /><span className="catalogueFloatTag">Capsules</span></div>
 
         <div className="pharmaFloat pharmaFloat1">💊</div>
         <div className="pharmaFloat pharmaFloat2">🧪</div>
@@ -834,16 +751,8 @@ function Products({setPage, initialCategory = ""}) {
 
         <div className="productsHeroInner">
           <Reveal><span className="eyebrowRed">OUR CATALOGUE</span></Reveal>
-          <Reveal delay={80}>
-            <h1 className="productsHeroTitle">
-              Explore Our <span className="aboutUnderline">Pharmaceutical Range</span>
-            </h1>
-          </Reveal>
-          <Reveal delay={160}>
-            <p className="productsHeroLead">
-              Over 100+ products across tablets, capsules, syrups, injectables, ointments, herbal tonics, and more. Search or filter to find what you need.
-            </p>
-          </Reveal>
+          <Reveal delay={80}><h1 className="productsHeroTitle">Explore Our <span className="aboutUnderline">Pharmaceutical Range</span></h1></Reveal>
+          <Reveal delay={160}><p className="productsHeroLead">Over 100+ products across tablets, capsules, syrups, injectables, ointments, herbal tonics, and more. Search or filter to find what you need.</p></Reveal>
           <Reveal delay={220} className="productsHeroStats">
             <span><b>{items.length}+</b> Products</span>
             <span><b>{catNames.length - 1}</b> Categories</span>
@@ -854,34 +763,16 @@ function Products({setPage, initialCategory = ""}) {
 
       <section className="section productsGridSection">
         <Reveal className="productsFiltersRow">
-          <input
-            className="productsSearch"
-            placeholder="🔍  Search by name, composition, or category..."
-            value={q}
-            onChange={e => setQ(e.target.value)}
-          />
+          <input className="productsSearch" placeholder="🔍  Search by name, composition, or category..." value={q} onChange={e => setQ(e.target.value)} />
         </Reveal>
 
         <Reveal delay={100} className="productsCategoryRow">
           {catNames.map(c => {
             const iconUrl = catMap[c];
             const imgSrc = iconUrl ? getImageSrc(iconUrl) : (c === "All" ? null : getCategoryImage(c));
-
             return (
-              <button
-                key={c}
-                className={`productsCatBtn ${cat === c ? "active" : ""}`}
-                onClick={() => setCat(c)}
-                style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}
-              >
-                {imgSrc && (
-                  <img 
-                    src={imgSrc} 
-                    alt={c} 
-                    style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} 
-                    onError={(e) => { e.target.style.display='none'; }}
-                  />
-                )}
+              <button key={c} className={`productsCatBtn ${cat === c ? "active" : ""}`} onClick={() => setCat(c)} style={{ display: 'inline-flex', alignItems: 'center', gap: '8px' }}>
+                {imgSrc && (<img src={imgSrc} alt={c} style={{ width: '20px', height: '20px', borderRadius: '50%', objectFit: 'cover' }} onError={(e) => { e.target.style.display='none'; }} />)}
                 {c}
               </button>
             );
@@ -889,61 +780,25 @@ function Products({setPage, initialCategory = ""}) {
         </Reveal>
 
         {filtered.length === 0 ? (
-          <Reveal className="productsEmpty">
-            <div className="productsEmptyIcon">🔍</div>
-            <h3>No products found</h3>
-            <p>Try a different search term or category.</p>
-          </Reveal>
+          <Reveal className="productsEmpty"><div className="productsEmptyIcon">🔍</div><h3>No products found</h3><p>Try a different search term or category.</p></Reveal>
         ) : (
           <div className="productsGridNew">
             {filtered.map((p, i) => (
               <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
                 <div className="productCardImageWrap" style={{ height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '12px', background: '#fff8f8', borderRadius: '8px', overflow: 'hidden' }}>
-                  <img
-                    src={getImageSrc(p.image_url)}
-                    alt={p.name}
-                    style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
-                    onError={(e) => { e.target.src = "/products/product-placeholder.svg"; }}
-                  />
+                  <img src={getImageSrc(p.image_url)} alt={p.name} style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }} onError={(e) => { e.target.src = "/products/product-placeholder.svg"; }} />
                 </div>
-
                 <div className="productCardTop">
                   <span className="productCardCat">{p.category}</span>
                   <span className="productCardForm">{p.dosage_form}</span>
                 </div>
-
                 <h3 className="productCardName">{p.name}</h3>
                 <p className="productCardComposition">{p.composition}</p>
-
-                {p.packing && (
-                  <div className="productCardMeta">
-                    <span className="productCardMetaLabel">Pack</span>
-                    <span className="productCardMetaValue">{p.packing}</span>
-                  </div>
-                )}
-
-                {p.mrp && (
-                  <div className="productCardPrice">
-                    <span className="productCardPriceLabel">MRP</span>
-                    <span className="productCardPriceValue">₹{Number(p.mrp).toFixed(2)}</span>
-                  </div>
-                )}
-
+                {p.packing && (<div className="productCardMeta"><span className="productCardMetaLabel">Pack</span><span className="productCardMetaValue">{p.packing}</span></div>)}
+                {p.mrp && (<div className="productCardPrice"><span className="productCardPriceLabel">MRP</span><span className="productCardPriceValue">₹{Number(p.mrp).toFixed(2)}</span></div>)}
                 <div className="productCardActions">
-                  <a
-                    href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hello, I am interested in " + p.name)}`}
-                    target="_blank"
-                    rel="noopener noreferrer"
-                    className="productCardBtn productCardBtnWa"
-                  >
-                    WhatsApp
-                  </a>
-                  <button
-                    className="productCardBtn productCardBtnEnquire"
-                    onClick={() => setPage("contact")}
-                  >
-                    Enquire
-                  </button>
+                  <a href={`https://wa.me/${COMPANY.whatsapp}?text=${encodeURIComponent("Hello, I am interested in " + p.name)}`} target="_blank" rel="noopener noreferrer" className="productCardBtn productCardBtnWa">WhatsApp</a>
+                  <button className="productCardBtn productCardBtnEnquire" onClick={() => setPage("contact")}>Enquire</button>
                 </div>
               </Reveal>
             ))}
@@ -967,12 +822,8 @@ function Contact({ presetType = "" }) {
     setSending(true);
     setMsg("Sending...");
     try {
-      const finalMessage = presetType === "Franchise" 
-        ? `Applied for franchise: ${form.message}` 
-        : `Sent an enquiry: ${form.message}`;
-        
+      const finalMessage = presetType === "Franchise" ? `Applied for franchise: ${form.message}` : `Sent an enquiry: ${form.message}`;
       const finalType = presetType === "Franchise" ? "Franchise" : "General";
-
       const r = await fetch(API_BASE + "/enquiries", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
@@ -995,9 +846,7 @@ function Contact({ presetType = "" }) {
       <div className="contactModernGrid">
         <Reveal className="contactLeft">
           <span className="contactAccent">GET IN TOUCH</span>
-          <h2 className="contactTitle">
-            Let&apos;s talk<span className="contactDot">.</span>
-          </h2>
+          <h2 className="contactTitle">Let&apos;s talk<span className="contactDot">.</span></h2>
           <p className="contactLead">
             {presetType === "Franchise" 
               ? "Fill out this form to apply for a franchise. Our team will get back to you shortly."
@@ -1011,9 +860,7 @@ function Contact({ presetType = "" }) {
             </div>
             <input name="email" type="email" value={form.email} onChange={handleChange} placeholder="Email" />
             <textarea name="message" value={form.message} onChange={handleChange} placeholder="Message" rows={5} required />
-            <button type="submit" disabled={sending} className="primary contactSubmit">
-              {sending ? "Sending..." : "Submit Enquiry →"}
-            </button>
+            <button type="submit" disabled={sending} className="primary contactSubmit">{sending ? "Sending..." : "Submit Enquiry →"}</button>
             {msg && <p className="contactMsg">{msg}</p>}
           </form>
         </Reveal>
@@ -1023,42 +870,13 @@ function Contact({ presetType = "" }) {
             <div className="contactWidgetBadge">✦</div>
             <h3 className="contactWidgetTitle">Reach us directly</h3>
             <p className="contactWidgetLead">Our team typically responds within one business day.</p>
-
             <div className="contactInfoList">
-              <div className="contactInfoRow">
-                <span className="contactInfoIcon">✉</span>
-                <div>
-                  <div className="contactInfoLabel">Email</div>
-                  <div className="contactInfoValue">{COMPANY?.email || "info@abencivo.com"}</div>
-                </div>
-              </div>
-              <div className="contactInfoRow">
-                <span className="contactInfoIcon">☎</span>
-                <div>
-                  <div className="contactInfoLabel">Phone</div>
-                  <div className="contactInfoValue">{COMPANY?.phone || "+91 XXXXXXXXXX"}</div>
-                </div>
-              </div>
-              <div className="contactInfoRow">
-                <span className="contactInfoIcon">📍</span>
-                <div>
-                  <div className="contactInfoLabel">Address</div>
-                  <div className="contactInfoValue">{COMPANY?.address || "Bilaspur, Haryana, India"}</div>
-                </div>
-              </div>
-              <div className="contactInfoRow">
-                <span className="contactInfoIcon">⏱</span>
-                <div>
-                  <div className="contactInfoLabel">Hours</div>
-                  <div className="contactInfoValue">Mon – Sat · 9:00 – 18:00 IST</div>
-                </div>
-              </div>
+              <div className="contactInfoRow"><span className="contactInfoIcon">✉</span><div><div className="contactInfoLabel">Email</div><div className="contactInfoValue">{COMPANY?.email || "info@abencivo.com"}</div></div></div>
+              <div className="contactInfoRow"><span className="contactInfoIcon">☎</span><div><div className="contactInfoLabel">Phone</div><div className="contactInfoValue">{COMPANY?.phone || "+91 XXXXXXXXXX"}</div></div></div>
+              <div className="contactInfoRow"><span className="contactInfoIcon">📍</span><div><div className="contactInfoLabel">Address</div><div className="contactInfoValue">{COMPANY?.address || "Bilaspur, Haryana, India"}</div></div></div>
+              <div className="contactInfoRow"><span className="contactInfoIcon">⏱</span><div><div className="contactInfoLabel">Hours</div><div className="contactInfoValue">Mon – Sat · 9:00 – 18:00 IST</div></div></div>
             </div>
-
-            <div className="contactLiveRow">
-              <span className="contactLivePulse"></span>
-              <span className="contactLiveText">AVAILABLE TO HELP</span>
-            </div>
+            <div className="contactLiveRow"><span className="contactLivePulse"></span><span className="contactLiveText">AVAILABLE TO HELP</span></div>
           </div>
         </Reveal>
       </div>
@@ -1067,16 +885,7 @@ function Contact({ presetType = "" }) {
 }
 
 /* ---------- ADMIN PANEL ---------- */
-const EMPTY_PRODUCT = {
-  name:"",
-  composition:"",
-  dosage_form:"Tablet",
-  category:"General",
-  image_url:"/products/product-placeholder.svg",
-  description:"",
-  packing:"",
-  mrp:""
-};
+const EMPTY_PRODUCT = {name:"",composition:"",dosage_form:"Tablet",category:"General",image_url:"/products/product-placeholder.svg",description:"",packing:"",mrp:""};
 const EMPTY_CATEGORY = {name:"",icon:"💊",icon_url:"",sort_order:0};
 const ENQUIRY_STATUSES = ["New","Contacted","Follow-up","Converted","Closed"];
 const STATUS_COLORS = {New:"#c51f2b",Contacted:"#a15b00",Followup:"#8f1620","Follow-up":"#8f1620",Converted:"#1a7a3c",Closed:"#6b6b6b"};
@@ -1220,16 +1029,9 @@ function Admin(){
  async function del(id){
    try {
      const r = await fetch(API_BASE+"/admin/products/"+id,{method:"DELETE",headers});
-     if(r.ok) {
-       setConfirmDeleteId(null);
-       flash("Product removed");
-       load();
-     } else {
-       flash("Could not delete product");
-     }
-   } catch (err) {
-     flash("Network error. Please try again.");
-   }
+     if(r.ok) { setConfirmDeleteId(null); flash("Product removed"); load(); }
+     else { flash("Could not delete product"); }
+   } catch (err) { flash("Network error. Please try again."); }
  }
 
  async function status(id,status){await fetch(API_BASE+"/admin/enquiries/"+id,{method:"PATCH",headers,body:JSON.stringify({status})});load()}
@@ -1237,38 +1039,22 @@ function Admin(){
  async function delEnquiry(id) {
    try {
      const r = await fetch(API_BASE + "/admin/enquiries/" + id, { method: "DELETE", headers });
-     if (r.ok) {
-       setConfirmDeleteEnquiryId(null);
-       flash("Enquiry deleted");
-       load();
-     } else {
-       flash("Could not delete enquiry");
-     }
-   } catch (err) {
-     flash("Network error. Please try again.");
-   }
+     if (r.ok) { setConfirmDeleteEnquiryId(null); flash("Enquiry deleted"); load(); }
+     else { flash("Could not delete enquiry"); }
+   } catch (err) { flash("Network error. Please try again."); }
  }
 
  async function delLog(id) {
    try {
      const r = await fetch(API_BASE + "/admin/audit-logs/" + id, { method: "DELETE", headers });
-     if (r.ok) {
-       setConfirmDeleteLogId(null);
-       flash("Log deleted");
-       load();
-     } else {
-       flash("Could not delete log");
-     }
-   } catch (err) {
-     flash("Network error. Please try again.");
-   }
+     if (r.ok) { setConfirmDeleteLogId(null); flash("Log deleted"); load(); }
+     else { flash("Could not delete log"); }
+   } catch (err) { flash("Network error. Please try again."); }
  }
 
  // === BULK DELETE LOGS ===
  function toggleLog(id) {
-   setSelectedLogs(prev => 
-     prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]
-   );
+   setSelectedLogs(prev => prev.includes(id) ? prev.filter(x => x !== id) : [...prev, id]);
  }
 
  function toggleAllLogs() {
@@ -1293,12 +1079,8 @@ function Admin(){
        setSelectedLogs([]);
        setConfirmBulkDelete(false);
        load();
-     } else {
-       flash("Could not delete logs");
-     }
-   } catch (err) {
-     flash("Network error. Please try again.");
-   }
+     } else { flash("Could not delete logs"); }
+   } catch (err) { flash("Network error. Please try again."); }
  }
 
  function startEditCat(c){setEditingCatId(c.id);setCatForm({name:c.name,icon:c.icon||"💊",icon_url:c.icon_url||"",sort_order:c.sort_order||0});setTab("categories");window.scrollTo({top:0,behavior:"smooth"})}
@@ -1317,16 +1099,9 @@ function Admin(){
  async function delCat(id){
    try {
      const r = await fetch(API_BASE+"/admin/categories/"+id,{method:"DELETE",headers});
-     if(r.ok) {
-       setConfirmDeleteCatId(null);
-       flash("Category removed");
-       load();
-     } else {
-       flash("Could not delete category");
-     }
-   } catch (err) {
-     flash("Network error. Please try again.");
-   }
+     if(r.ok) { setConfirmDeleteCatId(null); flash("Category removed"); load(); }
+     else { flash("Could not delete category"); }
+   } catch (err) { flash("Network error. Please try again."); }
  }
 
  if(!token)return(
@@ -1369,38 +1144,45 @@ function Admin(){
      <section className="adminMain">
        <div className="adminTop"><div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>{toast&&<span className="adminToast">{toast}</span>}</div>
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
+       
        {tab==="dashboard"&&(<><div className="grid3">
          <div className="counterCard"><b>{data.products.filter(p => p.active !== 0 && p.active !== false).length}</b><span>Active products</span></div>
          <div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div>
          <div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div>
        </div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
        
-       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={getImageSrc(form.image_url)} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div>
-         
-         <div className="fieldRow">
-           <input placeholder="Packing (e.g., 10x10 Alu-Alu)" value={form.packing} onChange={e=>setForm({...form,packing:e.target.value})}/>
-           <input placeholder="MRP (e.g., 150)" type="number" step="0.01" value={form.mrp} onChange={e=>setForm({...form,mrp:e.target.value})}/>
+       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>
+         {editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}
+         <div className="productFormGrid">
+           <div className="uploadBox">
+             <img src={getImageSrc(form.image_url)} alt="" />
+             <label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label>
+           </div>
+           <div className="productFields">
+             <input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/>
+             <input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/>
+             <div className="fieldRow">
+               <input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/>
+               <input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/>
+             </div>
+             <div className="fieldRow">
+               <input placeholder="Packing (e.g., 10x10 Alu-Alu)" value={form.packing} onChange={e=>setForm({...form,packing:e.target.value})}/>
+               <input placeholder="MRP (e.g., 150)" type="number" step="0.01" value={form.mrp} onChange={e=>setForm({...form,mrp:e.target.value})}/>
+             </div>
+             <textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/>
+           </div>
          </div>
-
-         <textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={getImageSrc(p.image_url)} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
+         <button className="primary">{editingId?"Save changes":"Add Product"}</button>
+       </form>
+       <input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/>
+       <div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={getImageSrc(p.image_url)} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
 
        {tab==="categories"&&(<><form className="adminForm productForm" onSubmit={saveCat}>
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
          <div className="productFormGrid">
            <div className="uploadBox">
-             {catForm.icon_url ? (
-               <img src={getImageSrc(catForm.icon_url)} alt="Category Icon" onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} />
-             ) : isKnownCategory(catForm.name) ? (
-               <img src={getCategoryImage(catForm.name)} alt="Category Icon" />
-             ) : (
-               <div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%", height:"100%", fontSize:"40px", background:"#fff8f8"}}>
-                 {catForm.icon || "💊"}
-               </div>
-             )}
-             <label className="uploadLabel">
-               {uploadingCat ? "Uploading..." : "Change Image"}
-               <input type="file" accept="image/*" hidden onChange={handleCatFile} disabled={uploadingCat}/>
-             </label>
+             {catForm.icon_url ? (<img src={getImageSrc(catForm.icon_url)} alt="Category Icon" onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} />) : isKnownCategory(catForm.name) ? (<img src={getCategoryImage(catForm.name)} alt="Category Icon" />) : (<div style={{display:"flex", alignItems:"center", justifyContent:"center", width:"100%", height:"100%", fontSize:"40px", background:"#fff8f8"}}>{catForm.icon || "💊"}</div>)}
+             <label className="uploadLabel">{uploadingCat ? "Uploading..." : "Change Image"}<input type="file" accept="image/*" hidden onChange={handleCatFile} disabled={uploadingCat}/></label>
            </div>
            <div className="productFields">
              <input placeholder="Category name (e.g. Tablets)" value={catForm.name} onChange={e=>setCatForm({...catForm,name:e.target.value})} required/>
@@ -1409,18 +1191,7 @@ function Admin(){
          </div>
          <button className="primary">{editingCatId?"Save changes":"Add Category"}</button>
        </form>
-       
-       <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
-         <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
-           {c.icon_url ? (
-             <img src={getImageSrc(c.icon_url)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
-           ) : isKnownCategory(c.name) ? (
-             <img src={getCategoryImage(c.name)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
-           ) : (
-             <span>{c.icon || "💊"}</span>
-           )}
-         </div>
-         <span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
+       <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}><div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>{c.icon_url ? (<img src={getImageSrc(c.icon_url)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />) : isKnownCategory(c.name) ? (<img src={getCategoryImage(c.name)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />) : (<span>{c.icon || "💊"}</span>)}</div><span><b>{c.name}</b><small>Sort: {c.sort_order} · {c.active?"Active":"Hidden"}</small></span><div className="rowActions"><button onClick={()=>startEditCat(c)}>Edit</button>{confirmDeleteCatId===c.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>delCat(c.id)}>Yes</button><button onClick={()=>setConfirmDeleteCatId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteCatId(c.id)}>Delete</button>}</div></div>))}{filteredCategories.length===0&&<div className="row emptyRow">No categories yet. Add one above!</div>}</div></>)}
 
        {tab==="enquiries"&&(
          <>
@@ -1440,37 +1211,18 @@ function Admin(){
                <tbody>
                  {filteredEnquiries.map(x => (
                    <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0'}}>
-                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
-                       {formatDateTime(x.created_at)}
-                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>{formatDateTime(x.created_at)}</td>
+                     <td style={{padding: '16px'}}><div style={{fontWeight: '600', color: '#333'}}>{x.name}</div><span className="typeBadge" style={{marginTop: '4px', display: 'inline-block'}}>{x.type}</span></td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555'}}><div>{x.phone}</div><div style={{fontSize: '12px', color: '#888'}}>{x.email}</div></td>
+                     <td style={{padding: '16px', fontSize: '14px', color: '#555', maxWidth: '250px'}}>{x.message}<div style={{fontSize: '11px', color: '#999', marginTop: '4px'}}>Assigned: {x.assigned_to || "Unassigned"}</div></td>
                      <td style={{padding: '16px'}}>
-                       <div style={{fontWeight: '600', color: '#333'}}>{x.name}</div>
-                       <span className="typeBadge" style={{marginTop: '4px', display: 'inline-block'}}>{x.type}</span>
-                     </td>
-                     <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>
-                       <div>{x.phone}</div>
-                       <div style={{fontSize: '12px', color: '#888'}}>{x.email}</div>
-                     </td>
-                     <td style={{padding: '16px', fontSize: '14px', color: '#555', maxWidth: '250px'}}>
-                       {x.message}
-                       <div style={{fontSize: '11px', color: '#999', marginTop: '4px'}}>Assigned: {x.assigned_to || "Unassigned"}</div>
-                     </td>
-                     <td style={{padding: '16px'}}>
-                       <select 
-                         className="statusSelect" 
-                         style={{color: STATUS_COLORS[x.status]||"#4b0d12", padding: '6px', borderRadius: '6px', border: '1px solid #ddd', width: '100%', maxWidth: '130px'}} 
-                         value={x.status} 
-                         onChange={e=>status(x.id,e.target.value)}
-                       >
+                       <select className="statusSelect" style={{color: STATUS_COLORS[x.status]||"#4b0d12", padding: '6px', borderRadius: '6px', border: '1px solid #ddd', width: '100%', maxWidth: '130px'}} value={x.status} onChange={e=>status(x.id,e.target.value)}>
                          {ENQUIRY_STATUSES.map(s=><option key={s}>{s}</option>)}
                        </select>
                      </td>
                      <td style={{padding: '16px'}}>
                        {confirmDeleteEnquiryId === x.id ? (
-                         <span className="confirmInline">
-                           Delete? <button className="dangerBtn" onClick={() => delEnquiry(x.id)}>Yes</button>
-                           <button onClick={() => setConfirmDeleteEnquiryId(null)}>No</button>
-                         </span>
+                         <span className="confirmInline">Delete? <button className="dangerBtn" onClick={() => delEnquiry(x.id)}>Yes</button><button onClick={() => setConfirmDeleteEnquiryId(null)}>No</button></span>
                        ) : (
                          <button onClick={() => setConfirmDeleteEnquiryId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
                        )}
@@ -1484,9 +1236,7 @@ function Admin(){
          </>
        )}
 
-       {tab==="brochure"&&(
-         <AdminBrochureLeads />
-       )}
+       {tab==="brochure"&&(<AdminBrochureLeads />)}
        
        {tab==="logs"&&(
          <>
@@ -1494,18 +1244,11 @@ function Admin(){
            <div style={{display: 'flex', justifyContent: 'space-between', alignItems: 'center', marginTop: '20px', marginBottom: '10px', padding: '12px 16px', background: '#fff', borderRadius: '12px', boxShadow: '0 2px 8px rgba(0,0,0,0.05)', flexWrap: 'wrap', gap: '10px'}}>
              <div style={{display: 'flex', alignItems: 'center', gap: '12px'}}>
                <label style={{display: 'flex', alignItems: 'center', gap: '8px', cursor: 'pointer', fontWeight: '600', color: '#333'}}>
-                 <input 
-                   type="checkbox" 
-                   checked={allLogsSelected} 
-                   onChange={toggleAllLogs}
-                   style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
-                 />
+                 <input type="checkbox" checked={allLogsSelected} onChange={toggleAllLogs} style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}} />
                  Select All
                </label>
                {selectedLogs.length > 0 && (
-                 <span style={{color: '#dc2626', fontWeight: '600', fontSize: '14px'}}>
-                   {selectedLogs.length} selected
-                 </span>
+                 <span style={{color: '#dc2626', fontWeight: '600', fontSize: '14px'}}>{selectedLogs.length} selected</span>
                )}
              </div>
              
@@ -1517,10 +1260,7 @@ function Admin(){
                    <button onClick={() => setConfirmBulkDelete(false)}>No</button>
                  </span>
                ) : (
-                 <button 
-                   onClick={() => setConfirmBulkDelete(true)}
-                   style={{padding: '8px 16px', cursor: 'pointer', color: '#fff', background: '#dc2626', border: 'none', borderRadius: '6px', fontWeight: '600'}}
-                 >
+                 <button onClick={() => setConfirmBulkDelete(true)} style={{padding: '8px 16px', cursor: 'pointer', color: '#fff', background: '#dc2626', border: 'none', borderRadius: '6px', fontWeight: '600'}}>
                    🗑 Delete Selected ({selectedLogs.length})
                  </button>
                )
@@ -1532,12 +1272,7 @@ function Admin(){
                <thead>
                  <tr style={{background: '#fcfcfc', borderBottom: '2px solid #eee'}}>
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600', width: '40px'}}>
-                     <input 
-                       type="checkbox" 
-                       checked={allLogsSelected} 
-                       onChange={toggleAllLogs}
-                       style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
-                     />
+                     <input type="checkbox" checked={allLogsSelected} onChange={toggleAllLogs} style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}} />
                    </th>
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Date & Time</th>
                    <th style={{padding: '16px', fontSize: '13px', color: '#666', fontWeight: '600'}}>Action</th>
@@ -1550,25 +1285,15 @@ function Admin(){
                  {sortedLogs.map(x => (
                    <tr key={x.id} style={{borderBottom: '1px solid #f0f0f0', background: selectedLogs.includes(x.id) ? '#fff5f5' : 'transparent'}}>
                      <td style={{padding: '16px'}}>
-                       <input 
-                         type="checkbox" 
-                         checked={selectedLogs.includes(x.id)} 
-                         onChange={() => toggleLog(x.id)}
-                         style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}}
-                       />
+                       <input type="checkbox" checked={selectedLogs.includes(x.id)} onChange={() => toggleLog(x.id)} style={{width: '18px', height: '18px', cursor: 'pointer', accentColor: '#dc2626'}} />
                      </td>
-                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>
-                       {formatDateTime(x.created_at)}
-                     </td>
+                     <td style={{padding: '16px', fontSize: '14px', whiteSpace: 'nowrap', fontWeight: '500', color: '#c51f2b'}}>{formatDateTime(x.created_at)}</td>
                      <td style={{padding: '16px', fontSize: '14px', color: '#333'}}>{x.action}</td>
                      <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>{x.entity}</td>
                      <td style={{padding: '16px', fontSize: '14px', color: '#555'}}>#{x.entity_id}</td>
                      <td style={{padding: '16px'}}>
                        {confirmDeleteLogId === x.id ? (
-                         <span className="confirmInline">
-                           Delete? <button className="dangerBtn" onClick={() => delLog(x.id)}>Yes</button>
-                           <button onClick={() => setConfirmDeleteLogId(null)}>No</button>
-                         </span>
+                         <span className="confirmInline">Delete? <button className="dangerBtn" onClick={() => delLog(x.id)}>Yes</button><button onClick={() => setConfirmDeleteLogId(null)}>No</button></span>
                        ) : (
                          <button onClick={() => setConfirmDeleteLogId(x.id)} style={{padding: '6px 12px', cursor: 'pointer', color: '#dc2626', border: '1px solid #dc2626', background: 'none', borderRadius: '6px'}}>Delete</button>
                        )}
