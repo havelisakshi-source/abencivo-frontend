@@ -885,7 +885,17 @@ function Contact({ presetType = "" }) {
 }
 
 /* ---------- ADMIN PANEL ---------- */
-const EMPTY_PRODUCT = {name:"",composition:"",dosage_form:"Tablet",category:"General",image_url:"/products/product-placeholder.svg",description:"",packing:"",mrp:""};
+// FIXED: dosage_form and category are now empty strings instead of pre-filled values
+const EMPTY_PRODUCT = {
+  name:"",
+  composition:"",
+  dosage_form:"",
+  category:"",
+  image_url:"/products/product-placeholder.svg",
+  description:"",
+  packing:"",
+  mrp:""
+};
 const EMPTY_CATEGORY = {name:"",icon:"💊",icon_url:"",sort_order:0};
 const ENQUIRY_STATUSES = ["New","Contacted","Follow-up","Converted","Closed"];
 const STATUS_COLORS = {New:"#c51f2b",Contacted:"#a15b00",Followup:"#8f1620","Follow-up":"#8f1620",Converted:"#1a7a3c",Closed:"#6b6b6b"};
@@ -1004,8 +1014,8 @@ function Admin(){
    setForm({
      name:p.name,
      composition:p.composition||"",
-     dosage_form:p.dosage_form||"Tablet",
-     category:p.category||"General",
+     dosage_form:p.dosage_form||"",
+     category:p.category||"",
      image_url:p.image_url||"/products/product-placeholder.svg",
      description:p.description||"",
      packing:p.packing||"",
