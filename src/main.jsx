@@ -118,11 +118,8 @@ function getFilterValue(displayName = "") {
 /* ---------- Helper: Get the correct image URL (handles Cloudinary, uploads, and local paths) ---------- */
 function getImageSrc(url) {
   if (!url) return "/products/product-placeholder.svg";
-  // Cloudinary or any full URL - use as-is
   if (url.startsWith("http://") || url.startsWith("https://")) return url;
-  // Legacy uploads path - prepend backend URL
   if (url.startsWith("/uploads")) return API_BASE.replace("/api","") + url;
-  // Local asset path - use as-is
   return url;
 }
 
@@ -1072,7 +1069,16 @@ function Contact({ presetType = "" }) {
 }
 
 /* ---------- ADMIN PANEL ---------- */
-const EMPTY_PRODUCT = {name:"",composition:"",dosage_form:"Tablet",category:"General",image_url:"/products/product-placeholder.svg",description:""};
+const EMPTY_PRODUCT = {
+  name:"",
+  composition:"",
+  dosage_form:"Tablet",
+  category:"General",
+  image_url:"/products/product-placeholder.svg",
+  description:"",
+  packing:"",  // <-- ADDED
+  mrp:""       // <-- ADDED
+};
 const EMPTY_CATEGORY = {name:"",icon:"💊",icon_url:"",sort_order:0};
 const ENQUIRY_STATUSES = ["New","Contacted","Follow-up","Converted","Closed"];
 const STATUS_COLORS = {New:"#c51f2b",Contacted:"#a15b00",Followup:"#8f1620","Follow-up":"#8f1620",Converted:"#1a7a3c",Closed:"#6b6b6b"};
@@ -1183,7 +1189,21 @@ function Admin(){
    setUploadingCat(false);
  }
 
- function startEdit(p){setEditingId(p.id);setForm({name:p.name,composition:p.composition||"",dosage_form:p.dosage_form||"Tablet",category:p.category||"General",image_url:p.image_url||"/products/product-placeholder.svg",description:p.description||""});setTab("products");window.scrollTo({top:0,behavior:"smooth"})}
+ function startEdit(p){
+   setEditingId(p.id);
+   setForm({
+     name:p.name,
+     composition:p.composition||"",
+     dosage_form:p.dosage_form||"Tablet",
+     category:p.category||"General",
+     image_url:p.image_url||"/products/product-placeholder.svg",
+     description:p.description||"",
+     packing:p.packing||"",   // <-- ADDED
+     mrp:p.mrp||""            // <-- ADDED
+   });
+   setTab("products");
+   window.scrollTo({top:0,behavior:"smooth"});
+ }
  function cancelEdit(){setEditingId(null);setForm(EMPTY_PRODUCT)}
 
  async function save(e){
@@ -1315,7 +1335,15 @@ function Admin(){
          <div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div>
        </div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
        
-       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={getImageSrc(form.image_url)} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={getImageSrc(p.image_url)} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
+       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={getImageSrc(form.image_url)} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div>
+         
+         {/* ADDED: Packing and MRP inputs */}
+         <div className="fieldRow">
+           <input placeholder="Packing (e.g., 10x10 Alu-Alu)" value={form.packing} onChange={e=>setForm({...form,packing:e.target.value})}/>
+           <input placeholder="MRP (e.g., 150)" type="number" step="0.01" value={form.mrp} onChange={e=>setForm({...form,mrp:e.target.value})}/>
+         </div>
+
+         <textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={getImageSrc(p.image_url)} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
 
        {tab==="categories"&&(<><form className="adminForm productForm" onSubmit={saveCat}>
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
