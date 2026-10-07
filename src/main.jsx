@@ -115,6 +115,17 @@ function getFilterValue(displayName = "") {
   return displayName;
 }
 
+/* ---------- Helper: Get the correct image URL (handles Cloudinary, uploads, and local paths) ---------- */
+function getImageSrc(url) {
+  if (!url) return "/products/product-placeholder.svg";
+  // Cloudinary or any full URL - use as-is
+  if (url.startsWith("http://") || url.startsWith("https://")) return url;
+  // Legacy uploads path - prepend backend URL
+  if (url.startsWith("/uploads")) return API_BASE.replace("/api","") + url;
+  // Local asset path - use as-is
+  return url;
+}
+
 /* ============================================================
    REAL PRODUCT CATALOGUE — fallback
    ============================================================ */
@@ -179,7 +190,6 @@ function Layout({children, setPage, page}) {
   const [navHidden, setNavHidden] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   
-  // Newsletter state
   const [newsletterEmail, setNewsletterEmail] = useState("");
   const [newsletterMsg, setNewsletterMsg] = useState("");
   const [newsletterLoading, setNewsletterLoading] = useState(false);
@@ -206,7 +216,6 @@ function Layout({children, setPage, page}) {
 
   const handleNavClick = (p) => { setPage(p); setMenuOpen(false); };
 
-  // Newsletter submit handler
   async function handleNewsletterSubmit(e) {
     e.preventDefault();
     if (!newsletterEmail) return;
@@ -391,11 +400,7 @@ function Home({setPage}) {
                 >
                   <div className="categoryIcon">
                     <img
-                      src={
-                        c.icon_url
-                          ? (c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url)
-                          : c.image_url || c.image || getCategoryImage(c.name)
-                      }
+                      src={c.icon_url ? getImageSrc(c.icon_url) : (c.image_url || c.image || getCategoryImage(c.name))}
                       alt={c.name}
                       loading="lazy"
                       onError={(e) => { e.target.src = getCategoryImage(c.name); }}
@@ -865,9 +870,7 @@ function Products({setPage, initialCategory = ""}) {
         <Reveal delay={100} className="productsCategoryRow">
           {catNames.map(c => {
             const iconUrl = catMap[c];
-            const imgSrc = iconUrl
-              ? (iconUrl.startsWith("/uploads") ? API_BASE.replace("/api","") + iconUrl : iconUrl)
-              : (c === "All" ? null : getCategoryImage(c));
+            const imgSrc = iconUrl ? getImageSrc(iconUrl) : (c === "All" ? null : getCategoryImage(c));
 
             return (
               <button
@@ -902,11 +905,7 @@ function Products({setPage, initialCategory = ""}) {
               <Reveal as="div" key={p.id} delay={(i % 12) * 50} className="productCardNew">
                 <div className="productCardImageWrap" style={{ height: '120px', display: 'flex', justifyContent: 'center', alignItems: 'center', marginBottom: '12px', background: '#fff8f8', borderRadius: '8px', overflow: 'hidden' }}>
                   <img
-                    src={
-                      p.image_url 
-                        ? (p.image_url.startsWith("/uploads") ? API_BASE.replace("/api","") + p.image_url : p.image_url) 
-                        : "/products/product-placeholder.svg"
-                    }
+                    src={getImageSrc(p.image_url)}
                     alt={p.name}
                     style={{ maxHeight: '100%', maxWidth: '100%', objectFit: 'contain' }}
                     onError={(e) => { e.target.src = "/products/product-placeholder.svg"; }}
@@ -1311,20 +1310,19 @@ function Admin(){
        <div className="adminTop"><div><span className="eyebrow">CONTROL CENTRE</span><h1>{TABS.find(t=>t[0]===tab)[1]}</h1></div>{toast&&<span className="adminToast">{toast}</span>}</div>
        {loadError&&<div className="errorBanner">{loadError} <button onClick={load}>Retry</button></div>}
        {tab==="dashboard"&&(<><div className="grid3">
-         {/* FIXED: Now correctly counts only active products */}
          <div className="counterCard"><b>{data.products.filter(p => p.active !== 0 && p.active !== false).length}</b><span>Active products</span></div>
          <div className="counterCard"><b>{data.enquiries.length}</b><span>Total enquiries</span></div>
          <div className="counterCard"><b>{data.logs.length}</b><span>Audit events</span></div>
        </div><h3 className="adminSubhead">Enquiries by status</h3><div className="statusBreakdown">{statusCounts.map(({s,n})=>(<div className="statusBarRow" key={s}><span className="statusBarLabel"><i className="statusDot" style={{background:STATUS_COLORS[s]}}></i>{s}</span><div className="statusBarTrack"><div className="statusBarFill" style={{width:`${data.enquiries.length?Math.max(4,(n/data.enquiries.length)*100):0}%`,background:STATUS_COLORS[s]}}></div></div><span className="statusBarCount">{n}</span></div>))}</div></>)}
        
-       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={form.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+form.image_url:form.image_url} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={p.image_url.startsWith("/uploads")?API_BASE.replace("/api","")+p.image_url:p.image_url} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
+       {tab==="products"&&(<><form className="adminForm productForm" onSubmit={save}>{editingId&&<div className="editingBanner">Editing product #{editingId} <button type="button" onClick={cancelEdit}>Cancel</button></div>}<div className="productFormGrid"><div className="uploadBox"><img src={getImageSrc(form.image_url)} alt="" /><label className="uploadLabel">{uploading?"Uploading...":"Change image"}<input type="file" accept="image/*" hidden onChange={handleFile} disabled={uploading}/></label></div><div className="productFields"><input placeholder="Name" value={form.name} onChange={e=>setForm({...form,name:e.target.value})} required/><input placeholder="Composition" value={form.composition} onChange={e=>setForm({...form,composition:e.target.value})}/><div className="fieldRow"><input placeholder="Dosage form" value={form.dosage_form} onChange={e=>setForm({...form,dosage_form:e.target.value})}/><input placeholder="Category" value={form.category} onChange={e=>setForm({...form,category:e.target.value})}/></div><textarea placeholder="Description" rows="3" value={form.description} onChange={e=>setForm({...form,description:e.target.value})}/></div></div><button className="primary">{editingId?"Save changes":"Add Product"}</button></form><input className="adminSearch" placeholder="Search products..." value={productQuery} onChange={e=>setProductQuery(e.target.value)}/><div className="table">{filteredProducts.map(p=>(<div className="row productRow" key={p.id}><img className="rowThumb" src={getImageSrc(p.image_url)} alt=""/><span><b>{p.name}</b><small>{p.category} · {p.dosage_form}</small></span><div className="rowActions"><button onClick={()=>startEdit(p)}>Edit</button>{confirmDeleteId===p.id?<span className="confirmInline">Delete? <button className="dangerBtn" onClick={()=>del(p.id)}>Yes</button><button onClick={()=>setConfirmDeleteId(null)}>No</button></span>:<button onClick={()=>setConfirmDeleteId(p.id)}>Delete</button>}</div></div>))}{filteredProducts.length===0&&<div className="row emptyRow">No products match your search.</div>}</div></>)}
 
        {tab==="categories"&&(<><form className="adminForm productForm" onSubmit={saveCat}>
          {editingCatId&&<div className="editingBanner">Editing category #{editingCatId} <button type="button" onClick={cancelEditCat}>Cancel</button></div>}
          <div className="productFormGrid">
            <div className="uploadBox">
              {catForm.icon_url ? (
-               <img src={catForm.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + catForm.icon_url : catForm.icon_url} alt="Category Icon" onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} />
+               <img src={getImageSrc(catForm.icon_url)} alt="Category Icon" onError={(e) => { e.target.src = getCategoryImage(catForm.name); }} />
              ) : isKnownCategory(catForm.name) ? (
                <img src={getCategoryImage(catForm.name)} alt="Category Icon" />
              ) : (
@@ -1348,7 +1346,7 @@ function Admin(){
        <div className="table">{filteredCategories.map(c=>(<div className="row" key={c.id}>
          <div style={{width:"44px", height:"44px", borderRadius:"50%", border:"2px solid #f6d9dc", background:"#fff8f8", display:"flex", alignItems:"center", justifyContent:"center", fontSize:"20px", flexShrink:0, overflow:"hidden"}}>
            {c.icon_url ? (
-             <img src={c.icon_url.startsWith("/uploads") ? API_BASE.replace("/api","") + c.icon_url : c.icon_url} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
+             <img src={getImageSrc(c.icon_url)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
            ) : isKnownCategory(c.name) ? (
              <img src={getCategoryImage(c.name)} alt={c.name} style={{width:"100%", height:"100%", objectFit:"cover"}} onError={(e) => { e.target.style.display='none'; e.target.nextSibling.style.display='flex'; }} />
            ) : (
